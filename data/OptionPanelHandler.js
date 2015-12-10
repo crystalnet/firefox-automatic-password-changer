@@ -56,14 +56,6 @@ function createOptionButton(id,text,iconSrc,newFunction){
 	}
 }
 
-//function deletePanelContent(){
-
-//	for(var i = 0;i < htmlElements.length; i = i + 1){
-//		var elem;
-//		(elem = document.getElementById(htmlElements[i])).parentNode.removeChild(elem);
-//	}
-//}
-
 //function for clicking on menu option Accountlist
 function openAccounts(){
 	alert("Hey you clicked on Accountlist!!");
@@ -76,5 +68,5 @@ function activate_deaktivate(){
 
 // function for start-endRecording
 function startRecord_endRecord(){
-	alert("Hey you clicked on Recording!!");
+	self.port.emit("go");
 }
