@@ -64,9 +64,11 @@ function openAccounts(){
 // function for activate-deactivate button in menu panel
 function activate_deaktivate(){
 	alert("Hey you clicked on Deactivate!!");
+	
+	self.port.emit("changePW");
 }
 
 // function for start-endRecording
 function startRecord_endRecord(){
-	self.port.emit("go");
+	self.port.emit("stopgorecord");
 }
