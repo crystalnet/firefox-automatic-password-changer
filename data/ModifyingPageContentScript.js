@@ -5,6 +5,28 @@ var xCoord;
 var yXoord;
 var submitElementID;
 
+
+// Listener for xClick message
+self.port.on("xClick", function(message){
+	xCoord = message;
+
+	if((xCoord != null) && (yCoord != null)){
+		document.elementFromPoint(xCoord,yCoord).click()
+	}
+	self.port.emit("wr");
+});
+
+// Listener for yClick message
+self.port.on("yClick", function(message){
+	yCoord = message;
+	
+	if((xCoord != null) && (yCoord != null)){
+		document.elementFromPoint(xCoord,yCoord).click()
+	}
+	self.port.emit("wr");
+});
+
+// Listener for submitElementID message
 self.port.on("submitElementID", function(message){
 	submitElementID = message;
 	if(document.getElementById(submitElementID) != null){
@@ -13,9 +35,13 @@ self.port.on("submitElementID", function(message){
     else if (document.getElementsByName(submitElementID)[0] != null){
         var btn = document.getElementsByName(submitElementID)[0];
     }
-    btn.submit();
+    else
+    	return;
+    btn.click();
+    self.port.emit("wr");
 });
 
+// Listener for elementID message
 self.port.on("elementID", function(message) {
 	elementID = message;
 
@@ -32,9 +58,16 @@ self.port.on("elementID", function(message) {
 		}
 
 		data.value = inputValue;
+		console.log("typed to  ", elementID);
+		console.log("the value  ", inputValue);
+		console.log("the value is ", data.value);
+		inputValue = null;
+		elementID = null;
+		self.port.emit("wr");
 	}
 });
 
+// Listener for inputValue message
 self.port.on("inputValue", function(message) {
 	inputValue = message;
 
@@ -51,6 +84,12 @@ self.port.on("inputValue", function(message) {
 		}
 
 		data.value = inputValue;
+		console.log("typed to  ", elementID);
+		console.log("the value  ", inputValue);
+		console.log("the value is ", data.value);
+		inputValue = null;
+		elementID = null;
+		self.port.emit("wr");
 	}
 });
 

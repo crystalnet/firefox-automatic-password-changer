@@ -6,6 +6,7 @@ var htmlElements = [];
 self.port.on("startBuilding", buildPanelHTML);
 //self.port.on("hide",deletePanelContent);
 
+self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
 // build panel dynamically
 function buildPanelHTML(){
 	createOptionButton("record-button","Aufzeichnen","icon-16.png",startRecord_endRecord);
@@ -48,6 +49,7 @@ function createOptionButton(id,text,iconSrc,newFunction){
 		img.setAttribute("src",iconSrc);
 		img.setAttribute("class","icon");
 
+		
 		div.innerHTML = text;
 		div.appendChild(img);
 
@@ -58,7 +60,7 @@ function createOptionButton(id,text,iconSrc,newFunction){
 
 //function for clicking on menu option Accountlist
 function openAccounts(){
-	alert("Hey you clicked on Accountlist!!");
+	self.port.emit("openAccountList");
 }
 
 // function for activate-deactivate button in menu panel
@@ -69,6 +71,27 @@ function activate_deaktivate(){
 }
 
 // function for start-endRecording
-function startRecord_endRecord(){
+function startRecord_endRecord(evt){
+
+	var btn = document.getElementById(evt.target.id);
+	switchRecordButtonstate();
 	self.port.emit("stopgorecord");
+}
+
+//changes label for record button 
+function switchRecordButtonstate(){
+	var recordbtn = document.getElementById("record-button");
+	var img = document.createElement("IMG");
+	var iconSrc = recordbtn.getElementsByTagName("IMG");
+	img.setAttribute("src",recordbtn.getElementsByTagName("IMG")[0].src);
+	img.setAttribute("class","icon");
+
+	if(recordbtn.innerHTML.indexOf('Aufzeichnen') > -1){
+		recordbtn.innerHTML = "Aufz. beenden";
+		recordbtn.appendChild(img);
+	}
+	else{
+		recordbtn.innerHTML = "Aufzeichnen";
+		recordbtn.appendChild(img);	
+	}
 }
