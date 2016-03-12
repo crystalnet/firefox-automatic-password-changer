@@ -3,6 +3,15 @@ self.port.on("startBuildingAccountlist", function(pwHash){
 	buildAccountlist(pwHash);
 });
 
+self.port.on("NoChangeWay", function(url){
+    var box=window.confirm("Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?");
+        if(box==true){ 
+            startRecording(url);
+        } 
+        else if(box==false){ 
+        } 
+});
+
 self.port.on("closing", function(){
 	Clear();
 });
@@ -50,12 +59,12 @@ function addAccountSection(name, password, url){
 
     		deleteBtn.innerHTML = "Eintrag löschen";
     		changeBtn.innerHTML = "Passwort jetzt automatisch ändern";
-    		createPathBtn.innerHTML = "Neuen Pfad aufzeichnen";
+    		createPathBtn.innerHTML = "Passwort jetzt manuell ändern";
 
     		//adding onClick functions
     		deleteBtn.addEventListener('click',function(){deleteThisEntry(url,name);});
     		changeBtn.addEventListener('click',function(){changeThisPasswordAut(url,name);}); 
-    		createPathBtn.addEventListener('click',function(){startRecording(url);});
+    		createPathBtn.addEventListener('click',function(){navigateToChangePW(url,name);});
 
 
     		div.appendChild(p1);
@@ -85,11 +94,14 @@ function changeThisPasswordAut(url, username){
 // triggerfunction for recording new passwordchangepath
 function startRecording(url){
 	console.log("lets record for url: "+ url);
-	//TODO
-	//1) close this tab
-	//2) navigate to website
-	//3) trigger recorder for starting
 	self.port.emit("startRecord",url);
+}
+
+// triggerfunction for navigating user to the page in account where the changing form is located.
+function navigateToChangePW(url, username){
+    console.log("navigating to password change form");
+
+    self.port.emit("Nav2ChangeForm", [url,username]);
 }
 
 //destroy all objects and Listener if needed
