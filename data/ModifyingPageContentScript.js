@@ -28,14 +28,18 @@ self.port.on("yClick", function(message){
 
 // Listener for submitElementID message
 self.port.on("submitLoginData", function(data){
+	console.log("here is the submitLoginDataPort");
 	//submitElementID = message;
 	var formID = data[0];
-	var formWebsite = data[1];
-	var formAction = data[2];
-	var formPWFieldName = data[3];
-	var formUsernameFieldName = data[4];
-	var password = data[5];
-	var username = data[6];
+	var formName = data[1];
+	var formWebsite = data[2];
+	var formAction = data[3];
+	var formPWFieldName = data[4];
+	var formPWFieldID = data[5];
+	var formUsernameFieldName = data[6];
+	var formUsernameFieldID = data[7];
+	var password = data[8];
+	var username = data[9];
 	var formsCollection;
 	var myForm;
 
@@ -47,6 +51,9 @@ self.port.on("submitLoginData", function(data){
 	if(formID != ""){
 		myForm = document.getElementById(formID);
 	}
+	else if(formName != ""){
+		myForm = document.getElementsByName(formName)[0];
+	}
 	else{
 
 		formsCollection = document.getElementsByTagName("form");
@@ -55,7 +62,7 @@ self.port.on("submitLoginData", function(data){
 		console.log("beginnen mit eintragen von daten in formular");
 		for(var i=0;i<formsCollection.length;i++){
 	   		var actualForm = formsCollection[i];
-	   		if((actualForm.id == formID) && (actualForm.action == formAction)){
+	   		if(((actualForm.id == formID) || (actualForm.name == formName)) && (actualForm.action == formAction)){
 	   			myForm = actualForm;
 	   			break;
 	   		}
@@ -71,16 +78,7 @@ self.port.on("submitLoginData", function(data){
 		var usernameField = document.getElementsByName(formUsernameFieldName)[0];
 		usernameField.value = username;
 	}
-	else{
-		var elem = document.getElementsByTagName('input');
-        for(var i = 0; i < elem.length; i++)
-        {
-        	if(elem[i].type != "password"){
-        		elem[i].value = username;
-        		break;
-        	}
-        } 
-	}
+	
 
 	console.log("formular gefunden und jetzt wird password eingetragen");
 	sleep(2000);
@@ -89,35 +87,18 @@ self.port.on("submitLoginData", function(data){
 		var pwField = document.getElementsByName(formPWFieldName);
 		pwField[0].value = password;
 	}
-	else{
-		var elem = document.getElementsByTagName('input');
-        for(var i = 0; i < elem.length; i++)
-        {
-        	if(elem[i].type == "password"){
-        		elem[i].value = password;
-        		break;
-        	}
-        } 
-	}
 
 	myForm.submit();
 });
 
-self.port.on("submitPWChangeData", function(data){
-	//TODO IMPLEMENT
+self.port.on("submitOnlyData", function(data){
 	var formID = data[0];
 	var formWebsite = data[1];
 	var formAction = data[2];
-	var password = data[3];
-	var newPassword = data[4];
-	var formsCollection;
-	var myForm;
-	var numberOfPWFields = 0;
 
 	for(var i = 0; i < data.length; i++){
 		console.log("data[" + i + "] = " + data[i] + " received");
-	}
-
+	}	
 
 	//#1 search for the right form
 	if(formID != ""){
@@ -138,14 +119,85 @@ self.port.on("submitPWChangeData", function(data){
 		}
 	}
 
+	sleep(2000);
+	myForm.submit();
+
+});
+
+self.port.on("submitPWChangeData", function(data){
+	//TODO IMPLEMENT
+	var formID = data[0];
+	var formName = data[1];
+	var formWebsite = data[2];
+	var formAction = data[3];
+	var numOfPWFields = data[4];
+	var PWInfo = data[5];
+	var password = data[6];
+	var newPassword = data[7];
+	var formsCollection;
+	var myForm;
+
+	for(var i = 0; i < data.length; i++){
+		console.log("data[" + i + "] = " + data[i] + " received");
+	}
+
+
+	//#1 search for the right form
+	if(formID != ""){
+		myForm = document.getElementById(formID);
+	}
+	else if(formName != ""){
+		myForm = document.getElementsByName(formName)[0];
+	}
+	else{
+
+		formsCollection = document.getElementsByTagName("form");
+		
+
+		console.log("beginnen mit eintragen von daten in formular");
+		for(var i=0;i<formsCollection.length;i++){
+	   		var actualForm = formsCollection[i];
+	   		if(countAllChildrenOfType(formsCollection[i],"password") == numOfPWFields){ 
+	   			myForm = formsCollection[i];
+	   			break;
+	   		}
+		}
+	}
+	
+
 	//#2 Fillout pw fields
-	fillOutPWFieldsIn(myForm,password,newPassword);
-	console.log("das korrekte Formular ist gefunden");
+	fillOutPWFieldsIn(myForm,password,newPassword,numOfPWFields,PWInfo);
+	console.log("das korrekte Formular wird submitted");
 
 	sleep(2000);
 	myForm.submit();
 
 	self.port.emit("successSubmit");
+});
+
+self.port.on("LogoutData", function(data){
+	formID, formName, formAction, mustWebsiteURL, hrefLink
+	var formID = data[0];
+	var formName = data[1];
+	var formAction = data[2];
+	var mustWebsiteURL = data[3];
+	var hrefLink = data[4];
+	var element = data[5];
+	var myForm;
+
+	if(formAction != ""){
+		if(formID != ""){
+			myForm = document.getElementById(formID);
+		}
+		else{
+			myForm = document.getElementsByName(formName);
+		}
+
+		myForm.submit();
+	}
+	else if(href != ""){
+		window.location.href = href;
+	}
 });
 
 // Listener for elementID message
@@ -219,26 +271,69 @@ function countAllChildrenOfType(node,type){
     return result;
   }
 */
-function fillOutPWFieldsIn(node,password, newpassword){
-	var allElements = document.getElementsByTagName('*');
+function fillOutPWFieldsIn(node,password, newpassword,numOfPWFields,PWInfo){
+	var allElements = node.getElementsByTagName('input');
 	var found = 0;
-	for(var i = 0; i < allElements.length;i++){
-		if(allElements[i].type == "password"){
-			console.log("PASSWORDFELD GEFUNDEN");
-			if(found == 0){
-				console.log("aktuelles password");
-				allElements[i].value = password;
-				found++;
-			}
-			else{ 
-				console.log("neues password");
+	var pwCount = numOfPWFields;
+	//for(var i = 0; i < allElements.length;i++){
+	//	if(allElements[i].type == "password"){
+	//		pwCount++;
+	//	}
+	//}
+
+
+	// if there is only one passwordfield to type
+	if(numOfPWFields == 1){
+		console.log("Nur das neue password wird eingetippt");
+		for(var i = 0; i < allElements.length;i++){
+			if(allElements[i].type == "password"){
 				allElements[i].value = newpassword;
-				found++;
 			}
 		}
 	}
-  }
-  
+
+	//if there are 2 passwordfields to type we have 2 possibilities
+	if(numOfPWFields == 2){
+		// type 2 times new password
+		if((PWInfo[0] == "N") && (PWInfo[1] == "N")){
+			console.log("Es wird 2 mal das neue pw eingetippt");
+			for(var i = 0; i < allElements.length;i++){
+				if(allElements[i].type == "password"){
+					allElements[i].value = newpassword;
+				}
+			}
+		}
+		//else first type old password then the new one
+		else{
+			console.log("Es wird erst altes pw dann neues eingetippt");
+			for(var i = 0; i < allElements.length;i++){
+				if((allElements[i].type == "password") && (pwCount == 2)){
+					allElements[i].value = password;
+					pwCount--;
+				}
+				else if((allElements[i].type == "password") && (pwCount == 1)){
+					allElements[i].value = newpassword;
+				}
+			}
+		}
+	}
+
+	// if there are 3 passwordfields type first old password the two times the new one
+	if(numOfPWFields == 3){
+		console.log("Es wird erst altes dann 2  mal das neue pw eingetippt");
+		for(var i = 0; i < allElements.length;i++){
+			if((allElements[i].type == "password") && (pwCount == 3)){
+				console.log("erst altes pw eintippen");
+				allElements[i].value = password;
+				pwCount--;
+			}
+			else if(allElements[i].type == "password"){
+				console.log("neues pw eintippen");
+				allElements[i].value = newpassword;
+			}
+		}
+	}
+}
 // this function waits for milliseconds as parameter
 function sleep(milliseconds) {
   		var start = new Date().getTime();
@@ -247,5 +342,19 @@ function sleep(milliseconds) {
       			break;
     		}
   		}
-	}
+}
+
+function countAllChildrenOfType(node,type){
+    var result = 0;
+    if (node.hasChildNodes()) {
+        for (var i = 0; i < node.childNodes.length; i++) {
+          var newNode = node.childNodes[i];
+          result += countAllChildrenOfType(newNode,type);  
+        }
+    }
+    else if(node.type == type){
+      return result +1;
+    }
+    return result;
+}
 

@@ -10,9 +10,9 @@ self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
 // build panel dynamically
 function buildPanelHTML(){
 	createOptionButton("record-button","Aufzeichnen","icon-16.png",startRecord_endRecord);
-	createOptionButton("accountlist","Accountliste","icon-16.png",openAccounts);
 	createSeparator("myHr");
-	createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
+	createOptionButton("accountlist","Accountliste","icon-16.png",openAccounts);
+	//createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
 }
 
 // creates a separator in panel menu
