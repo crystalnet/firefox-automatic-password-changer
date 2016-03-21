@@ -1,3 +1,6 @@
+/*
+This is the content script for option panel of the addon 
+*/
 var active = true;
 var recording = false;
 var htmlElements = [];
@@ -7,6 +10,7 @@ self.port.on("startBuilding", buildPanelHTML);
 //self.port.on("hide",deletePanelContent);
 
 self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
+
 // build panel dynamically
 function buildPanelHTML(){
 	createOptionButton("record-button","Aufzeichnen","icon-16.png",startRecord_endRecord);

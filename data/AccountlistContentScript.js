@@ -1,3 +1,6 @@
+/*
+This is the content script for the Accountlist.html
+*/
 
 self.port.on("startBuildingAccountlist", function(pwHash){
 	buildAccountlist(pwHash);
@@ -16,10 +19,13 @@ self.port.on("closing", function(){
 	Clear();
 });
 
+/*
+this function builds dynamically the accountlist
+pwHash: hashtable with login-entries from password manager
+*/
 function buildAccountlist(pwHash){
 
 	console.log("start building acclist");
-	console.log(pwHash.length);
 	for(var i = 0; i < pwHash.length;i++){
 		var name = pwHash.items[i][0];
 		var url = pwHash.items[i][1];
@@ -30,6 +36,7 @@ function buildAccountlist(pwHash){
         $( "#accordion" ).accordion();
     });
 
+    // these 2 buttons are fix but they need eventlistener 
     var bpButton = document.getElementById("Blaupausen-button");
     bpButton.addEventListener('click',function(){openBlaupausen();});
     var bpImport = document.getElementById("Blaupausen-import");
@@ -38,6 +45,8 @@ function buildAccountlist(pwHash){
 }
 
 //adds a section for an account to accountlist
+// name: username for a login entry
+// url : url for a login entry
 function addAccountSection(name, url){
 	
     	var accord = document.getElementById('accordion');
@@ -86,6 +95,8 @@ function addAccountSection(name, url){
 }
 
 // triggerfunction for deleting entry from persistent storage and passwordmanager
+// username: username for a login entry
+// url : url for a login entry
 function deleteThisEntry(url, username){
     window.alert("Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.");
 	console.log("deleting entry : " + url + " " + username);
@@ -93,35 +104,44 @@ function deleteThisEntry(url, username){
 }
 
 // triggerfunction for automatic change password
+// username: username for a login entry
+// url : url for a login entry
 function changeThisPasswordAut(url, username){
     window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist das Passwort automatisch ändern. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen lönnen. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
 	console.log("changing password for username: " + username + " on website: " + url);
 	self.port.emit("changePW",[url,username]);
 }
 
-// triggerfunction for recording new passwordchangepath
+// triggerfunction for recording new blaupause
+// url : url for a login entry
 function startRecording(url){
 	console.log("lets record for url: "+ url);
 	self.port.emit("startRecord",url);
 }
 
 // triggerfunction for navigating user to the page in account where the changing form is located.
+// username: username for a login entry
+// url : url for a login entry
 function navigateToChangePW(url, username){
     console.log("navigating to password change form");
     window.alert("Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.");
     self.port.emit("Nav2ChangeForm", [url,username]);
 }
 
+// triggerfunction for export of blaupause
+// url : url for a login entry
 function exportBlaupause(url){
     console.log("Blaupause für " + url + " wird exportiert");
     self.port.emit("ExportBP",url);
 }
 
+// triggerfunction for opening of blaupause
 function openBlaupausen(){
     console.log("openBlaupausen");
     self.port.emit("OpenBlaupausen");
 }
 
+// triggerfunction for import of blaupause
 function importBlaupause(){
     console.log("importnutton clicked");
     self.port.emit("ImportBP");

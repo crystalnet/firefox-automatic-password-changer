@@ -1,4 +1,7 @@
+/*
+This is the content script for the blaupause menu 
 
+*/
 self.port.on("startBuildingBlaupausen", function(BPs){
 	if(BPs != null)
 		buildBlaupausen(BPs);
@@ -8,6 +11,8 @@ self.port.on("closing", function(){
 	Clear();
 });
 
+// builds dynamically a list of blaupause which are known to the addon 
+//BPs: hashtable from simple-stotage of blaupauses
 function buildBlaupausen(BPs){
 
 	console.log("start building blaupausen");
@@ -24,7 +29,7 @@ function buildBlaupausen(BPs){
 	
 }
 
-//adds a section for an account to accountlist
+//adds a section for a blaupause to blaupause menu
 function addBPSection(url){
 	
     	var accord = document.getElementById('accordion');
@@ -54,6 +59,8 @@ function addBPSection(url){
 }
 
 // triggerfunction for deleting entry from persistent storage and passwordmanager
+// url: url for website of blaupause
+// username: username for account for website of blaupause
 function deleteThisEntry(url, username){
     window.alert("Diese Blaupause wird aus dem Speicher von Firefox gelöscht");
 	console.log("deleting entry blaupause: " + url);

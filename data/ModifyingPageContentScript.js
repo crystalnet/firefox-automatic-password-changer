@@ -1,32 +1,49 @@
 //### script for interaction with a website -> filling forms
+/*
+This is the content script for interaction with webpages
+it performs every input and submit that ist needed for password change on extern webpages
+*/
 var elementID;
 var inputValue;
-var xCoord;
-var yXoord;
 var submitElementID;
 
 
 // Listener for xClick message
-self.port.on("xClick", function(message){
-	xCoord = message;
+// message: [x coordinate, y coordinate, viewport position]
+self.port.on("xyCoords", function(message){
+	xCoord = message[0];
+	yCoord = message[1];
+	mustScrollTop = message[2];
+	console.log("xyClick received = " + xCoord + " " + yCoord);
+	console.log("mustScrollTop "+mustScrollTop);
+	console.log("Scroll top is " + document.documentElement.scrollTop);
 
-	if((xCoord != null) && (yCoord != null)){
-		document.elementFromPoint(xCoord,yCoord).click()
-	}
-	self.port.emit("wr");
-});
+	//scroll the viewport if necessary
+	if(document.documentElement.scrollTop != mustScrollTop)
+		document.documentElement.scrollTop = mustScrollTop;
 
-// Listener for yClick message
-self.port.on("yClick", function(message){
-	yCoord = message;
-	
+	// perform click if coods are set
 	if((xCoord != null) && (yCoord != null)){
-		document.elementFromPoint(xCoord,yCoord).click()
+
+		var element = document.elementFromPoint(xCoord,yCoord);
+		if(element != null){
+			console.log("element to be clicked" + element);
+			if(element.hasAttribute("href")){
+				console.log(element.href);
+				eval(element.href);
+				element.click();
+				xCoord = null;
+				yCoord = null;
+			}
+		}
 	}
-	self.port.emit("wr");
+	// a kind of callback for imitatorobject
+	self.port.emit("clickReady");
 });
 
 // Listener for submitElementID message
+// data : [form id, form name, website of form , action of form , name of password field, id of password field, name of username field, id of username field,
+//			actual password, username]
 self.port.on("submitLoginData", function(data){
 	console.log("here is the submitLoginDataPort");
 	//submitElementID = message;
@@ -55,11 +72,8 @@ self.port.on("submitLoginData", function(data){
 		myForm = document.getElementsByName(formName)[0];
 	}
 	else{
-
 		formsCollection = document.getElementsByTagName("form");
 		
-
-		console.log("beginnen mit eintragen von daten in formular");
 		for(var i=0;i<formsCollection.length;i++){
 	   		var actualForm = formsCollection[i];
 	   		if(((actualForm.id == formID) || (actualForm.name == formName)) && (actualForm.action == formAction)){
@@ -69,7 +83,6 @@ self.port.on("submitLoginData", function(data){
 		}
 	}
 
-	console.log("formular gefunden und jetzt wird name eingetragen");
 	sleep(2000);
 
 	//#2 put the username in the right textbox
@@ -79,8 +92,6 @@ self.port.on("submitLoginData", function(data){
 		usernameField.value = username;
 	}
 	
-
-	console.log("formular gefunden und jetzt wird password eingetragen");
 	sleep(2000);
 	//#3 put the password in the right textbox
 	if(formPWFieldName != ""){
@@ -89,8 +100,11 @@ self.port.on("submitLoginData", function(data){
 	}
 
 	myForm.submit();
+	self.port.emit("ReadyLogin");
 });
 
+// listener for submit event when it is no login or password change form
+// data : [id of form, website of form, action of form]
 self.port.on("submitOnlyData", function(data){
 	var formID = data[0];
 	var formWebsite = data[1];
@@ -108,8 +122,6 @@ self.port.on("submitOnlyData", function(data){
 
 		formsCollection = document.getElementsByTagName("form");
 		
-
-		console.log("beginnen mit eintragen von daten in formular");
 		for(var i=0;i<formsCollection.length;i++){
 	   		var actualForm = formsCollection[i];
 	   		if((actualForm.id == formID) && (actualForm.action == formAction)){
@@ -124,8 +136,10 @@ self.port.on("submitOnlyData", function(data){
 
 });
 
+// listener for submit a password change form event
+// data: [id of form, name of form, website of form, action of form, number of passwordfields in form, string for identify passwords,
+//	actual password, new password]
 self.port.on("submitPWChangeData", function(data){
-	//TODO IMPLEMENT
 	var formID = data[0];
 	var formName = data[1];
 	var formWebsite = data[2];
@@ -153,8 +167,6 @@ self.port.on("submitPWChangeData", function(data){
 
 		formsCollection = document.getElementsByTagName("form");
 		
-
-		console.log("beginnen mit eintragen von daten in formular");
 		for(var i=0;i<formsCollection.length;i++){
 	   		var actualForm = formsCollection[i];
 	   		if(countAllChildrenOfType(formsCollection[i],"password") == numOfPWFields){ 
@@ -167,39 +179,56 @@ self.port.on("submitPWChangeData", function(data){
 
 	//#2 Fillout pw fields
 	fillOutPWFieldsIn(myForm,password,newPassword,numOfPWFields,PWInfo);
-	console.log("das korrekte Formular wird submitted");
 
 	sleep(2000);
 	myForm.submit();
-
-	self.port.emit("successSubmit");
+	console.log("submitted " + myForm.id);
+	self.port.emit("SubmitPWReady");
 });
 
 self.port.on("LogoutData", function(data){
-	formID, formName, formAction, mustWebsiteURL, hrefLink
 	var formID = data[0];
 	var formName = data[1];
 	var formAction = data[2];
 	var mustWebsiteURL = data[3];
 	var hrefLink = data[4];
-	var element = data[5];
 	var myForm;
 
 	if(formAction != ""){
 		if(formID != ""){
 			myForm = document.getElementById(formID);
 		}
-		else{
+		else if (formName != ""){
 			myForm = document.getElementsByName(formName);
 		}
-
+		else{
+			formsCollection = document.getElementsByTagName("form");
+		
+			for(var i=0;i<formsCollection.length;i++){
+		   		var actualForm = formsCollection[i];
+		   		if(actualForm.action == formAction){ 
+		   			myForm = formsCollection[i];
+		   			break;
+		   		}
+			}
+		}
 		myForm.submit();
 	}
 	else if(href != ""){
 		window.location.href = href;
 	}
+	// if it is a button
+	else if(formID != ""){
+		var button = document.getElementById(formID);
+		button.click();
+	}
+	else if(formName != ""){
+		var button = document.getElementsByName(formName)[0];
+		button.click();
+	}
 });
 
+// not needed in this version
 // Listener for elementID message
 self.port.on("elementID", function(message) {
 	elementID = message;
@@ -226,6 +255,7 @@ self.port.on("elementID", function(message) {
 	}
 });
 
+// not needed in this version
 // Listener for inputValue message
 self.port.on("inputValue", function(message) {
 	inputValue = message;
@@ -252,42 +282,25 @@ self.port.on("inputValue", function(message) {
 	}
 });
 
-// this function searches recursively elements with certain type in nodes and childnodes 
-// node = html elemnt as start element
-// type = type of element that will counted
-// returns number of elements of type in childelements of node
 /*
-function countAllChildrenOfType(node,type){
-    var result = 0;
-    if (node.hasChildNodes()) {
-        for (var i = 0; i < node.childNodes.length; i++) {
-          	var newNode = node.childNodes[i];
-          	result += countAllChildrenOfType(newNode,type);  
-        }
-    }
-    else if(node.type == type){
-      	return result +1;
-    }
-    return result;
-  }
+this function fills out password fields in a form
+node: form that have to be filled out
+password: actual password
+newpassword: the new password
+numOfPWFields: number of inputfields with type="password" in form 
+PWInfo: array like [A,N,N] that means -> first field is actual password, second and third field is new password
 */
 function fillOutPWFieldsIn(node,password, newpassword,numOfPWFields,PWInfo){
-	var allElements = node.getElementsByTagName('input');
+	var allElements = document.getElementsByTagName('input');
 	var found = 0;
 	var pwCount = numOfPWFields;
-	//for(var i = 0; i < allElements.length;i++){
-	//	if(allElements[i].type == "password"){
-	//		pwCount++;
-	//	}
-	//}
-
 
 	// if there is only one passwordfield to type
 	if(numOfPWFields == 1){
 		console.log("Nur das neue password wird eingetippt");
 		for(var i = 0; i < allElements.length;i++){
 			if(allElements[i].type == "password"){
-				allElements[i].value = newpassword;
+				allElements[i].value = newpassword;			
 			}
 		}
 	}
@@ -325,11 +338,13 @@ function fillOutPWFieldsIn(node,password, newpassword,numOfPWFields,PWInfo){
 			if((allElements[i].type == "password") && (pwCount == 3)){
 				console.log("erst altes pw eintippen");
 				allElements[i].value = password;
+				console.log("hier wird das alte pw eingetipt = " + allElements[i].id + " " + allElements[i].name);
 				pwCount--;
 			}
 			else if(allElements[i].type == "password"){
 				console.log("neues pw eintippen");
 				allElements[i].value = newpassword;
+				console.log("hier wird das neue pw eingetipt = " + allElements[i].id + " " + allElements[i].name);
 			}
 		}
 	}
@@ -344,6 +359,9 @@ function sleep(milliseconds) {
   		}
 }
 
+//recursive function  that returns number of inputfields of type="type" in a html element
+//node: html element
+//type: type developer is searching for 
 function countAllChildrenOfType(node,type){
     var result = 0;
     if (node.hasChildNodes()) {
