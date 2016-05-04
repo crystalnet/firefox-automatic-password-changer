@@ -10,7 +10,7 @@ var submitElementID;
 
 // Listener for xClick message
 // message: [x coordinate, y coordinate, viewport position]
-self.port.on("xyCoords", function(message){
+self.port.on("xyCoords", ClickAt=function(message){
 	xCoord = message[0];
 	yCoord = message[1];
 	mustScrollTop = message[2];
@@ -44,7 +44,7 @@ self.port.on("xyCoords", function(message){
 // Listener for submitElementID message
 // data : [form id, form name, website of form , action of form , name of password field, id of password field, name of username field, id of username field,
 //			actual password, username]
-self.port.on("submitLoginData", function(data){
+self.port.on("submitLoginData", submitLoginData = function(data){
 	console.log("here is the submitLoginDataPort");
 	//submitElementID = message;
 	var formID = data[0];
@@ -105,7 +105,7 @@ self.port.on("submitLoginData", function(data){
 
 // listener for submit event when it is no login or password change form
 // data : [id of form, website of form, action of form]
-self.port.on("submitOnlyData", function(data){
+self.port.on("submitOnlyData", submitData=function(data){
 	var formID = data[0];
 	var formWebsite = data[1];
 	var formAction = data[2];

@@ -107,7 +107,7 @@ function deleteThisEntry(url, username){
 // username: username for a login entry
 // url : url for a login entry
 function changeThisPasswordAut(url, username){
-    window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist das Passwort automatisch ändern. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen lönnen. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
+    window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
 	console.log("changing password for username: " + username + " on website: " + url);
 	self.port.emit("changePW",[url,username]);
 }
