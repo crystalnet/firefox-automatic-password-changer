@@ -1,18 +1,17 @@
 /*
 This is the content script for the Accountlist.html
 */
-
 self.port.on("startBuildingAccountlist", function(pwHash){
 	buildAccountlist(pwHash);
 });
 
 self.port.on("NoChangeWay", function(url){
     var box=window.confirm("Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?");
-        if(box==true){ 
+        if(box==true){
             startRecording(url);
-        } 
-        else if(box==false){ 
-        } 
+        }
+        else if(box==false){
+        }
 });
 
 self.port.on("closing", function(){
@@ -36,19 +35,19 @@ function buildAccountlist(pwHash){
         $( "#accordion" ).accordion();
     });
 
-    // these 2 buttons are fix but they need eventlistener 
-    var bpButton = document.getElementById("Blaupausen-button");
-    bpButton.addEventListener('click',function(){openBlaupausen();});
-    var bpImport = document.getElementById("Blaupausen-import");
-    bpImport.addEventListener('click',function(){importBlaupause();});
-	
+    // these 2 buttons are fix but they need eventlistener
+    var bpButton = document.getElementById("btn_show_blueprints");
+    bpButton.addEventListener('click',function(){openBlueprints();});
+    var bpImport = document.getElementById("btn_import_blueprints");
+    bpImport.addEventListener('click',function(){importBlueprint();});
+
 }
 
 //adds a section for an account to accountlist
 // name: username for a login entry
 // url : url for a login entry
 function addAccountSection(name, url){
-	
+
     	var accord = document.getElementById('accordion');
 
     	if(accord != null){
@@ -77,9 +76,9 @@ function addAccountSection(name, url){
 
     		//adding onClick functions
     		deleteBtn.addEventListener('click',function(){deleteThisEntry(url,name);});
-    		changeBtn.addEventListener('click',function(){changeThisPasswordAut(url,name);}); 
+    		changeBtn.addEventListener('click',function(){changeThisPasswordAut(url,name);});
     		createPathBtn.addEventListener('click',function(){navigateToChangePW(url,name);});
-            exportBtn.addEventListener('click',function(){exportBlaupause(url);});
+            exportBtn.addEventListener('click',function(){exportBlueprint(url);});
 
 
     		div.appendChild(p1);
@@ -112,7 +111,7 @@ function changeThisPasswordAut(url, username){
 	self.port.emit("changePW",[url,username]);
 }
 
-// triggerfunction for recording new blaupause
+// triggerfunction for recording new blueprint
 // url : url for a login entry
 function startRecording(url){
 	console.log("lets record for url: "+ url);
@@ -128,21 +127,21 @@ function navigateToChangePW(url, username){
     self.port.emit("Nav2ChangeForm", [url,username]);
 }
 
-// triggerfunction for export of blaupause
+// triggerfunction for export of blueprint
 // url : url for a login entry
-function exportBlaupause(url){
+function exportBlueprint(url){
     console.log("Blaupause für " + url + " wird exportiert");
     self.port.emit("ExportBP",url);
 }
 
-// triggerfunction for opening of blaupause
-function openBlaupausen(){
-    console.log("openBlaupausen");
-    self.port.emit("OpenBlaupausen");
+// triggerfunction for opening of blueprint
+function openBlueprints(){
+    console.log("openBlueprints");
+    self.port.emit("OpenBlueprints");
 }
 
-// triggerfunction for import of blaupause
-function importBlaupause(){
+// triggerfunction for import of blueprint
+function importBlueprint(){
     console.log("importnutton clicked");
     self.port.emit("ImportBP");
 }
@@ -151,4 +150,3 @@ function importBlaupause(){
 function Clear(){
 
 }
-

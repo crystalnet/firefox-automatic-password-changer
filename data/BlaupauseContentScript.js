@@ -1,19 +1,18 @@
 /*
-This is the content script for the blaupause menu 
-
+This is the content script for the blueprint menu
 */
-self.port.on("startBuildingBlaupausen", function(BPs){
+self.port.on("startBuildingBlueprints", function(BPs){
 	if(BPs != null)
-		buildBlaupausen(BPs);
+		buildBlueprints(BPs);
 });
 
 self.port.on("closing", function(){
 	Clear();
 });
 
-// builds dynamically a list of blaupause which are known to the addon 
+// builds dynamically a list of blueprint which are known to the addon
 //BPs: hashtable from simple-stotage of blaupauses
-function buildBlaupausen(BPs){
+function buildBlueprints(BPs){
 
 	console.log("start building blaupausen");
 	console.log(BPs.length);
@@ -26,18 +25,18 @@ function buildBlaupausen(BPs){
 	$(function() {
         $( "#accordion" ).accordion();
     });
-	
+
 }
 
-//adds a section for a blaupause to blaupause menu
+//adds a section for a blueprint to blueprint menu
 function addBPSection(url){
-	
+
     	var accord = document.getElementById('accordion');
 
     	if(accord != null){
     		var h3 = document.createElement("H3");
     		var div = document.createElement("DIV");
-    		
+
     		var deleteBtn = document.createElement("BUTTON");
 
     		// adding labels to elements
@@ -59,11 +58,11 @@ function addBPSection(url){
 }
 
 // triggerfunction for deleting entry from persistent storage and passwordmanager
-// url: url for website of blaupause
-// username: username for account for website of blaupause
+// url: url for website of blueprint
+// username: username for account for website of blueprint
 function deleteThisEntry(url, username){
     window.alert("Diese Blaupause wird aus dem Speicher von Firefox gelöscht");
-	console.log("deleting entry blaupause: " + url);
+	console.log("deleting entry blueprint: " + url);
 	self.port.emit("deleteThisEntry", url);
 }
 
@@ -71,4 +70,3 @@ function deleteThisEntry(url, username){
 function Clear(){
 
 }
-

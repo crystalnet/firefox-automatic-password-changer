@@ -1,5 +1,5 @@
 /*
-This is the content script for option panel of the addon 
+This is the content script for option panel of the addon
 */
 var active = true;
 var recording = false;
@@ -13,21 +13,21 @@ self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
 
 // build panel dynamically
 function buildPanelHTML(){
-	createOptionButton("record-button","Aufzeichnen","icon-16.png",startRecord_endRecord);
+	createOptionButton("record-button","Aufzeichnen","images/record-v1_16.png",startRecord_endRecord);
 	createSeparator("myHr");
-	createOptionButton("accountlist","Accountliste","icon-16.png",openAccounts);
+	createOptionButton("accountlist","Accountliste","images/list-v1_16.png",openAccounts);
 	//createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
 }
 
 // creates a separator in panel menu
-// parameter: 
+// parameter:
 // id = id for separator
 function createSeparator(id){
 
 	if(document.getElementById(id) == null){
 
 		var hr = document.createElement("hr");
-	
+
 		hr.setAttribute("id",id);
 		document.body.appendChild(hr);
 	}
@@ -49,15 +49,15 @@ function createOptionButton(id,text,iconSrc,newFunction){
 
 	    div.setAttribute("id", id);
 		div.setAttribute("class", "menu-item");
-		
+
 		img.setAttribute("src",iconSrc);
 		img.setAttribute("class","icon");
 
-		
+
 		div.innerHTML = text;
 		div.appendChild(img);
 
-		div.addEventListener("click", newFunction, false); 
+		div.addEventListener("click", newFunction, false);
 		document.body.appendChild(div);
 	}
 }
@@ -75,20 +75,22 @@ function startRecord_endRecord(evt){
 	self.port.emit("stopgorecord");
 }
 
-//changes label for record button 
+//changes label for record button
 function switchRecordButtonstate(){
 	var recordbtn = document.getElementById("record-button");
 	var img = document.createElement("IMG");
 	var iconSrc = recordbtn.getElementsByTagName("IMG");
-	img.setAttribute("src",recordbtn.getElementsByTagName("IMG")[0].src);
+	//img.setAttribute("src",recordbtn.getElementsByTagName("IMG")[0].src);
 	img.setAttribute("class","icon");
 
 	if(recordbtn.innerHTML.indexOf('Aufzeichnen') > -1){
 		recordbtn.innerHTML = "Aufz. beenden";
+		img.setAttribute("src","images/stop.png");
 		recordbtn.appendChild(img);
 	}
 	else{
 		recordbtn.innerHTML = "Aufzeichnen";
-		recordbtn.appendChild(img);	
+		img.setAttribute("src","images/record-v1_16.png");
+		recordbtn.appendChild(img);
 	}
 }

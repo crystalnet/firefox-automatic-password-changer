@@ -1,8 +1,16 @@
 {
-  "title": "Password reset in firefox",
+  "locales": {
+        "de": {
+            "title": "Passwort Reset in Firefox",
+            "description": "Dieses Add-On ermöglicht es Ihnen, ihre Passwörter automatisch abzuändern."
+        },
+        "en": {
+            "title": "Password reset in firefox",
+            "description": "This add-on allows you to automatically change your passwords."
+        }
+  },
   "name": "firefox-automatic-password-changer",
   "version": "0.0.4",
-  "description": "A basic add-on",
   "main": "./lib/passwordChanger.js",
   "author": "Ger4ik",
   "engines": {
