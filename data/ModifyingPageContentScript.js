@@ -15,14 +15,14 @@ self.port.on("xyCoords", ClickAt=function(message){
 	yCoord = message[1];
 	mustScrollTop = message[2];
 	console.log("xyClick received = " + xCoord + " " + yCoord);
-	console.log("mustScrollTop "+mustScrollTop);
+	console.log("mustScrollTop " + mustScrollTop);
 	console.log("Scroll top is " + document.documentElement.scrollTop);
 
 	//scroll the viewport if necessary
 	if(document.documentElement.scrollTop != mustScrollTop)
 		document.documentElement.scrollTop = mustScrollTop;
 
-	// perform click if coods are set
+	// perform click if coordinates are set
 	if((xCoord != null) && (yCoord != null)){
 
 		var element = document.elementFromPoint(xCoord,yCoord);
@@ -75,6 +75,7 @@ self.port.on("submitLoginData", submitLoginData = function(data){
 		formsCollection = document.getElementsByTagName("form");
 		
 		for(var i=0;i<formsCollection.length;i++){
+            //TOCHECK: at this point, formId and formName are always ""
 	   		var actualForm = formsCollection[i];
 	   		if(((actualForm.id == formID) || (actualForm.name == formName)) && (actualForm.action == formAction)){
 	   			myForm = actualForm;
@@ -82,7 +83,8 @@ self.port.on("submitLoginData", submitLoginData = function(data){
 	   		}
 		}
 	}
-
+	//TOCHECK: sleep before form submit does not do anything unless client side js abuse detection is in place,
+	// which is unlikely
 	sleep(2000);
 
 	//#2 put the username in the right textbox
@@ -124,6 +126,7 @@ self.port.on("submitOnlyData", submitData=function(data){
 		
 		for(var i=0;i<formsCollection.length;i++){
 	   		var actualForm = formsCollection[i];
+	   		//TOCHECK: at this point, formId is always ""
 	   		if((actualForm.id == formID) && (actualForm.action == formAction)){
 	   			myForm = actualForm;
 	   			break;
