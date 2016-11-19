@@ -11,7 +11,7 @@ var myFrom;
 self.on("click", function (node, data) {
     console.log("You clicked " + data);
     console.log("thats the node " + node.id);
-
+	//TODO change BE1, AP2, NP3 to more expressive labels
     switch(data){
     	case "BE1": 
     		console.log("hier muss man also benutzername/email eingeben");

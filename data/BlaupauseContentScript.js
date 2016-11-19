@@ -11,10 +11,10 @@ self.port.on("closing", function(){
 });
 
 // builds dynamically a list of blueprint which are known to the addon
-//BPs: hashtable from simple-stotage of blaupauses
+//BPs: hashtable from simple-storage of blueprints
 function buildBlueprints(BPs){
 
-	console.log("start building blaupausen");
+	console.log("start building blueprints");
 	console.log(BPs.length);
 	var BPKeys = Object.keys(BPs.items);
 	for(var i = 0; i < BPKeys.length;i++){
@@ -61,6 +61,7 @@ function addBPSection(url){
 // url: url for website of blueprint
 // username: username for account for website of blueprint
 function deleteThisEntry(url, username){
+	//TODO define a languageString
     window.alert("Diese Blaupause wird aus dem Speicher von Firefox gelöscht");
 	console.log("deleting entry blueprint: " + url);
 	self.port.emit("deleteThisEntry", url);
