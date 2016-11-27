@@ -1,6 +1,6 @@
 var Recorder = require("../lib/Recorder");
 var tabs = require("sdk/tabs");
-var Hashtable = require("../lib/Hashtable");
+var HashTable = require("../lib/Hashtable");
 
 var countAllChildrenOfType_testdata = (function () {
     var pwType = {
@@ -33,15 +33,37 @@ var countAllChildrenOfType_testdata = (function () {
     };
 })();
 
-function assertShouldBe(o1, o2, assert) {
+function assertShouldBe(o1, o2, assert, message) {
+    if (typeof message === 'undefined') {
+        message = "";
+    }
     if (o1 != o2) {
-        assert.fail("GUARD FAILED - actual value is not equal to the expected value");
+        assert.fail("GUARD FAILED - actual was '" + o1 + "' but '"+ o2 + "' was expected. " + message);
     }
 }
 
-function assertShouldNotBe(o1, o2, assert) {
+function assertShouldNotBe(o1, o2, assert, message) {
+    if (typeof message === 'undefined') {
+        message = "";
+    }
     if (o1 == o2) {
-        assert.fail("GUARD FAILED - actual value is something it should not be");
+        assert.fail("GUARD FAILED - actual value should not be '" + o2 + "'. " + message);
+    }
+}
+
+function assertSequenceEquals(actualArray, expectedArray, assert, message) {
+    if (typeof message === 'undefined') {
+        message = "";
+    }
+    for (var i = 0; i < actualArray.length; i++) {
+        if (i < expectedArray.length) {
+            if (actualArray[i] != expectedArray[i]) {
+                assert.fail("GUARD FAILED - actual was '" + actualArray[i] + "' but '"+ expectedArray[i] + "' was expected. (index " + i + "). " + message);
+            }
+        }
+        else {
+            assert.fail("GUARD FAILED - arrays dont have the same length. " + message);
+        }
     }
 }
 
@@ -71,6 +93,7 @@ exports["test recorder countAllChildrenOfType should find in children"] = functi
     assertShouldBe(result, 1, assert);
 };
 exports["test recorder countAllChildrenOfType should find self"] = function (assert) {
+    // this test was not working in version 0.4
     var recorder = new Recorder();
     var result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "roottype");
 
@@ -128,38 +151,56 @@ var onSubmit_testdata = (function () {
         messageStubLogout: ["Logout"]
     };
 })();
-
-function assertSequenceEquals(actualArray, expectedArray, assert) {
-    for (var i = 0; i < actualArray.length; i++) {
-        if (i < expectedArray.length) {
-            if (actualArray[i] != expectedArray[i]) {
-                asser.fail("GUARD FAILED - actual value is not equal to the expected value (index " + i + ")");
-            }
-        }
-        else {
-            assert.fail("GUARD FAILED - arrays dont have the same length");
-        }
-    }
-}
 var onSubmit_header = [onSubmit_testdata.form.id, onSubmit_testdata.form.name, onSubmit_testdata.url, onSubmit_testdata.form.action];
-/*exports["test recorder onSubmit actual password and username email fields set"] = function (assert) {
- var hashtable = new Hashtable();
- var recorder = new Recorder();
- recorder.testhook.injectUserWebPath(hashtable);
- // set actual password and username-email
- recorder.testhook.setMessageValues(onSubmit_testdata.messageStubAP2);
- recorder.testhook.setMessageValues(onSubmit_testdata.messageStubBE1);
+exports["test recorder onSubmit actual password and username email fields set"] = function (assert) {
+    var hashtable = new HashTable();
+    var recorder = new Recorder();
+    recorder.testhook.injectTabs(onSubmit_testdata.tabs);
+    recorder.testhook.injectWindow(onSubmit_testdata.window)
+    recorder.testhook.injectUserWebPath(hashtable);
 
- recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
+    var i = 0;
+    test_onSubmit_combination(recorder, assert, hashtable, false, false, false, ["Submit"], i++);
+    test_onSubmit_combination(recorder, assert, hashtable, false, false, true, ["newPasswordFieldName", "newPasswordFieldId", "0" /* numOfPWFields */, "N" /* PWInfo */, "SubmitPWChange"], i++);
+    test_onSubmit_combination(recorder, assert, hashtable, false, true, false, ["passwordField", "passwordFieldId", "", "", "SubmitLogin"], i++);
+    test_onSubmit_combination(recorder, assert, hashtable, false, true, true, ["0" /* numOfPWFields */, "AN" /* PWInfo */, "SubmitPWChange"], i++);
+    test_onSubmit_combination(recorder, assert, hashtable, true, false, false, ["", "", "usernameField", "usernameFieldId", "SubmitLogin"], i++);
+    //test_onSubmit_combination(recorder, assert, hashtable, true, false, true, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++);
+    test_onSubmit_combination(recorder, assert, hashtable, true, true, false, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++);
+    //test_onSubmit_combination(recorder, assert, hashtable, true, true, true, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++);
 
- // check stored result
- assertSequenceEquals(hashtable.values()[0], onSubmit_header.concat(["passwordField","passwordFieldId","usernameField","usernameFieldId","SubmitLogin"]), assert);
- assertShouldNotBe(recorder.GetWebPage4PWChange(), "", assert);
- //TODO: build 1 test for all combinations
- };*/
+    // TODO: test logout
+};
+
+function test_onSubmit_combination(recorder, assert, injectedHashTable, usernameSet, actualpasswordSet, newpasswordSet, expectedInsert, index) {
+    var combinationToString = usernameSet + ":" + actualpasswordSet + ":" + newpasswordSet;
+    if (usernameSet) {
+        recorder.testhook.setMessageValues(onSubmit_testdata.messageStubBE1);
+    }
+    if (actualpasswordSet) {
+        recorder.testhook.setMessageValues(onSubmit_testdata.messageStubAP2);
+    }
+    if (newpasswordSet) {
+        recorder.testhook.setMessageValues(onSubmit_testdata.messageStubNP3);
+    }
+
+    recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
+
+    // test if it inserted the expected result
+    assertSequenceEquals(injectedHashTable.getItem(index), onSubmit_header.concat(expectedInsert), assert, "combination is " + combinationToString);
+
+    // test if webpage was set
+    assertShouldNotBe(recorder.GetWebPage4PWChange(), "", assert, "webpage was empty for " + combinationToString);
+
+    // test if modes were reset
+    var branch = recorder.testhook.extractSubmitBranch();
+    assertShouldBe(branch.usernameSet, false, assert, "usernameSet for " + combinationToString);
+    assertShouldBe(branch.actualPasswordSet, false, assert, "actualPasswordSet for " + combinationToString);
+    assertShouldBe(branch.newPasswordSet, false, assert, "newPasswordSet for " + combinationToString);
+}
 
 exports["test recorder onSubmit orderNumber should be increased"] = function (assert) {
-    var hashtable = new Hashtable();
+    var hashtable = new HashTable();
     var recorder = new Recorder();
     recorder.testhook.injectTabs(onSubmit_testdata.tabs);
     recorder.testhook.injectWindow(onSubmit_testdata.window)
@@ -175,36 +216,32 @@ exports["test recorder onSubmit orderNumber should be increased"] = function (as
     recorder.testhook.setMessageValues(onSubmit_testdata.messageStubAP2);
     recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
     var keys = hashtable.keys();
-    assertShouldBe(keys[keys.length-1], 1, assert);
+    assertShouldBe(keys[keys.length - 1], 1, assert);
 
     // set just username-email
     recorder.testhook.setMessageValues(onSubmit_testdata.messageStubBE1);
     recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
     var keys = hashtable.keys();
-    assertShouldBe(keys[keys.length-1], 2, assert);
+    assertShouldBe(keys[keys.length - 1], 2, assert);
 
     // set actualPassword and newPassword
     recorder.testhook.setMessageValues(onSubmit_testdata.messageStubAP2);
     recorder.testhook.setMessageValues(onSubmit_testdata.messageStubNP3);
     recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
     var keys = hashtable.keys();
-    assertShouldBe(keys[keys.length-1], 3, assert);
+    assertShouldBe(keys[keys.length - 1], 3, assert);
 
     // set just newPassword
     recorder.testhook.setMessageValues(onSubmit_testdata.messageStubNP3);
     recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
     var keys = hashtable.keys();
-    assertShouldBe(keys[keys.length-1], 4, assert);
+    assertShouldBe(keys[keys.length - 1], 4, assert);
 
     // no field set
     recorder.testhook.onSubmit(onSubmit_testdata.eventStub);
     var keys = hashtable.keys();
-    assertShouldBe(keys[keys.length-1], 5, assert);
+    assertShouldBe(keys[keys.length - 1], 5, assert);
 };
-
-// test-- setting of tabs url is possible
-// test PWInfo reset
-// FieldSets reset
 
 // test recorder onSubmit/onClick exclusiveness
 
