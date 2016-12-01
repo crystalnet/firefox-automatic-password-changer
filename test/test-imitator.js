@@ -4,60 +4,59 @@ var windows = require("sdk/windows").browserWindows;
 var window = viewFor(require("sdk/windows").browserWindows[0]);
 var imitator = require("../lib/Imitator");
 var Recorder = require("../lib/Recorder");
+var Hashtable = require('lib/Hashtable');
+var assertex = require('./assertExtension');
 
+//Test delete Cookie function
+exports["test delete cookie 1"] = function (assert, done) {
+    var test_imitator = new imitator(this, "test", "https://www.google.de");
+    assert.pass("delete cookie 1 test start");
+    //var windows = require("sdk/windows").browserWindows;
+    //var window = viewFor(require("sdk/windows").browserWindows[0]);
+    window.content.document.cookie = "cookie= TestCookie; expires=Thu, 18 Dec 2020 12:00:00 UTC";
+    test_imitator.testhook.setWindow(window);
+    test_imitator.testhook.delete_cookie("cookie");
+    var before = test_imitator.testhook.returnWindow.content.document.cookie.toString();
+    var after = "cookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    assert.pass(before);
+    assert.pass(after);
+    assert.ok(before == after, "Compare before / after");
+    assert.pass("delete cookie 1 test ended");
+    done();
+};
 
-/**
-
-
- //Test open new window 1
- exports["test open new window 1"] = function(assert, done){
+//Test open new window
+exports["test open new window"] = function (assert, done) {
     assert.pass("start test open new window 1");
     var test_imitator = new imitator(this,"test", "http://pfadfinderhaus.de");
-    assert.pass(test_imitator.hiddenWin);
-    test_imitator.openNewWindow("http://pfadfinderhaus.de");
-    assert.pass("XX:"+test_imitator.hiddenWin.content.document.location);
-    //assert.ok(test_imitator.hiddenWindow=="https://www.google.de", "Compare before / after");
-    assert.pass("end test open new window 1");
-}
-
- //Test open new window 2
- exports["test open new window 2"] = function(assert, done){
-    assert.pass("start test open new window 1");
-    var test_imitator = new imitator(this,"test", "http://xxxougk.de");
-    assert.pass(test_imitator.hiddenWin);
-    test_imitator.openNewWindow("http://xxxougk.de");
-    assert.pass("XX:"+test_imitator.hiddenWin.content.document.location);
-    //assert.ok(test_imitator.hiddenWindow=="https://www.google.de", "Compare before / after");
-    assert.pass("end test open new window 1");
-}
+    var windows = require("sdk/windows").browserWindows;
+    var window = viewFor(require("sdk/windows").browserWindows[0]);
+    test_imitator.testhook.setWindow(window);
+    test_imitator.testhook.openNewWindow();
+    assert.pass("Window: " + test_imitator.testhook.returnWindow.content.document.location.toString());
+    assert.pass("HiddenWindow: " + test_imitator.testhook.returnHiddenWin.content.document.location);
+    assert.ok(test_imitator.testhook.returnHiddenWin.content.document.location.toString().startsWith("pfadfinderhaus.de"), "Compare before / after");
+    assert.pass("end test open new window");
+    done();
+};
 
 
- //Test change website 1
- exports["test change website 1"] = function(assert, done){
-    assert.pass("start test change website 1");
-    var test_imitator = new imitator(this,"test", "http://google.de")
-    //test_imitator.openNewWindow();
-    //test_imitator.openNewWindow();
-    test_imitator.openNewWindow();
-    //test_imitator.changeWebsite("http://www.tu-darmstadt.de");
-    assert.pass("XX:"+test_imitator.returnHiddenWin.content.document.location.toString());
-    assert.pass("XX:"+test_imitator.hiddenWin.content.document.location.toString());
-    assert.ok(test_imitator.returnHiddenWin().content.document.location.toString()=="http://www.tu-darmstadt.de", "---");
-    assert.pass("end change website 2");
-}
- **/
 
 //TODO think about how and if testing this function
 //changeAlgorithm
 
 
-/**
  // Tests change Site function
- exports["test change site function 1"]  = function (assert, done){
-    var test_imitator = new imitator(this, "test", test);
-    assert.pass("test change site function 1 start")
-    test_imitator.changeWebsite("www.pfadfinderhaus.de");
-}
+exports["test change site function"] = function (assert, done) {
+    var test_imitator = new imitator(this, "http://google.de", "test");
+    window.content.document.location = "http://google.de";
+    test_imitator.testhook.setHiddenWin(window);
+    assert.pass("test change site function 1 start");
+    var link = "http://www.pfadfinderhaus.de";
+    test_imitator.testhook.changeWebsite(link);
+    assert.ok(test_imitator.testhook.returnHiddenWin.content.document.location.toString().startsWith(link), "true");
+    done();
+};
 
 
  // performSubmitLogin(submitdata)
@@ -67,23 +66,41 @@ var Recorder = require("../lib/Recorder");
  //    function changeWindowSize(newHeight, newWidth)
  // function performInput(inputValue, elementID)
  // function performClick(xCoord, yCoord,mustScrollTop)
- // function sleep(milliseconds)
 
+// function sleep(milliseconds)
+// Test sleep 1
+exports["test sleep 1"] = function (assert, done) {
+    var test_imitator = new imitator(this, "http://google.de", "test");
+    var start = new Date().getTime();
+    var milliseconds = 2000;
+    test_imitator.testhook.sleep(milliseconds);
+    var end = new Date().getTime();
+    assert.shouldBe(start + milliseconds, end);
+    done();
+};
+/**
  //function getLastIndexOfInput(obj,actualStepNum)
+
  // function getNextIndexOfInput()
  // function determineEventAfterSubmit()
  //function fetchNDeleteOldLoginData(url,username)
  // function isPWChange(hash)
- //function getMainPageFromLink(link)
+
+ **/
  exports["test get main page from link 1"] = function(assert, done){
     var test_imitator = new imitator(this, "test", "https://www.google.de");
-    assert.pass("test get main page from link 1 start");
-    var link = test_imitator.getMainPageFromLink("http://facebook.com/dingsda?ee=aa");
-    assert.pass(link);
-    assert.ok(link=="http://facebook.com", "link");
-    assert.pass("test get main page from link 1 end")
+     var link = test_imitator.testhook.getMainPageFromLink("http://facebook.com/dingsda?ee=aa");
+     assert.shouldBe(link, "http://facebook.com");
     done();
-}
+ };
+
+exports["test get main page from link 2"] = function (assert, done) {
+    var test_imitator = new imitator(this, "test", "https://www.google.de");
+    var link = test_imitator.testhook.getMainPageFromLink("");
+    assert.shouldBe(link, "");
+    done();
+};
+/**
  //function show_all_passwords()
  exports["test get password list 1"] = function(assert, done){
     var test_imitator = new imitator(this, "test", "https://www.google.de");
@@ -98,21 +115,43 @@ var Recorder = require("../lib/Recorder");
     done();
 
 }
+ **/
  //function stopImitating()
  //
- **/
-//Test delete Cookie function
-exports["test delete cookie 1"] = function (assert, done) {
+
+
+//getLastIndexOfInput(obj,actualStepNum)
+exports["test get last index of input 1"] = function (assert, done) {
     var test_imitator = new imitator(this, "test", "https://www.google.de");
-    assert.pass("delete cookie 1 test start");
-    window.content.document.cookie = "cookie= TestCookie; expires=Thu, 18 Dec 2020 12:00:00 UTC";
-    test_imitator.delete_cookie("cookie");
-    var before = window.content.document.cookie.toString();
-    var after = "cookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    assert.pass(before);
-    assert.pass(after);
-    assert.ok(before == after, "Compare before / after");
-    assert.pass("delete cookie 1 test ended");
+    var hashtable = new Hashtable();
+    hashtable.setItem(0, "zero");
+    hashtable.setItem(1, [1, this, this, this, "Input"]);
+    hashtable.setItem(2, "two");
+    hashtable.setItem(3, [3, this, this, this, "Input"]);
+    hashtable.setItem(4, "four");
+    hashtable.setItem(5, "five");
+    var i = test_imitator.testhook.getLastIndexOfInput(hashtable, 5);
+    assert.shouldBe(i, 3);
+    assert.pass(i);
+    assert.pass(3);
+    assert.ok(i == 3, "compare indexes");
+    done();
+};
+
+//getLastIndexOfInput(obj,actualStepNum)
+exports["test get next index of input 1"] = function (assert, done) {
+    var test_imitator = new imitator(this, "test", "https://www.google.de");
+    var hashtable = new Hashtable();
+    hashtable.setItem(0, "zero");
+    hashtable.setItem(1, [1, this, this, this, "Input"]);
+    hashtable.setItem(2, "two");
+    hashtable.setItem(3, [3, this, this, this, "Input"]);
+    hashtable.setItem(4, "four");
+    hashtable.setItem(5, "five");
+    test_imitator.testhook.obj(hashtable);
+    test_imitator.testhook.actualStepNum(1);
+    var i = test_imitator.testhook.getNextIndexOfInput();
+    assert.shouldBe(i, 3);
     done();
 };
 
