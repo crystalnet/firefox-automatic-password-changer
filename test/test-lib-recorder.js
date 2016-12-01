@@ -1,7 +1,7 @@
 var Recorder = require("../lib/Recorder");
 var tabs = require("sdk/tabs");
 var HashTable = require("../lib/Hashtable");
-var assertExtensions = require("./assertExtension");
+require("./assertExtension");
 
 var countAllChildrenOfType_testdata = (function () {
     var pwType = {
@@ -119,11 +119,12 @@ var onSubmit_testdata = (function () {
     };
 })();
 var onSubmit_header = [onSubmit_testdata.form.id, onSubmit_testdata.form.name, onSubmit_testdata.url, onSubmit_testdata.form.action];
+
 exports["test recorder onSubmit actual password and username email fields set"] = function (assert) {
     var hashtable = new HashTable();
     var recorder = new Recorder();
     recorder.testhook.injectTabs(onSubmit_testdata.tabs);
-    recorder.testhook.injectWindow(onSubmit_testdata.window)
+    recorder.testhook.injectWindow(onSubmit_testdata.window);
     recorder.testhook.injectUserWebPath(hashtable);
 
     var i = 0;
