@@ -30,7 +30,7 @@ Object.defineProperty(assert.prototype,"sequenceShouldBe",{
         for (var i = 0; i < actualArray.length; i++) {
             if (i < expectedArray.length) {
                 if (actualArray[i] != expectedArray[i]) {
-                    this.fail("TEST FAILED - actual was '" + actualArray[i] + "' but '"+ expectedArray[i] + "' was expected. (index " + i + "). " + message);
+                    this.fail("TEST FAILED - actual was '" + actualArray[i] + "' but '"+ expectedArray[i] + "' was expected. (index " + i + "). " + optionalMessage);
                 }
             }
             else {
