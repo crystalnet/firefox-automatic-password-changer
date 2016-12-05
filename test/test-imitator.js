@@ -5,9 +5,9 @@ var Recorder = require("../lib/Recorder");
 var Hashtable = require('lib/Hashtable');
 var assertex = require('./assertExtension');
 
-exports["test delete cookie"] = function (assert, done) {
+exports["test imitator delete_cookie"] = function (assert, done) {
+    assert.announce("test imitator delete_cookie");
     var test_imitator = new imitator(this, "test", "https://www.google.de");
-    assert.pass("begin test delete cookie");
     var windowTest = {content: {document: {cookie: "cookie= TestCookie; expires=Thu, 18 Dec 2020 12:00:00 UTC"}}};
     test_imitator.testhook.setWindow(windowTest);
     test_imitator.testhook.delete_cookie("cookie");
@@ -39,8 +39,8 @@ exports["test change site function"] = function (assert, done) {
     done();
 };
  **/
-exports["test sleep 1"] = function (assert, done) {
-    assert.pass("begin test sleep");
+exports["test imitator sleep exactly 2000"] = function (assert, done) {
+    assert.announce("test imitator sleep exactly 2000");
     var test_imitator = new imitator(this, "http://google.de", "test");
     var start = new Date().getTime();
     var milliseconds = 2000;
@@ -50,8 +50,8 @@ exports["test sleep 1"] = function (assert, done) {
     done();
 };
 
-exports["test determine event after submit"] = function (assert, done) {
-    assert.pass("begin test determine event after submit");
+exports["test imitator determineEventAfterSubmit"] = function (assert, done) {
+    assert.announce("test imitator determineEventAfterSubmit");
     var hashtable = new Hashtable();
     hashtable.setItem(0, "zero");
     hashtable.setItem(1, [1, this, this, this, "Input"]);
@@ -66,8 +66,8 @@ exports["test determine event after submit"] = function (assert, done) {
     done();
 };
 //SubmitPWChange
-exports["test is password change"] = function (assert, done) {
-    assert.pass("begin test is password change");
+exports["test imitator is password change"] = function (assert, done) {
+    assert.announce("test imitator is password change");
     var hashtable = new Hashtable();
     hashtable.setItem(0, "zero");
     hashtable.setItem(1, [1, this, this, this, "Input"]);
@@ -81,24 +81,24 @@ exports["test is password change"] = function (assert, done) {
     done();
 };
 
- exports["test get main page from link 1"] = function(assert, done){
-     assert.pass("begin test get main page from link 1");
+ exports["test imitator getMainPageFromLink"] = function(assert, done){
+     assert.announce("test imitator getMainPageFromLink");
     var test_imitator = new imitator(this, "test", "https://www.google.de");
      var link = test_imitator.testhook.getMainPageFromLink("http://facebook.com/dingsda?ee=aa");
      assert.shouldBe(link, "http://facebook.com");
     done();
  };
 
-exports["test get main page from link 2"] = function (assert, done) {
-    assert.pass("begin test get main page from link 2");
+exports["test imitator getMainPageFromLink should be empty for empty input"] = function (assert, done) {
+    assert.announce("test imitator getMainPageFromLink should be empty for empty input");
     var test_imitator = new imitator(this, "test", "https://www.google.de");
     var link = test_imitator.testhook.getMainPageFromLink("");
     assert.shouldBe(link, "");
     done();
 };
 
-exports["test get last index of input 1"] = function (assert, done) {
-    assert.pass("begin test get last index of input 1");
+exports["test imitator getLastIndexOfInput 1"] = function (assert, done) {
+    assert.announce("test imitator getLastIndexOfInput 1");
     var test_imitator = new imitator(this, "test", "https://www.google.de");
     var hashtable = new Hashtable();
     hashtable.setItem(0, "zero");
@@ -112,8 +112,8 @@ exports["test get last index of input 1"] = function (assert, done) {
     done();
 };
 
-exports["test get next index of input 2"] = function (assert, done) {
-    assert.pass("begin test get next index of input 2");
+exports["test imitator getNextIndexOfInput 2"] = function (assert, done) {
+    assert.announce("test imitator getNextIndexOfInput 2");
     var test_imitator = new imitator(this, "test", "https://www.google.de");
     var hashtable = new Hashtable();
     hashtable.setItem(0, "zero");

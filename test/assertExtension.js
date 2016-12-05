@@ -2,7 +2,7 @@ var assert = require("sdk/test/assert").Assert;
 
 function tryPrintMessage(message) {
     var optionalMessage = "";
-    if (typeof optionalMessage !== 'undefined') {
+    if (typeof message !== 'undefined') {
         optionalMessage = "Message: '" + message + "'.";
     }
     return optionalMessage;
