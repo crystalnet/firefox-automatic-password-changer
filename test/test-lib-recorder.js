@@ -146,9 +146,15 @@ var submitOrClick_testdata = (function () {
     };
 })();
 
-var tableEntry_header = [submitOrClick_testdata.form.id, submitOrClick_testdata.form.name, submitOrClick_testdata.url, submitOrClick_testdata.form.action];
+var tableEntry_header = [submitOrClick_testdata.form.id,
+    submitOrClick_testdata.form.name,
+    submitOrClick_testdata.url,
+    submitOrClick_testdata.form.action];
 
-function test_one_message_combination_for(recorder, assert, injectedHashTable, usernameSet, actualpasswordSet, newpasswordSet, expectedInsert, index, executeFunction) {
+function test_one_message_combination_for(recorder, assert, injectedHashTable,
+                                          usernameSet, actualpasswordSet, newpasswordSet,
+                                          expectedInsert, index, executeFunction) {
+
     var combinationToString = usernameSet + ":" + actualpasswordSet + ":" + newpasswordSet;
     if (usernameSet) {
         recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubBE1);
@@ -161,7 +167,6 @@ function test_one_message_combination_for(recorder, assert, injectedHashTable, u
     }
 
     executeFunction();
-
     // test if it inserted the expected result
     assert.sequenceShouldBe(injectedHashTable.getItem(index), tableEntry_header.concat(expectedInsert), "combination is " + combinationToString);
 
@@ -183,12 +188,17 @@ function test_all_message_combinations_for(recorder, assert, executeFunction) {
 
     var i = 0;
     test_one_message_combination_for(recorder, assert, hashtable, false, false, false, ["Submit"], i++, executeFunction);
-    test_one_message_combination_for(recorder, assert, hashtable, false, false, true, ["newPasswordFieldName", "newPasswordFieldId", "0" /* numOfPWFields */, "N" /* PWInfo */, "SubmitPWChange"], i++, executeFunction);
-    test_one_message_combination_for(recorder, assert, hashtable, false, true, false, ["passwordField", "passwordFieldId", "", "", "SubmitLogin"], i++, executeFunction);
-    test_one_message_combination_for(recorder, assert, hashtable, false, true, true, ["0" /* numOfPWFields */, "AN" /* PWInfo */, "SubmitPWChange"], i++, executeFunction);
-    test_one_message_combination_for(recorder, assert, hashtable, true, false, false, ["", "", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
+    test_one_message_combination_for(recorder, assert, hashtable, false, false, true,
+        ["newPasswordFieldName", "newPasswordFieldId", "1" /* numOfPWFields */, "N" /* PWInfo */, "SubmitPWChange"], i++, executeFunction);
+    test_one_message_combination_for(recorder, assert, hashtable, false, true, false,
+        ["passwordField", "passwordFieldId", "", "", "SubmitLogin"], i++, executeFunction);
+    test_one_message_combination_for(recorder, assert, hashtable, false, true, true,
+        ["1" /* numOfPWFields */, "AN" /* PWInfo */, "SubmitPWChange"], i++, executeFunction);
+    test_one_message_combination_for(recorder, assert, hashtable, true, false, false,
+        ["", "", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
     //test_one_message_combination_for(recorder, assert, hashtable, true, false, true, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
-    test_one_message_combination_for(recorder, assert, hashtable, true, true, false, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
+    test_one_message_combination_for(recorder, assert, hashtable, true, true, false,
+        ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
     //test_one_message_combination_for(recorder, assert, hashtable, true, true, true, ["passwordField", "passwordFieldId", "usernameField", "usernameFieldId", "SubmitLogin"], i++, executeFunction);
     // TODO: test logout
 }
@@ -199,41 +209,42 @@ function test_orderNumber_increase_for_all_message_combinations(recorder, assert
     recorder.testhook.injectWindow(submitOrClick_testdata.window);
     recorder.testhook.injectUserWebPath(hashtable);
 
+    var i=0;
     // set actual password and username-email
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubAP2);
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubBE1);
     executeFunction();
-    assert.shouldBe(hashtable.keys()[0], 0);
+    assert.shouldBe(hashtable.keys()[0], i++);
 
     // set just actualPassword
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubAP2);
     executeFunction();
     var keys = hashtable.keys();
-    assert.shouldBe(keys[keys.length - 1], 1);
+    assert.shouldBe(keys[keys.length - 1], i++);
 
     // set just username-email
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubBE1);
     executeFunction();
     var keys = hashtable.keys();
-    assert.shouldBe(keys[keys.length - 1], 2);
+    assert.shouldBe(keys[keys.length - 1], i++);
 
     // set actualPassword and newPassword
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubAP2);
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubNP3);
     executeFunction();
     var keys = hashtable.keys();
-    assert.shouldBe(keys[keys.length - 1], 3);
+    assert.shouldBe(keys[keys.length - 1], i++);
 
     // set just newPassword
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubNP3);
     executeFunction();
     var keys = hashtable.keys();
-    assert.shouldBe(keys[keys.length - 1], 4);
+    assert.shouldBe(keys[keys.length - 1], i++);
 
     // no field set
     executeFunction();
     var keys = hashtable.keys();
-    assert.shouldBe(keys[keys.length - 1], 5);
+    assert.shouldBe(keys[keys.length - 1], i++);
 }
 
 // onSubmit tests
@@ -285,8 +296,9 @@ exports["test recorder onClickOnSubmit no password fields"] = function (assert) 
     });
     assert.shouldBe(hashtable.length, 0);
 
+    recorder.testhook.resetSubmitSeen();
     // ignores the password field count for now
-    // TODO: check if this is correct
+    // TODO: check if this is the correct behavior
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubAP2);
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubBE1);
     recorder.testhook.onSubmit({target: submitOrClick_testdata.formWithoutPasswordField})

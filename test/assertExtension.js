@@ -34,7 +34,7 @@ Object.defineProperty(assert.prototype,"sequenceShouldBe",{
                 }
             }
             else {
-                this.fail("GUARD FAILED - arrays dont have the same length. " + optionalMessage);
+                this.fail("TEST FAILED - arrays dont have the same length. " + optionalMessage);
             }
         }
     }
