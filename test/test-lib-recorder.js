@@ -160,7 +160,7 @@ var tableEntry_header = [submitOrClick_testdata.form.id,
 function test_one_message_combination_for(recorder, assert, injectedHashTable,
                                           usernameSet, actualpasswordSet, newpasswordSet,
                                           expectedInsert, index, executeFunction) {
-    // TODO check why submitSeen behaves differently in onSubmit and onClick
+    // reset of submitSeen is not actually needed for onSubmitEventHandler
     recorder.testhook.resetSubmitSeen();
     var combinationToString = usernameSet + ":" + actualpasswordSet + ":" + newpasswordSet;
     if (usernameSet) {
