@@ -13,8 +13,10 @@ self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
 
 // build panel dynamically
 function buildPanelHTML(){
+	//TODO define a languageString
 	createOptionButton("record-button","Aufzeichnen","images/record-v1_16.png",startRecord_endRecord);
 	createSeparator("myHr");
+	//TODO define a languageString
 	createOptionButton("accountlist","Accountliste","images/list-v1_16.png",openAccounts);
 	//createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
 }
@@ -83,12 +85,14 @@ function switchRecordButtonstate(){
 	//img.setAttribute("src",recordbtn.getElementsByTagName("IMG")[0].src);
 	img.setAttribute("class","icon");
 
+	//TODO define a languageString
 	if(recordbtn.innerHTML.indexOf('Aufzeichnen') > -1){
 		recordbtn.innerHTML = "Aufz. beenden";
 		img.setAttribute("src","images/stop.png");
 		recordbtn.appendChild(img);
 	}
 	else{
+		//TODO define a languageString
 		recordbtn.innerHTML = "Aufzeichnen";
 		img.setAttribute("src","images/record-v1_16.png");
 		recordbtn.appendChild(img);

@@ -6,6 +6,7 @@ self.port.on("startBuildingAccountlist", function(pwHash){
 });
 
 self.port.on("NoChangeWay", function(url){
+    //TODO define a languageString
     var box=window.confirm("Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?");
         if(box==true){
             startRecording(url);
@@ -68,10 +69,13 @@ function addAccountSection(name, url){
     		p1.innerHTML = "Benutzername: " + name;
     		//p2.innerHTML = "Passwort: " + password;
     		p2.innerHTML = "url: " + url;
-
+            //TODO define a languageString
     		deleteBtn.innerHTML = "Eintrag löschen";
+            //TODO define a languageString
     		changeBtn.innerHTML = "Passwort jetzt automatisch ändern";
+            //TODO define a languageString
     		createPathBtn.innerHTML = "Passwort jetzt manuell ändern";
+            //TODO define a languageString
             exportBtn.innerHTML = "Blaupause exportieren";
 
     		//adding onClick functions
@@ -97,6 +101,7 @@ function addAccountSection(name, url){
 // username: username for a login entry
 // url : url for a login entry
 function deleteThisEntry(url, username){
+    //TODO define a languageString
     window.alert("Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.");
 	console.log("deleting entry : " + url + " " + username);
 	self.port.emit("deleteThisEntry", [url,username]);
@@ -106,6 +111,7 @@ function deleteThisEntry(url, username){
 // username: username for a login entry
 // url : url for a login entry
 function changeThisPasswordAut(url, username){
+    //TODO define a languageString
     window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
 	console.log("changing password for username: " + username + " on website: " + url);
 	self.port.emit("changePW",[url,username]);
@@ -123,6 +129,7 @@ function startRecording(url){
 // url : url for a login entry
 function navigateToChangePW(url, username){
     console.log("navigating to password change form");
+    //TODO define a languageString
     window.alert("Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.");
     self.port.emit("Nav2ChangeForm", [url,username]);
 }
@@ -142,7 +149,7 @@ function openBlueprints(){
 
 // triggerfunction for import of blueprint
 function importBlueprint(){
-    console.log("importnutton clicked");
+    console.log("importbutton clicked");
     self.port.emit("ImportBP");
 }
 

@@ -23,12 +23,14 @@ self.port.on("ContextMenuClick", function(message){
 		var inputField = document.getElementById(message[3]);
 	}
 	else if(message[5].tagName == "a"){
+		//TODO define a languageString
 		alert("logout wird beachtet");
 	}
 	else {
 		var inputs = document.getElementsByName(message[4]);
 		if(inputs.length > 1){
 			for(var i = 0; i< inputs.length;i++){
+				//TODO yellow is so often used here. Think about define it as a const
 				inputs[i].style.backgroundColor = "yellow";
 			}
 		}
@@ -38,7 +40,7 @@ self.port.on("ContextMenuClick", function(message){
 	}
 
 	if(typeof(inputField) === "undefined"){
-
+		//TODO think about doing something in this case. Could lead to annoying bug searching
 	}
 	else 
 		inputField.style.backgroundColor = "yellow";
