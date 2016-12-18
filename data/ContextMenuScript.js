@@ -1,59 +1,60 @@
 /*
 this is a content script for contextmenu functionalities 
 it is attached to the contextmenu when a recorderobject is recording 
-there are 4 events that is listened for
-BE1 = if user marked a inputfield as a username input field
-AP2 = if user marked a inputfield as a actual password input field
-NP3 = if user marked a inputfield as a new password input field
-Logout = if user marked a inputfield as a logout element input field
+there are 3 events it listens for
+usernameOrEmail = user marked a inputfield as a username input field
+currentPassword = user marked a inputfield as a actual password input field
+newPassword = user marked a inputfield as a new password input field
 */
-var myFrom; 
 self.on("click", function (node, data) {
-    console.log("You clicked " + data);
-    console.log("thats the node " + node.id);
     switch(data){
-    	case "usernameOrEmail":
-    		console.log("hier muss man also benutzername/email eingeben");
-    		console.log("die id des formulars ist " + node.form.id);
-    		console.log("die name des formulars ist " + node.form.name);
-    		console.log("das feld ist vom Typ " + node.type);
-    		console.log("das feld ist mit id " + node.id);
-    		console.log("das feld ist mit name " + node.name);
-    		console.log("die action ist " + node.form.action);
-    		self.postMessage(["usernameOrEmail",node.form.id, node.type,node.id,node.name,node.form.name,node.form.action]);
+		case "usernameOrEmail":
+    		// first remove possibly registered event handlers, so if the user uses
+			// the context menu option several times on the same input element we still
+			// only send one message on blur event
+    		node.removeEventListener("blur", postMessage, false);
+    		node.addEventListener("blur", postMessage(node, "U"), false);
     		break;
     	case "currentPassword":
-    		console.log("hier muss man also das aktuelle password eingeben");
-    		console.log("die id des formulars ist " + node.form.id);
-    		console.log("die name des formulars ist " + node.form.name);
-    		console.log("das feld ist vom Typ " + node.type);
-    		console.log("das feld ist mit id " + node.id);
-    		console.log("das feld ist mit name " + node.name);
-    		console.log("die action ist " + node.form.action);
-    		self.postMessage(["currentPassword",node.form.id, node.type,node.id,node.name,node.form.name,node.form.action]);
-    		break;
+            node.removeEventListener("blur", postMessage, false);
+            node.addEventListener("blur", postMessage(node, "C"), false);
+            break;
     	case "newPassword":
-    		console.log("hier muss man also neues passwort eingeben");
-    		console.log("die id des formulars ist " + node.form.id);
-    		console.log("die name des formulars ist " + node.form.name);
-    		console.log("das feld ist vom Typ " + node.type);
-    		console.log("das feld ist mit id " + node.id);
-    		console.log("das feld ist mit name " + node.name);
-    		console.log("die action ist " + node.form.action);
-    		self.postMessage(["newPassword",node.form.id, node.type,node.id,node.name, node.form.name,node.form.action]);
-    		break;
-		// this case never happens, option is not even added to the content menu
-		// might be needed for websites that implement logout as form submit
-    	// case "Logout":
-    	// 	console.log("hiermit loggt man sich aus");
-    	// 	if((node.form != null) && (node.form.hasAttribute("action"))){
-    	// 		self.postMessage(["Logout",node.form.id, node.form.name,node.form.action,""]);
-    	// 	}
-    	// 	else if(node.hasAttribute("href")){
-    	// 		self.postMessage(["Logout","", "","",node.href]);
-    	// 	}
-         //    else if(node.tagName == "button")
-    	// 	  self.postMessage(["Logout",node.id, node.name,"",""]);
-    	// 	break;
+            node.removeEventListener("blur", postMessage, false);
+            node.addEventListener("blur", postMessage(node, "N"), false);
+            break;
     }
 });
+
+function postMessage(node, tag) {
+    // nodeNumber is the position of the node inside the collection of all
+    // input elements; we use this number to identify the node on the page
+    var nodeNumber;
+    // variables we need for changing the password after recording stopped
+    var formSubmitURL = "";
+    var usernameInputName = "";
+    var passwordInputName = "";
+    var currentWebsite = window.location.href;
+    var websiteTrunk = currentWebsite.split("?");
+
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+    	if(inputs[i].isSameNode(node)) {
+            nodeNumber = i;
+            break;
+        }
+    }
+    if(tag === "U") {
+        formSubmitURL = node.form.action;
+        usernameInputName = node.name;
+        var passwordInputs = document.querySelectorAll("input[type=password]");
+        for (var j = 0; j < passwordInputs.length; j++) {
+            if(passwordInputs[j].form.isSameNode(node.form)) {
+                passwordInputName = passwordInputs[j].name;
+                break;
+            }
+        }
+
+    }
+    self.postMessage([tag,node.value,inputs.length,nodeNumber,websiteTrunk[0],formSubmitURL,usernameInputName,passwordInputName]);
+}
