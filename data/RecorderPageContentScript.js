@@ -12,9 +12,11 @@ self.port.on("ContextMenuClick", function(message){
 
 	var formsCollection;
 	var myForm;
+	var consolelog = "Data received message: [";
 	for(var i = 0; i < message.length;i++){
-		console.log("Data received message[" + i + "] = " + message[i]);	
+		consolelog += i + ":'" + message[i] + "',";
 	}
+	console.log(consolelog + "]");
 
 	var inputs = document.getElementsByTagName('input');
 
