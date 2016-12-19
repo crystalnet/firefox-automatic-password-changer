@@ -34,11 +34,16 @@ var countAllChildrenOfType_testdata = (function () {
     };
 })();
 
-exports["test recorder isactive should initially be false"] = function (assert) {
-    assert.announce("test recorder isactive should initially be false");
+exports["test recorder isactive should only be active if the recorder is started"] = function (assert) {
+    assert.announce("test recorder isactive should only be active if the recorder is started");
     var recorder = new Recorder();
 
     assert.shouldBe(recorder.RecorderIsActive(), false);
+    recorder.StartRecording();
+    assert.shouldBe(recorder.RecorderIsActive(), true);
+    recorder.StopRecording();
+    assert.shouldBe(recorder.RecorderIsActive(), false);
+
 };
 
 exports["test recorder getMainPageFromLink should extract host"] = function (assert) {
@@ -215,7 +220,7 @@ function test_orderNumber_increase_for_all_message_combinations(recorder, assert
     recorder.testhook.injectWindow(submitOrClick_testdata.window);
     recorder.testhook.injectUserWebPath(hashtable);
 
-    var i=0;
+    var i = 0;
     // set actual password and username-email
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubAP2);
     recorder.testhook.setMessageValues(submitOrClick_testdata.messageStubBE1);
