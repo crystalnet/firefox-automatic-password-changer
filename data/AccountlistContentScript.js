@@ -101,7 +101,6 @@ function addAccountSection(name, url){
 // url : url for a login entry
 function deleteThisEntry(url, username){
 
-    window.alert("Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.");
 	window.alert(languageStrings["acclmessage2"]);
 	console.log("deleting entry : " + url + " " + username);
 	self.port.emit("deleteThisEntry", [url,username]);
@@ -111,7 +110,6 @@ function deleteThisEntry(url, username){
 // username: username for a login entry
 // url : url for a login entry
 function changeThisPasswordAut(url, username){
-    window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
 	window.alert(languageStrings["acclmessage3"]);
 	console.log("changing password for username: " + username + " on website: " + url);
 	self.port.emit("changePW",[url,username]);
@@ -129,8 +127,6 @@ function startRecording(url){
 // url : url for a login entry
 function navigateToChangePW(url, username){
     console.log("navigating to password change form");
-    //TODO define a languageString
-    window.alert("Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.");
 	window.alert(languageStrings["acclmessage4"]);
     self.port.emit("Nav2ChangeForm", [url,username]);
 }
