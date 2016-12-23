@@ -5,9 +5,13 @@ self.port.on("startBuildingAccountlist", function(pwHash){
 	buildAccountlist(pwHash);
 });
 
+var languageStrings = "";
+self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
+	languageStrings = myMessagePayload;
+});
+
 self.port.on("NoChangeWay", function(url){
-    //TODO define a languageString
-    var box=window.confirm("Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?");
+	var box = window.confirm(languageStrings["acclmessage1"]);
         if(box==true){
             startRecording(url);
         }
@@ -69,15 +73,10 @@ function addAccountSection(name, url){
     		p1.innerHTML = "Benutzername: " + name;
     		//p2.innerHTML = "Passwort: " + password;
     		p2.innerHTML = "url: " + url;
-            //TODO define a languageString
-    		deleteBtn.innerHTML = "Eintrag löschen";
-            //TODO define a languageString
-    		changeBtn.innerHTML = "Passwort jetzt automatisch ändern";
-            //TODO define a languageString
-    		createPathBtn.innerHTML = "Passwort jetzt manuell ändern";
-            //TODO define a languageString
-            exportBtn.innerHTML = "Blaupause exportieren";
-
+			deleteBtn.innerHTML = languageStrings["delete_entry"];
+			changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
+			createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
+			exportBtn.innerHTML = languageStrings["export_blueprint"];
     		//adding onClick functions
     		deleteBtn.addEventListener('click',function(){deleteThisEntry(url,name);});
     		changeBtn.addEventListener('click',function(){changeThisPasswordAut(url,name);});
@@ -101,8 +100,9 @@ function addAccountSection(name, url){
 // username: username for a login entry
 // url : url for a login entry
 function deleteThisEntry(url, username){
-    //TODO define a languageString
+
     window.alert("Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.");
+	window.alert(languageStrings["acclmessage2"]);
 	console.log("deleting entry : " + url + " " + username);
 	self.port.emit("deleteThisEntry", [url,username]);
 }
@@ -111,8 +111,8 @@ function deleteThisEntry(url, username){
 // username: username for a login entry
 // url : url for a login entry
 function changeThisPasswordAut(url, username){
-    //TODO define a languageString
     window.alert("Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.");
+	window.alert(languageStrings["acclmessage3"]);
 	console.log("changing password for username: " + username + " on website: " + url);
 	self.port.emit("changePW",[url,username]);
 }
@@ -131,6 +131,7 @@ function navigateToChangePW(url, username){
     console.log("navigating to password change form");
     //TODO define a languageString
     window.alert("Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.");
+	window.alert(languageStrings["acclmessage4"]);
     self.port.emit("Nav2ChangeForm", [url,username]);
 }
 

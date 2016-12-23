@@ -4,6 +4,10 @@ This is the content script for option panel of the addon
 var active = true;
 var recording = false;
 var htmlElements = [];
+var languageStrings = "";
+self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
+	languageStrings = myMessagePayload;
+});
 
 // listen to startBuilding event after show event
 self.port.on("startBuilding", buildPanelHTML);
@@ -13,11 +17,10 @@ self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
 
 // build panel dynamically
 function buildPanelHTML(){
-	//TODO define a languageString
-	createOptionButton("record-button","Aufzeichnen","images/record-v1_16.png",startRecord_endRecord);
+	createOptionButton("record-button", languageStrings["record"], "images/record-v1_16.png", startRecord_endRecord);
+	createOptionButton("record-button", languageStrings["record"], "images/record-v1_16.png", startRecord_endRecord);
 	createSeparator("myHr");
-	//TODO define a languageString
-	createOptionButton("accountlist","Accountliste","images/list-v1_16.png",openAccounts);
+	createOptionButton("accountlist", languageStrings["accountlist"], "images/list-v1_16.png", openAccounts);
 	//createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
 }
 
@@ -85,15 +88,13 @@ function switchRecordButtonstate(){
 	//img.setAttribute("src",recordbtn.getElementsByTagName("IMG")[0].src);
 	img.setAttribute("class","icon");
 
-	//TODO define a languageString
-	if(recordbtn.innerHTML.indexOf('Aufzeichnen') > -1){
-		recordbtn.innerHTML = "Aufz. beenden";
+	if (recordbtn.innerHTML.indexOf(languageStrings["record"]) > -1) {
+		recordbtn.innerHTML = languageStrings["stop_recording"];
 		img.setAttribute("src","images/stop.png");
 		recordbtn.appendChild(img);
 	}
 	else{
-		//TODO define a languageString
-		recordbtn.innerHTML = "Aufzeichnen";
+		recordbtn.innerHTML = languageStrings["record"];
 		img.setAttribute("src","images/record-v1_16.png");
 		recordbtn.appendChild(img);
 	}

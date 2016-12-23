@@ -6,6 +6,11 @@ self.port.on("startBuildingBlueprints", function(BPs){
 		buildBlueprints(BPs);
 });
 
+var languageStrings = "";
+self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
+	languageStrings = myMessagePayload;
+});
+
 self.port.on("closing", function(){
 	Clear();
 });
@@ -40,11 +45,11 @@ function addBPSection(url){
     		var deleteBtn = document.createElement("BUTTON");
 
     		// adding labels to elements
-    		h3.innerHTML = "Seite: " + url;
+			h3.innerHTML = languageStrings["page"] + ": " + url;
 
     		div.setAttribute("id", "ID"+url);
 
-    		deleteBtn.innerHTML = "Eintrag löschen";
+			deleteBtn.innerHTML = languageStrings["delete_entry"];
 
     		//adding onClick functions
     		deleteBtn.addEventListener('click',function(){deleteThisEntry(url,name);});
@@ -61,8 +66,7 @@ function addBPSection(url){
 // url: url for website of blueprint
 // username: username for account for website of blueprint
 function deleteThisEntry(url, username){
-	//TODO define a languageString
-    window.alert("Diese Blaupause wird aus dem Speicher von Firefox gelöscht");
+	window.alert(languageStrings["This_blueprint_will_be_deleted_out_of_the_memory_of_firefox"]);
 	console.log("deleting entry blueprint: " + url);
 	self.port.emit("deleteThisEntry", url);
 }

@@ -1,0 +1,13 @@
+{
+  "record": "record",
+  "accountlist": "accountlist",
+  "stop_recording": "stop rec.",
+  "delete_entry": "delete entry",
+  "change_password_now_automatically": "Passwort jetzt automatisch ändern",
+  "change_password_now_manually": "Passwort jetzt manuell ändern",
+  "export_blueprint": "Blaupause exportieren",
+  "this_entry_will_be_deleted": "Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.",
+  "the_password_will_be_changed": "Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.",
+  "you_will_be_navigated_to_the_password_changing_formula": "Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.",
+  "the_blueprint_will_be_deleted_from_the_firefox_memory": "Diese Blaupause wird aus dem Speicher von Firefox gelöscht"
+}
