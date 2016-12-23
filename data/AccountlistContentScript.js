@@ -42,10 +42,18 @@ function buildAccountlist(pwHash){
 
     // these 2 buttons are fix but they need eventlistener
     var bpButton = document.getElementById("btn_show_blueprints");
+	bpButton.innerHTML = languageStrings["btn_show_blueprints"];
+
+	var bpImport = document.getElementById("btn_import_blueprints");
+	bpImport.innerHTML = languageStrings["btn_import_blueprints"];
+
     bpButton.addEventListener('click',function(){openBlueprints();});
-    var bpImport = document.getElementById("btn_import_blueprints");
     bpImport.addEventListener('click',function(){importBlueprint();});
 
+	var title1 = document.getElementById("title_accountlist1");
+	var heading_accountlist = document.getElementById("heading_accountlist");
+	title1.innerHTML = languageStrings["title_accountlist"];
+	heading_accountlist.innerHTML = languageStrings["heading_accountlist"];
 }
 
 //adds a section for an account to accountlist

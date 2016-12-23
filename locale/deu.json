@@ -15,5 +15,12 @@
   "acclmessage1": "Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?",
   "acclmessage2": "Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.",
   "acclmessage3": "Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.",
-  "acclmessage4": "Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können."
+  "acclmessage4": "Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.",
+  "title_accountlist": "Accountliste",
+  "heading_accountlist": "Meine vertraulichen Daten",
+  "btn_import_blueprints": "Blaupausen importieren",
+  "btn_show_blueprints": "Blaupausen anzeigen",
+  "title_blueprints": "Blaupausen",
+  "heading_blueprints": "Diese Seiten sind als Blaupausen vorhanden",
+  "record_id": "Aufzeichnen"
 }
