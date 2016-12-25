@@ -22,6 +22,8 @@ self.port.on("xyCoords", function(message){
 	if(element != null) {
         element.click();
         self.port.emit("clickDone");
+	} else {
+		console.log("element to click not found");
 	}
 });
 
