@@ -10,7 +10,7 @@
   "page": "page",
   "a_problem_appeared_when_changing_password": "A problem appeared",
   "Successfully exported on the desktop as": "Successfully exported on desktop as",
-  "The blueprint was imported..": "The blueprint was exported. You can watch them under 'show blueprints'",
+  "The blueprint was imported..": "The blueprint was imported. You can watch them under 'show blueprints'",
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The PasswortChanger don't know how to do it at this site. Do you wan't to show it?",
   "acclmessage2": "This entry will be deleted out of this list and out of the password manager of firefox.",
