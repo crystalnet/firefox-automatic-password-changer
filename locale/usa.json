@@ -9,8 +9,8 @@
   "This_blueprint_will_be_deleted_out_of_the_memory_of_firefox": "The blueprint will be deleted out of the memory of firefox",
   "page": "page",
   "a_problem_appeared_when_changing_password": "A problem appeared",
-  "Successfully exported on the desktop as": "Successfully exported on desktop as",
-  "The blueprint was imported..": "The blueprint was imported. You can watch them under 'show blueprints'",
+  "blueprint exported successfully": "Successfully exported on desktop as %1$s.",
+  "blueprint imported": "The blueprint was imported. You can watch them under 'show blueprints'",
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The PasswortChanger don't know how to do it at this site. Do you wan't to show it?",
   "acclmessage2": "This entry will be deleted out of this list and out of the password manager of firefox.",
@@ -21,5 +21,9 @@
   "btn_import_blueprints": "Import blueprints",
   "btn_show_blueprints": "Show blueprints",
   "title_blueprints": "Blueprints",
-  "heading_blueprints": "These sites are available as blueprints"
+  "heading_blueprints": "These sites are available as blueprints",
+  "imitator change failed":"There was an error while changing the password. It may be possible that the password was changed anyway, but the password was not saved in the password manager.",
+  "imitator change failed new password is":"In that case the password would be '%1$s'.",
+  "imitator failed to save new password old deleted":"The old password was deleted, but the new password could not be saved. Please use the password reset function of the website.",
+  "imitator failed to save new password already changed":"The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website."
 }
