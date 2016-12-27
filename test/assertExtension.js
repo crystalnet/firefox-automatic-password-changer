@@ -45,6 +45,14 @@ Object.defineProperty(assert.prototype, "sequenceShouldBe", {
     }
 });
 
+Object.defineProperty(assert.prototype, "shouldBeTrue", {
+    value: function shouldBe(o1, optionalMessage) {
+        if (!o1) {
+            this.fail("TEST FAILED - condition was not true, but it should be. " + tryPrintMessage(optionalMessage));
+        }
+    }
+});
+
 Object.defineProperty(assert.prototype, "announce", {
     value: function announce(message) {
         console.log("Test '" + message + "' started.");
