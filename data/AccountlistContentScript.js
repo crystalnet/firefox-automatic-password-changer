@@ -74,13 +74,13 @@ function addAccountSection(name, url){
             var exportBtn = document.createElement("BUTTON");
 
     		// adding labels to elements
-    		h3.innerHTML = "Seite: " + url + " || User: " + name;
+    		h3.innerHTML = languageStrings["page"] + ": " + url + " || "+ languageStrings["user"] + ": " + name;
 
     		div.setAttribute("id", "ID"+url);
 
-    		p1.innerHTML = "Benutzername: " + name;
+    		p1.innerHTML = languageStrings["user"] + ": " + name;
     		//p2.innerHTML = "Passwort: " + password;
-    		p2.innerHTML = "url: " + url;
+    		p2.innerHTML = languageStrings["url"] + ": " + url;
 			deleteBtn.innerHTML = languageStrings["delete_entry"];
 			changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
 			createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
@@ -142,7 +142,7 @@ function navigateToChangePW(url, username){
 // triggerfunction for export of blueprint
 // url : url for a login entry
 function exportBlueprint(url){
-    console.log("Blaupause für " + url + " wird exportiert");
+    console.log("blueprint for " + url + " is being exported");
     self.port.emit("ExportBP",url);
 }
 
