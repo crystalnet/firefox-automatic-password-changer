@@ -20,6 +20,13 @@ self.port.on("xyCoords", function(message){
 	// perform click
 	var element = document.elementFromPoint(xCoord,yCoord);
 	if(element != null) {
+        // some stuff for google special case
+        let googleAccountButton = window.content.document.querySelector("a[href^='https://accounts.google.com/SignOutOptions']");
+		if(element.parentNode.isSameNode(googleAccountButton)) {
+            let event = document.createEvent('Event');
+            event.initEvent('mouseover', true, true);
+            element.dispatchEvent(event);
+		}
         element.click();
         self.port.emit("clickDone");
 	} else {
