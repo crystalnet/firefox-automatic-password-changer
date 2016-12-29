@@ -30,5 +30,6 @@
   "imitator change failed":"There was an error while changing the password. It may be possible that the password was changed anyway, but the password was not saved in the password manager.",
   "imitator change failed new password is":"In that case the password would be '{0}'.",
   "imitator failed to save new password old deleted":"The old password was deleted, but the new password could not be saved. Please use the password reset function of the website.",
-  "imitator failed to save new password already changed":"The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website."
+  "imitator failed to save new password already changed":"The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website.",
+  "tag as": "tag as"
 }

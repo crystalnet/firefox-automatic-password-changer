@@ -182,7 +182,7 @@ function test_one_message_combination_for(recorder, assert, injectedHashTable,
     assert.sequenceShouldBe(injectedHashTable.getItem(index), tableEntry_header.concat(expectedInsert), "combination is " + combinationToString);
 
     // test if webpage was set
-    assert.shouldNotBe(recorder.GetWebPage4PWChange(), "", "webpage was empty for " + combinationToString);
+    assert.shouldNotBe(recorder.GetWebPage(), "", "webpage was empty for " + combinationToString);
 
     // test if modes were reset
     var branch = recorder.testhook.extractSubmitBranch();

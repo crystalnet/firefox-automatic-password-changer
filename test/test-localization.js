@@ -31,6 +31,7 @@ exports["test localization files should have the same fields set"] = function (a
         if (typeof phrase === 'string') {
             for (let lang = 0; lang < langs.length; lang++) {
                 if (langs[lang] === maxlang) continue;
+                // if assert fails, check languageArray for actual name of failed language
                 assert.shouldNotBe(typeof (langs[lang][phrase]), 'undefined', 'phrase: "' + phrase + '" lang: "' + languageArray[lang]);
             }
         }

@@ -30,5 +30,6 @@
   "imitator change failed":"Bei der Änderung des Passwords ist ein Fehler unterlaufen. Es könnte trotzdem geändert worden sein, in diesem Fall ist die Änderung aber nicht im Passwort-Manager eingetragen worden.",
   "imitator change failed new password is":"Das neue Passwort wäre in diesem Fall '{0}'.",
   "imitator failed to save new password old deleted":"Das alte Passwort wurde gelöscht, aber das neue konnte nicht eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite.",
-  "imitator failed to save new password already changed":"Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort.Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite."
+  "imitator failed to save new password already changed":"Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort.Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite.",
+  "tag as":"Markieren als"
 }
