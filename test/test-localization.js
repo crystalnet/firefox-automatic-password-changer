@@ -1,17 +1,17 @@
 require("./assertExtension");
 const {Translator, LANGUAGE} = require('../lib/Translator');
-const $ = require('../data/jquery.min');
 const languageArray = [LANGUAGE.deu, LANGUAGE.usa];
 
 exports["test localization files should have the same fields set"] = function (assert) {
     assert.announce("test localization files should have the same fields set");
 
     // fill languages
-    let langs = $.map(languageArray, function (l) {
-        return new Translator(l);
-    });
+    let langs = [];
+    for(let i=0;i<languageArray.length;i++){
+        langs[i] = new Translator(languageArray[i]);
+    }
 
-    let maxlang = [];
+    let maxlang = {};
     let max = 0;
     let phrases = [];
     for (let i = 0; i < langs.length; i++) {
@@ -31,7 +31,7 @@ exports["test localization files should have the same fields set"] = function (a
         if (typeof phrase === 'string') {
             for (let lang = 0; lang < langs.length; lang++) {
                 if (langs[lang] === maxlang) continue;
-                assert.shouldNotBe(typeof (langs[lang][phrase]), 'undefined', "phrase: '" + phrase + "' lang: " + languageArray[lang]);
+                assert.shouldNotBe(typeof (langs[lang][phrase]), 'undefined', 'phrase: "' + phrase + '" lang: "' + languageArray[lang]);
             }
         }
     }

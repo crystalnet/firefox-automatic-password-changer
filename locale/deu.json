@@ -27,7 +27,6 @@
   "btn_show_blueprints": "Blaupausen anzeigen",
   "title_blueprints": "Blaupausen",
   "heading_blueprints": "Diese Seiten sind als Blaupausen vorhanden",
-  "record_id": "Aufzeichnen",
   "imitator change failed":"Bei der Änderung des Passwords ist ein Fehler unterlaufen. Es könnte trotzdem geändert worden sein, in diesem Fall ist die Änderung aber nicht im Passwort-Manager eingetragen worden.",
   "imitator change failed new password is":"Das neue Passwort wäre in diesem Fall '{0}'.",
   "imitator failed to save new password old deleted":"Das alte Passwort wurde gelöscht, aber das neue konnte nicht eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite.",
