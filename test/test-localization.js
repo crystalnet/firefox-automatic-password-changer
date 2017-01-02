@@ -1,5 +1,7 @@
 require("./assertExtension");
 const {Translator, LANGUAGE} = require('../lib/Translator');
+
+// add new languages here
 const languageArray = [LANGUAGE.deu, LANGUAGE.usa];
 
 exports["test localization files should have the same fields set"] = function (assert) {

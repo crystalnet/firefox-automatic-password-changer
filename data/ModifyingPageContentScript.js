@@ -1,12 +1,11 @@
-//### script for interaction with a website -> filling forms
 /*
 This is the content script for interaction with webpages
 it performs every input and submit that ist needed for password change on extern webpages
 */
 
-/*
- Listener for xyClick message
- message: [x coordinate, y coordinate, viewport position]
+/**
+ * Listener for xyClick message
+ * message: [x coordinate, y coordinate, viewport position]
 */
 self.port.on("xyCoords", function(message){
 	var xCoord = message[0];
@@ -34,10 +33,10 @@ self.port.on("xyCoords", function(message){
 	}
 });
 
-/*
- Listener for fillInput message
- message: [x, numberOfInputElements, positionOfInputElement]
- with x being either username, current password or new password
+/**
+ * Listener for fillInput message
+ * message: [x, numberOfInputElements, positionOfInputElement]
+ * with x being either username, current password or new password
 */
 self.port.on("fillInput", function(message) {
 	var value = message[0];
