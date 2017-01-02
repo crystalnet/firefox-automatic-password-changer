@@ -1,40 +1,43 @@
-html{
-	background:#f8f8f8;
-	height: 60%
+html {
+    background: #f8f8f8;
+    height: 60%
 }
 
-body{
-	height: 60%;
+body {
+    height: 60%;
 }
 
-.icon{
-	float: left;
-	padding-top: 2px;
+.icon {
+    float: left;
+    padding-top: 2px;
 }
-.menu-item{
-	font-family: "Helvetica","comic sans ms", "Open Sans Light","X-LocaleSpecific-Light","Open Sans","X-LocaleSpecific","sans-serif";
-	display: block;
-	font-size: 15px;
-    width:96%;
+
+.menu-item {
+    font-family: "Helvetica", "comic sans ms", "Open Sans Light", "X-LocaleSpecific-Light", "Open Sans", "X-LocaleSpecific", "sans-serif";
+    display: block;
+    font-size: 15px;
+    width: 96%;
     height: 20px;
-    background-color:#f8f8f8;
+    background-color: #f8f8f8;
     text-align: center;
     border-radius: 5px;
     clear: both;
     cursor: pointer;
-    }
-.menu-item:hover{
-	display: block;
+}
+
+.menu-item:hover {
+    display: block;
     background-color: #E0E0E0;
-    }
-
-div:hover{
-	background-color:#E0E0E0;
 }
 
-#on-off-button{
-	background-color: #E0E0E0;
+div:hover {
+    background-color: #E0E0E0;
 }
-#on-off-button:hover{
-	background-color: #C8C8C8;
+
+#on-off-button {
+    background-color: #E0E0E0;
+}
+
+#on-off-button:hover {
+    background-color: #C8C8C8;
 }

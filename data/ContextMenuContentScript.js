@@ -1,10 +1,10 @@
 /**
- this is a content script for contextmenu functionalities
- it is attached to the contextmenu when a recorderobject is recording
- there are 3 events it listens for
- usernameOrEmail = user marked a inputfield as a username input field
- currentPassword = user marked a inputfield as a actual password input field
- newPassword = user marked a inputfield as a new password input field
+ * this is a content script for contextmenu functionalities
+ * it is attached to the contextmenu when a recorder object is recording
+ * there are 3 events it listens for
+ * usernameOrEmail = user marked a input field as a username input field
+ * currentPassword = user marked a input field as a actual password input field
+ * newPassword = user marked a input field as a new password input field
  */
 self.on("click", function (node, data) {
     switch (data) {
