@@ -20,8 +20,6 @@ self.port.on("NoChangeWay", function (url) {
     if (box == true) {
         startRecording(url);
     }
-    else if (box == false) {
-    }
 });
 
 self.port.on("closing", function () {
