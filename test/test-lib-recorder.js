@@ -1,23 +1,23 @@
-var Recorder = require("../lib/Recorder");
-var tabs = require("sdk/tabs");
-var HashTable = require("../lib/Hashtable");
+const Recorder = require("../lib/Recorder");
+let tabs = require("sdk/tabs");
+const HashTable = require("../lib/Hashtable");
 require("./assertExtension");
 
-var countAllChildrenOfType_testdata = (function () {
-    var pwType = {
+let countAllChildrenOfType_testdata = (function () {
+    let pwType = {
         type: "password",
         hasChildNodes: function () {
             return false;
         }
     };
-    var otherType = {
+    let otherType = {
         type: "roottype",
         childNodes: [pwType],
         hasChildNodes: function () {
             return true;
         }
     };
-    var notPwType = {
+    let notPwType = {
         type: "notpw",
         hasChildNodes: function () {
             return false;
@@ -36,7 +36,7 @@ var countAllChildrenOfType_testdata = (function () {
 
 exports["test recorder isactive should only be active if the recorder is started"] = function (assert) {
     assert.announce("test recorder isactive should only be active if the recorder is started");
-    var recorder = new Recorder();
+    let recorder = new Recorder();
 
     assert.shouldBe(recorder.RecorderIsActive(), false);
     recorder.StartRecording();
@@ -48,8 +48,8 @@ exports["test recorder isactive should only be active if the recorder is started
 
 exports["test recorder getMainPageFromLink should extract host"] = function (assert) {
     assert.announce("test recorder getMainPageFromLink should extract host");
-    var recorder = new Recorder();
-    var result = recorder.testhook.getMainPageFromLink("https://www.facebook.com/settings/password");
+    let recorder = new Recorder();
+    let result = recorder.testhook.getMainPageFromLink("https://www.facebook.com/settings/password");
 
     assert.shouldBe(result, "https://www.facebook.com");
 };
@@ -57,22 +57,22 @@ exports["test recorder getMainPageFromLink should extract host"] = function (ass
 // countAllChildrenOfType tests
 exports["test recorder countAllChildrenOfType should find top-layer"] = function (assert) {
     assert.announce("test recorder countAllChildrenOfType should find top-layer");
-    var recorder = new Recorder();
-    var result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "notpw");
+    let recorder = new Recorder();
+    let result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "notpw");
     assert.shouldBe(result, 2);
 };
 exports["test recorder countAllChildrenOfType should find in children"] = function (assert) {
     assert.announce("test recorder countAllChildrenOfType should find in children");
-    var recorder = new Recorder();
-    var result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "password");
+    let recorder = new Recorder();
+    let result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "password");
 
     assert.shouldBe(result, 1);
 };
 exports["test recorder countAllChildrenOfType should find self"] = function (assert) {
     assert.announce("test recorder countAllChildrenOfType should find self");
     // this test was not working in version 0.4
-    var recorder = new Recorder();
-    var result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "roottype");
+    let recorder = new Recorder();
+    let result = recorder.testhook.countAllChildrenOfType(countAllChildrenOfType_testdata.rootNode, "roottype");
 
     assert.shouldBe(result, 2);
 };
