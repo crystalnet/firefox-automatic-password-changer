@@ -30,6 +30,13 @@ body {
     background-color: #E0E0E0;
 }
 
+.ui-accordion-header-icon.has-blueprint {
+    background-image: url("images/ui-icon_blueprint_16x16.png");
+    background-position: left;
+    width: 16px;
+    height: 16px;
+}
+
 div:hover {
     background-color: #E0E0E0;
 }

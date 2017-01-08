@@ -4,8 +4,11 @@
 
 let languageStrings = "";
 
-self.port.on("startBuildingAccountlist", function (pwHash) {
-    buildAccountlist(pwHash);
+self.port.on("startBuildingAccountlist", function (payload) {
+    let pwHash = payload[0];
+    let BPs = payload[1];
+    let BPKeys = Object.keys(BPs.items);
+    buildAccountlist(pwHash, BPKeys);
 });
 
 self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
@@ -29,20 +32,28 @@ self.port.on("closing", function () {
  * this function builds the acount list dynamically
  * @param pwHash hashtable with login-entries from the password manager
  */
-function buildAccountlist(pwHash) {
+function buildAccountlist(pwHash, BPKeys) {
 
     console.log("start building account list");
     for (let i = 0; i < pwHash.length; i++) {
         let name = pwHash.items[i][0];
         let url = pwHash.items[i][1];
         console.log("name: " + name + ", url = " + url);
-        addAccountSection(name, url, pwHash);
+        let blueprintExists = BPKeys.indexOf(url) !== -1;
+        addAccountSection(name, url, blueprintExists);
     }
     $(function () {
         let accordion = $("#accordion");
         accordion.accordion({
             collapsible: true,
-            active: false
+            active: false,
+            create: function () {
+                $(".ui-accordion-header").each(function () {
+                    if($(this).hasClass("has-blueprint"))
+                        // add class so we get to see a blueprint icon for this entry
+                        $(this).find("span").addClass("has-blueprint");
+                })
+            }
         });
         $(".ui-accordion button").button();
         accordion.css("visibility", "visible");
@@ -73,22 +84,23 @@ function buildAccountlist(pwHash) {
  * @param name username for a login entry
  * @param url url for a login entry
  */
-function addAccountSection(name, url) {
-
+function addAccountSection(name, url, blueprintExists) {
     let accord = document.getElementById('accordion');
-
     if (accord != null) {
         let h3 = document.createElement("H3");
         let div = document.createElement("DIV");
         let changeBtn = document.createElement("BUTTON");
         let createPathBtn = document.createElement("BUTTON");
         let exportBtn = document.createElement("BUTTON");
-
-        // adding labels to elements
-        h3.innerHTML = "<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
-
         div.setAttribute("id", "ID" + url);
 
+        if(blueprintExists) {
+            // add class so we get to see a blueprint icon for this entry
+            h3.classList.add("has-blueprint");
+        }
+
+        // adding labels to elements
+        h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
         changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
         createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
         exportBtn.innerHTML = languageStrings["export_blueprint"];
