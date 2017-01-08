@@ -36,10 +36,16 @@ function buildAccountlist(pwHash) {
         let name = pwHash.items[i][0];
         let url = pwHash.items[i][1];
         console.log("name: " + name + ", url = " + url);
-        addAccountSection(name, url);
+        addAccountSection(name, url, pwHash);
     }
     $(function () {
-        $("#accordion").accordion();
+        let accordion = $("#accordion");
+        accordion.accordion({
+            collapsible: true,
+            active: false
+        });
+        $(".ui-accordion button").button();
+        accordion.css("visibility", "visible");
     });
 
     // these two buttons are fix but they need an event listener
@@ -74,29 +80,20 @@ function addAccountSection(name, url) {
     if (accord != null) {
         let h3 = document.createElement("H3");
         let div = document.createElement("DIV");
-        let p1 = document.createElement("P");
-        let p2 = document.createElement("P");
-        let deleteBtn = document.createElement("BUTTON");
         let changeBtn = document.createElement("BUTTON");
         let createPathBtn = document.createElement("BUTTON");
         let exportBtn = document.createElement("BUTTON");
 
         // adding labels to elements
-        h3.innerHTML = languageStrings["page"] + ": " + url + " || " + languageStrings["user"] + ": " + name;
+        h3.innerHTML = "<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
 
         div.setAttribute("id", "ID" + url);
 
-        p1.innerHTML = languageStrings["user"] + ": " + name;
-        //p2.innerHTML = "Passwort: " + password;
-        p2.innerHTML = languageStrings["url"] + ": " + url;
-        deleteBtn.innerHTML = languageStrings["delete_entry"];
         changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
         createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
         exportBtn.innerHTML = languageStrings["export_blueprint"];
+
         //adding onClick functions
-        deleteBtn.addEventListener('click', function () {
-            deleteThisEntry(url, name);
-        });
         changeBtn.addEventListener('click', function () {
             changeThisPasswordAut(url, name);
         });
@@ -107,10 +104,6 @@ function addAccountSection(name, url) {
             exportBlueprint(url);
         });
 
-
-        div.appendChild(p1);
-        div.appendChild(p2);
-        div.appendChild(deleteBtn);
         div.appendChild(changeBtn);
         div.appendChild(createPathBtn);
         div.appendChild(exportBtn);
@@ -118,18 +111,6 @@ function addAccountSection(name, url) {
         accord.appendChild(h3);
         accord.appendChild(div);
     }
-}
-
-/**
- * trigger function for deleting entry from persistent storage and password manager
- * @param url url for a login entry
- * @param username username for a login entry
- */
-function deleteThisEntry(url, username) {
-
-    window.alert(languageStrings["acclmessage2"]);
-    console.log("deleting entry : " + url + " " + username);
-    self.port.emit("deleteThisEntry", [url, username]);
 }
 
 /**
