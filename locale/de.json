@@ -13,7 +13,7 @@
   "This_blueprint_will_be_deleted_out_of_the_memory_of_firefox": "Diese Blaupause wird aus dem Speicher von Firefox gelöscht",
   "page": "Seite",
   "a_problem_appeared_when_changing_password": "Bei der Änderung des Passwords ist ein Fehler unterlaufen",
-  "blueprint exported successfully": "Erfolgreich exportiert auf Ihren Desktop als '{0}'.",
+  "save blueprint": "Speichere Blaupause",
   "blueprint imported": "Die Blaupause wurde importiert. Sie können sie sich unter 'Blaupausen anzeigen' anzeigen lassen.",
   "password_has_been_successfully_changed": "Passwort wurde erfolgreich geändert",
   "acclmessage1": "Der PasswortChanger weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?",

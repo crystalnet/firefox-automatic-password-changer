@@ -13,7 +13,7 @@
   "This_blueprint_will_be_deleted_out_of_the_memory_of_firefox": "The blueprint will be deleted out of the memory of firefox",
   "page": "page",
   "a_problem_appeared_when_changing_password": "A problem appeared",
-  "blueprint exported successfully": "Successfully exported on desktop as '{0}'.",
+  "save blueprint": "Save blueprint",
   "blueprint imported": "The blueprint was imported. You can watch them under 'show blueprints'",
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The PasswortChanger don't know how to do it at this site. Do you wan't to show it?",
