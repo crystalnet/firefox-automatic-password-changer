@@ -2,7 +2,8 @@
  This is the content script for the blueprint menu
  */
 
-let languageStrings = "";
+let languageStrings = null;
+let passwordList = null;
 
 self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
     languageStrings = myMessagePayload;
@@ -12,9 +13,10 @@ self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
     heading_blueprints.innerHTML = languageStrings["heading_blueprints"];
 });
 
-self.port.on("startBuildingBlueprints", function (BPs) {
-    if (BPs != null)
-        buildBlueprints(BPs);
+self.port.on("startBuildingBlueprints", function (payload) {
+    passwordList = payload[1];
+    if (payload[0] != null)
+        buildBlueprints(payload[0]);
 
 });
 
@@ -22,6 +24,17 @@ self.port.on("startBuildingBlueprints", function (BPs) {
 self.port.on("closing", function () {
     Clear();
 });
+
+function hasEntryInPasswordList(url) {
+    if (passwordList == undefined || passwordList == null) return false;
+    for (let i = 0; i < passwordList.length; i++) {
+        if (passwordList.items[i][1] === url) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 /**
  * builds dynamically a list of blueprint which are known to the addon
@@ -34,6 +47,7 @@ function buildBlueprints(BPs) {
     let BPKeys = Object.keys(BPs.items);
     for (let i = 0; i < BPKeys.length; i++) {
         let url = BPKeys[i];
+
         console.log("url = " + url);
         addBPSection(url);
     }
@@ -55,8 +69,10 @@ function addBPSection(url) {
         let div = document.createElement("DIV");
         let deleteBtn = document.createElement("BUTTON");
 
+        let hasEntry = hasEntryInPasswordList(url) ? languageStrings["has_entry"] : languageStrings["has_no_entry"];
+
         // adding labels to elements
-        h3.innerHTML = languageStrings["page"] + ": " + url;
+        h3.innerHTML = languageStrings["page"] + ": " + url + ", " + hasEntry; // + passwordList[0][1];
 
         div.setAttribute("id", "ID" + url);
 
