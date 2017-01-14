@@ -69,11 +69,14 @@ function addBPSection(url) {
         let div = document.createElement("DIV");
         let deleteBtn = document.createElement("BUTTON");
 
-        let hasEntry = hasEntryInPasswordList(url) ? languageStrings["has_entry"] : languageStrings["has_no_entry"];
+        let hasEntry = hasEntryInPasswordList(url);
 
         // adding labels to elements
-        h3.innerHTML = languageStrings["page"] + ": " + url + ", " + hasEntry; // + passwordList[0][1];
-
+        let htmlString = "";
+        if (!hasEntry) htmlString += "<div style='background-color: grey'>";
+        htmlString += languageStrings["page"] + ": " + url;
+        if (!hasEntry) htmlString += ", " + languageStrings["has_no_entry"] + "</div>";
+        h3.innerHTML = htmlString;
         div.setAttribute("id", "ID" + url);
 
         deleteBtn.innerHTML = languageStrings["delete_entry"];
