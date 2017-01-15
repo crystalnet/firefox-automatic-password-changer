@@ -138,12 +138,12 @@ function addAccountSection(name, url, blueprintExists) {
         exportBtn.classList.add("manage-option");
         exportBtn.innerHTML = languageStrings["export_blueprint"];
         exportBtn.addEventListener('click', function () {
-            exportBlueprints(url);
+            exportBlueprint(url);
         });
 
         let deleteBtn = document.createElement("BUTTON");
         deleteBtn.classList.add("manage-option");
-        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
+        deleteBtn.classList.add("delete-blueprint-icon");
         deleteBtn.addEventListener('click', function () {
             deleteBlueprint(url);
         });
@@ -187,7 +187,7 @@ function addUnusedBlueprint(url) {
 
         let deleteBtn = document.createElement("BUTTON");
         deleteBtn.classList.add("manage-option");
-        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
+        deleteBtn.classList.add("delete-blueprint-icon");
         deleteBtn.addEventListener('click', function () {
             deleteBlueprint(url);
         });
@@ -236,9 +236,9 @@ function navigateToChangePW(url, username) {
  * trigger function for export of blueprints
  * @param url url for a login entry
  */
-function exportBlueprints(url) {
+function exportBlueprint(url) {
     console.log("blueprint for " + url + " is being exported");
-    self.port.emit("ExportBPs", url);
+    self.port.emit("ExportBP", url);
 }
 
 /**
