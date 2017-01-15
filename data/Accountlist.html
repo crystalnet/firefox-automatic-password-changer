@@ -6,6 +6,7 @@
     <link href="external/jquery-ui.structure.min.css" type="text/css" rel="stylesheet">
     <link href="external/jquery-ui.min.css" type="text/css" rel="stylesheet">
     <link href="optionPanel-style.css" type="text/css" rel="stylesheet">
+    <link href="accountlist.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="OptionPanelBuilder"></script>
 
     <title id="title_accountlist1"></title>
@@ -14,10 +15,13 @@
 <body>
     <button id="btn_import_blueprints" class="ui-button ui-widget ui-corner-all"
         style="float:right; position: relative; top: 5px;"></button>
-    <button id="btn_show_blueprints" class="ui-button ui-widget ui-corner-all" style="float:right; position: relative; top: 5px;"></button>
+
+    <label for="btn_manage_blueprints">manage blueprints</label>
+    <input type="checkbox" id="btn_manage_blueprints">
+
     <h1 id="heading_accountlist"></h1>
 
-    <div id="accordion" style="visibility: hidden"></div>
+    <div id="accountList" style="visibility: hidden" class="manage-options-hidden"></div>
 
 </body>
 </html>

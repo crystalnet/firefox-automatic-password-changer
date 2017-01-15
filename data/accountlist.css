@@ -1,0 +1,16 @@
+.manage-options-visible .has-blueprint .manage-option{
+    visibility: visible !important;
+}
+
+/* hide elements that do not have has-blueprint class */
+.manage-options-visible .manage-option{
+    visibility: hidden;
+}
+
+.manage-options-hidden .manage-option{
+    visibility: hidden;
+}
+
+.unused-blueprint{
+    color: gray;
+}

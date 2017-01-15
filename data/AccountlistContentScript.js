@@ -6,9 +6,8 @@ let languageStrings = "";
 
 self.port.on("startBuildingAccountlist", function (payload) {
     let pwHash = payload[0];
-    let BPs = payload[1];
-    let BPKeys = Object.keys(BPs.items);
-    buildAccountlist(pwHash, BPKeys);
+    let blueprintKeys = payload[1];
+    buildAccountList(pwHash, blueprintKeys);
 });
 
 self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
@@ -27,46 +26,77 @@ self.port.on("closing", function () {
 });
 
 /**
- * this function builds the acount list dynamically
+ * this function builds the account list dynamically
  * @param pwHash hashtable with login-entries from the password manager
+ * @param blueprintKeys keys of the blueprints
  */
-function buildAccountlist(pwHash, BPKeys) {
+function buildAccountList(pwHash, blueprintKeys) {
 
     console.log("start building account list");
+    let processedAccounts = [];
     for (let i = 0; i < pwHash.length; i++) {
         let name = pwHash.items[i][0];
         let url = pwHash.items[i][1];
         console.log("name: " + name + ", url = " + url);
-        let blueprintExists = BPKeys.indexOf(url) !== -1;
+        let blueprintExists = blueprintKeys.indexOf(url) !== -1;
         addAccountSection(name, url, blueprintExists);
+        processedAccounts.push(url);
     }
+    for (let i = 0; i < blueprintKeys.length; i++) {
+
+        // check if pwHash contains blueprint
+        let hasItem = false;
+        for (let j = 0; j < pwHash.length; j++) {
+            if (pwHash.items[j][1] === blueprintKeys[i]) {
+                hasItem = true;
+            }
+        }
+        if (!hasItem) {
+            addUnusedBlueprint(blueprintKeys[i]);
+        }
+    }
+
     $(function () {
-        let accordion = $("#accordion");
-        accordion.accordion({
+        let accountList = $("#accountList");
+        accountList.accordion({
             collapsible: true,
             active: false,
             create: function () {
                 $(".ui-accordion-header").each(function () {
-                    if($(this).hasClass("has-blueprint"))
-                        // add class so we get to see a blueprint icon for this entry
+                    if ($(this).hasClass("has-blueprint"))
+                    // add class so we get to see a blueprint icon for this entry
                         $(this).find("span").addClass("has-blueprint");
                 })
             }
         });
         $(".ui-accordion button").button();
-        accordion.css("visibility", "visible");
+        accountList.css("visibility", "visible");
+
+        $("#btn_manage_blueprints").button({
+            label: languageStrings["manage_blueprints"],
+            icon: false
+        });
     });
 
-    // these two buttons are fix but they need an event listener
-    let bpButton = document.getElementById("btn_show_blueprints");
-    bpButton.innerHTML = languageStrings["btn_show_blueprints"];
+
+    let manageBlueprintsSwitch = false;
+    let manageBlueprints = document.getElementById("btn_manage_blueprints");
+    manageBlueprints.addEventListener('click', function () {
+        let accountList = $("#accountList");
+        if (manageBlueprintsSwitch) {
+            accountList.addClass('manage-options-hidden');
+            accountList.removeClass('manage-options-visible');
+            manageBlueprintsSwitch = false;
+        }
+        else {
+            accountList.addClass('manage-options-visible');
+            accountList.removeClass('manage-options-hidden');
+            manageBlueprintsSwitch = true;
+        }
+    });
 
     let bpImport = document.getElementById("btn_import_blueprints");
     bpImport.innerHTML = languageStrings["btn_import_blueprints"];
-
-    bpButton.addEventListener('click', function () {
-        openBlueprints();
-    });
     bpImport.addEventListener('click', function () {
         importBlueprint();
     });
@@ -81,45 +111,93 @@ function buildAccountlist(pwHash, BPKeys) {
  * adds a section for an account to the account list
  * @param name username for a login entry
  * @param url url for a login entry
+ * @param blueprintExists true if the blueprint is known
  */
 function addAccountSection(name, url, blueprintExists) {
-    let accord = document.getElementById('accordion');
-    if (accord != null) {
+    let accountList = document.getElementById('accountList');
+    if (accountList != null) {
         let h3 = document.createElement("H3");
+        h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
+
         let div = document.createElement("DIV");
-        let changeBtn = document.createElement("BUTTON");
-        let createPathBtn = document.createElement("BUTTON");
-        let exportBtn = document.createElement("BUTTON");
         div.setAttribute("id", "ID" + url);
 
-        if(blueprintExists) {
-            // add class so we get to see a blueprint icon for this entry
-            h3.classList.add("has-blueprint");
-        }
-
-        // adding labels to elements
-        h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
+        let changeBtn = document.createElement("BUTTON");
         changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
-        createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
-        exportBtn.innerHTML = languageStrings["export_blueprint"];
-
-        //adding onClick functions
         changeBtn.addEventListener('click', function () {
             changeThisPasswordAut(url, name);
         });
+
+        let createPathBtn = document.createElement("BUTTON");
+        createPathBtn.innerHTML = languageStrings["change_password_now_manually"];
         createPathBtn.addEventListener('click', function () {
             navigateToChangePW(url, name);
         });
+
+        let exportBtn = document.createElement("BUTTON");
+        exportBtn.classList.add("manage-option");
+        exportBtn.innerHTML = languageStrings["export_blueprint"];
         exportBtn.addEventListener('click', function () {
-            exportBlueprint(url);
+            exportBlueprints(url);
         });
 
+        let deleteBtn = document.createElement("BUTTON");
+        deleteBtn.classList.add("manage-option");
+        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
+        deleteBtn.addEventListener('click', function () {
+            deleteBlueprint(url);
+        });
+
+        if (blueprintExists) {
+            // add class so we get to see a blueprint icon for this entry
+            h3.classList.add("has-blueprint");
+            div.classList.add("has-blueprint");
+        }
+
+        // add to html
         div.appendChild(changeBtn);
         div.appendChild(createPathBtn);
         div.appendChild(exportBtn);
+        div.appendChild(deleteBtn);
 
-        accord.appendChild(h3);
-        accord.appendChild(div);
+        accountList.appendChild(h3);
+        accountList.appendChild(div);
+    }
+}
+
+function addUnusedBlueprint(url) {
+    let accountList = document.getElementById('accountList');
+    if (accountList != null) {
+        let h3 = document.createElement("H3");
+        h3.classList.add("unused-blueprint");
+        h3.classList.add("has-blueprint");
+        h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
+
+        let div = document.createElement("DIV");
+        div.classList.add("unused-blueprint");
+        div.setAttribute("id", "ID" + url);
+        div.classList.add("has-blueprint");
+
+        let exportBtn = document.createElement("BUTTON");
+        exportBtn.classList.add("manage-option");
+        exportBtn.innerHTML = languageStrings["export_blueprint"];
+        exportBtn.addEventListener('click', function () {
+            exportBlueprints(url);
+        });
+
+        let deleteBtn = document.createElement("BUTTON");
+        deleteBtn.classList.add("manage-option");
+        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
+        deleteBtn.addEventListener('click', function () {
+            deleteBlueprint(url);
+        });
+
+        // add to html
+        div.appendChild(exportBtn);
+        div.appendChild(deleteBtn);
+
+        accountList.appendChild(h3);
+        accountList.appendChild(div);
     }
 }
 
@@ -155,20 +233,12 @@ function navigateToChangePW(url, username) {
 }
 
 /**
- * trigger function for export of blueprint
+ * trigger function for export of blueprints
  * @param url url for a login entry
  */
-function exportBlueprint(url) {
+function exportBlueprints(url) {
     console.log("blueprint for " + url + " is being exported");
-    self.port.emit("ExportBP", url);
-}
-
-/**
- * trigger function for opening of blueprint
- */
-function openBlueprints() {
-    console.log("openBlueprints");
-    self.port.emit("OpenBlueprints");
+    self.port.emit("ExportBPs", url);
 }
 
 /**
@@ -177,6 +247,16 @@ function openBlueprints() {
 function importBlueprint() {
     console.log("import button clicked");
     self.port.emit("ImportBP");
+}
+
+/**
+ * deletes the blueprint for the given url
+ * @param url for website of blueprint
+ */
+function deleteBlueprint(url) {
+    window.alert(languageStrings["delete_blueprint_warning"]);
+    console.log("deleting blueprint: " + url);
+    self.port.emit("deleteBlueprint", url);
 }
 
 /**
