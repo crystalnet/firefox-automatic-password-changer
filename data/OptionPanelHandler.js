@@ -11,14 +11,13 @@ self.port.on("languageStrings", function handleMyMessage(localizationObject) {
 self.port.on("startBuilding", buildPanelHTML);
 //self.port.on("hide",deletePanelContent);
 
-self.port.on("switchRecordbuttonLabel", switchRecordButtonstate);
+self.port.on("switchRecordbuttonLabel", switchRecordButtonState);
 
 /**
  * build panel dynamically
  */
 function buildPanelHTML() {
-    createOptionButton("record-button", languageStrings["record"], "images/record-v1_16.png", startRecord_endRecord);
-    createOptionButton("record-button", languageStrings["record"], "images/record-v1_16.png", startRecord_endRecord);
+    createOptionButton("record-button", languageStrings["record"], "images/recording_16x16.png", startRecord_endRecord);
     createSeparator("myHr");
     createOptionButton("accountlist", languageStrings["accountlist"], "images/list-v1_16.png", openAccounts);
     //createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
@@ -77,28 +76,28 @@ function openAccounts() {
  * @param evt
  */
 function startRecord_endRecord(evt) {
-    switchRecordButtonstate();
+    switchRecordButtonState();
     self.port.emit("stopgorecord");
 }
 
 /**
  * changes label for record button
  */
-function switchRecordButtonstate() {
+function switchRecordButtonState() {
     let recordButton = document.getElementById("record-button");
     let image = document.createElement("IMG");
     //let iconSrc = recordButton.getElementsByTagName("IMG");
     //image.setAttribute("src",recordButton.getElementsByTagName("IMG")[0].src);
     image.setAttribute("class", "icon");
 
-    if (recordButton.innerHTML.indexOf(languageStrings["record"]) > -1) {
+    if (recordButton.innerHTML.indexOf(languageStrings["record"]) === 0) {
         recordButton.innerHTML = languageStrings["stop_recording"];
         image.setAttribute("src", "images/stop.png");
         recordButton.appendChild(image);
     }
     else {
         recordButton.innerHTML = languageStrings["record"];
-        image.setAttribute("src", "images/record-v1_16.png");
+        image.setAttribute("src", "images/recording_16x16.png");
         recordButton.appendChild(image);
     }
 }
