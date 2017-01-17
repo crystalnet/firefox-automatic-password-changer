@@ -17,7 +17,7 @@
   "page": "Seite",
   "a_problem_appeared_when_changing_password": "Bei der Änderung des Passwords ist ein Fehler unterlaufen",
   "save blueprint": "Speichere Blaupause",
-  "blueprint imported": "Die Blaupause wurde importiert.",
+  "blueprint imported": "Die Blaupause wurde importiert. Laden sie die Seite neu, um die hinzugefügte Blaupause angezeigt zu bekommen.",
   "password_has_been_successfully_changed": "Passwort wurde erfolgreich geändert.",
   "acclmessage1": "Der Password Changer weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?",
   "acclmessage2": "Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.",
