@@ -9,6 +9,7 @@
   "new password": "Neues Passwort",
   "change_password_now_automatically": "Passwort jetzt automatisch ändern",
   "change_password_now_manually": "Passwort jetzt manuell ändern",
+  "record_blueprint_btn": "Blaupause aufzeichnen",
   "export_blueprint": "Blaupause exportieren",
   "delete_blueprint_warning": "Diese Blaupause wird gelöscht",
   "delete_blueprint":"Blaupase löschen",
@@ -19,7 +20,7 @@
   "save blueprint": "Speichere Blaupause",
   "blueprint imported": "Die Blaupause wurde importiert. Laden sie die Seite neu, um die hinzugefügte Blaupause angezeigt zu bekommen.",
   "password_has_been_successfully_changed": "Passwort wurde erfolgreich geändert.",
-  "acclmessage1": "Der Password Changer weiß nicht, wie das für diese Seite funktioniert. Wollen Sie es ihm zeigen?",
+  "acclmessage1": "Der Password Changer startet nun eine neue Aufnahme auf '{0}'. Wollen Sie fortfahren?",
   "acclmessage2": "Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt.",
   "acclmessage3": "Das Passwort wird, wenn die Blaupause vorhanden ist, automatisch geändert. Dies geschieht live im offenen Fenster, sodass Sie das live mitverfolgen können. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis.",
   "acclmessage4": "Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können.",
@@ -35,6 +36,5 @@
   "imitator failed to save new password already changed": "Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort.Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite.",
   "label as": "Markieren als",
   "has_entry": "Es existiert ein Eintrag im Passwortmanager",
-  "has_no_entry": "Es existiert kein Eintrag im Passwortmanager",
-  "delete_entry": "Eintrag löschen"
+  "has_no_entry": "Es existiert kein Eintrag im Passwortmanager"
 }
