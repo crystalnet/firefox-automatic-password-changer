@@ -18,7 +18,7 @@
   "page": "Page",
   "a_problem_appeared_when_changing_password": "A problem appeared.",
   "save blueprint": "Save Blueprint",
-  "blueprint imported": "The blueprint was imported. Refresh the site to see the added blueprint.",
+  "blueprint imported": "The blueprint was imported.",
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The Password Changer will now start a new recording on '{0}'. Do you want to continue?",
   "acclmessage2": "This entry will be deleted out of this list and out of the password manager of firefox.",
