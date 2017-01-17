@@ -1,16 +1,20 @@
-.manage-options-visible .has-blueprint .manage-option{
+.manage-options-visible .has-blueprint .manage-option {
     visibility: visible !important;
 }
 
 /* hide elements that do not have has-blueprint class */
-.manage-options-visible .manage-option{
+.manage-options-visible .manage-option {
     visibility: hidden;
 }
 
-.manage-options-hidden .manage-option{
+.manage-options-hidden .manage-option {
     visibility: hidden;
 }
 
-.unused-blueprint{
+.unused-blueprint.ui-accordion-header-collapsed {
     color: gray;
+}
+
+.unused-blueprint.ui-accordion-header-active {
+    color: white;
 }
