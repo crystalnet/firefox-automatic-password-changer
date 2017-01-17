@@ -42,12 +42,14 @@ function buildAccountList(pwHash, blueprintKeys) {
             collapsible: true,
             active: false
         });
-        $("#btn_manage_blueprints").button({
+        let manageBlueprints = $("#btn_manage_blueprints").button({
             label: languageStrings["manage_blueprints"],
             icon: false
         });
-        // make account list visible after styling is done
+        // make everything visible after styling is done
         accountList.css("visibility", "visible");
+        manageBlueprints.css("visibility", "visible");
+        $("#label_btn_manage_blueprints").css("visibility", "visible");
     });
 
     let manageBlueprints = document.getElementById("btn_manage_blueprints");
