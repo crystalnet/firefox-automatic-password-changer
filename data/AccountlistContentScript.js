@@ -247,9 +247,12 @@ function importBlueprint() {
  * @param url for website of blueprint
  */
 function deleteBlueprint(url) {
-    window.alert(languageStrings["delete_blueprint_warning"]);
-    console.log("deleting blueprint: " + url);
-    self.port.emit("deleteBlueprint", url);
+    // let message = languageStrings.format(languageStrings["delete_blueprint_warning"], url);
+    let box = window.confirm("test"); // actually we would like to use message from one line above here
+    if (box == true) {
+        console.log("deleting blueprint: " + url);
+        self.port.emit("deleteBlueprint", url);
+    }
 }
 
 /**
