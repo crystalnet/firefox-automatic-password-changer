@@ -69,7 +69,16 @@ function buildAccountList(pwHash, blueprintKeys) {
                 })
             }
         });
-        $(".ui-accordion button").button();
+        $(".ui-accordion button").each(function(){
+            let button = $(this);
+            if(button.hasClass("export-blueprint-button")) {
+                button.button({icon: "ui-icon-disk"});
+            } else if(button.hasClass("delete-blueprint-button")) {
+                button.button({icon: "ui-icon-trash"});
+            } else {
+                button.button();
+            }
+        });
         accountList.css("visibility", "visible");
 
         $("#btn_manage_blueprints").button({
@@ -135,15 +144,15 @@ function addAccountSection(name, url, blueprintExists) {
         });
 
         let exportBtn = document.createElement("BUTTON");
-        exportBtn.classList.add("manage-option");
+        exportBtn.classList.add("manage-option", "export-blueprint-button");
         exportBtn.innerHTML = languageStrings["export_blueprint"];
         exportBtn.addEventListener('click', function () {
             exportBlueprint(url);
         });
 
         let deleteBtn = document.createElement("BUTTON");
-        deleteBtn.classList.add("manage-option");
-        deleteBtn.classList.add("delete-blueprint-icon");
+        deleteBtn.classList.add("manage-option", "delete-blueprint-button");
+        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
         deleteBtn.addEventListener('click', function () {
             deleteBlueprint(url);
         });
@@ -179,15 +188,15 @@ function addUnusedBlueprint(url) {
         div.classList.add("has-blueprint");
 
         let exportBtn = document.createElement("BUTTON");
-        exportBtn.classList.add("manage-option");
+        exportBtn.classList.add("manage-option", "export-blueprint-button");
         exportBtn.innerHTML = languageStrings["export_blueprint"];
         exportBtn.addEventListener('click', function () {
             exportBlueprints(url);
         });
 
         let deleteBtn = document.createElement("BUTTON");
-        deleteBtn.classList.add("manage-option");
-        deleteBtn.classList.add("delete-blueprint-icon");
+        deleteBtn.classList.add("manage-option", "delete-blueprint-button");
+        deleteBtn.innerHTML = languageStrings["delete_blueprint"];
         deleteBtn.addEventListener('click', function () {
             deleteBlueprint(url);
         });

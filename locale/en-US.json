@@ -36,5 +36,5 @@
   "label as": "Label as",
   "has_entry": "there is an entry in the passwordmanager",
   "has_no_entry": "there is no entry in passwordmanager",
-  "delete_etry": "Delete Entry"
+  "delete_entry": "Delete Entry"
 }
