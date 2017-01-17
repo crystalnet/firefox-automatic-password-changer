@@ -63,16 +63,6 @@ function buildAccountList(pwHash, blueprintKeys) {
             collapsible: true,
             active: false
         });
-        $(".ui-accordion button").each(function(){
-            let button = $(this);
-            if(button.hasClass("export-blueprint-button")) {
-                button.button({icon: "ui-icon-disk"});
-            } else if(button.hasClass("delete-blueprint-button")) {
-                button.button({icon: "ui-icon-trash"});
-            } else {
-                button.button();
-            }
-        });
         $("#btn_manage_blueprints").button({
             label: languageStrings["manage_blueprints"],
             icon: false
@@ -123,18 +113,18 @@ function addAccountSection(name, url, blueprintExists) {
         let div = document.createElement("DIV");
         div.setAttribute("id", "ID_" + url);
 
-        let changeBtn, createPathBtn, recordBtn, exportBtn, deleteBtn;
+        let changeBtn, createPathBtn, recordBtn, $exportBtn, $deleteBtn;
         if(blueprintExists) {
-            exportBtn = document.createElement("BUTTON");
-            exportBtn.classList.add("manage-option", "export-blueprint-button");
-            exportBtn.innerHTML = languageStrings["export_blueprint"];
-            exportBtn.addEventListener('click', function () {
+            $exportBtn = $(document.createElement("DIV")).button({
+                icon: "ui-icon-disk",
+                label: languageStrings["export_blueprint"]
+            }).addClass("manage-option export-blueprint-button").click(function () {
                 exportBlueprint(url);
             });
-            deleteBtn = document.createElement("BUTTON");
-            deleteBtn.classList.add("manage-option", "delete-blueprint-button");
-            deleteBtn.innerHTML = languageStrings["delete_blueprint"];
-            deleteBtn.addEventListener('click', function () {
+            $deleteBtn = $(document.createElement("DIV")).button({
+                icon: "ui-icon-trash",
+                label: languageStrings["delete_blueprint"]
+            }).addClass("manage-option delete-blueprint-button").click(function () {
                 deleteBlueprint(url);
             });
             // add class so we get to see a blueprint icon for this entry
@@ -168,15 +158,15 @@ function addAccountSection(name, url, blueprintExists) {
             });
             div.appendChild(recordBtn);
             if(blueprintExists) {
-                div.appendChild(exportBtn);
-                div.appendChild(deleteBtn);
+                $(div).append($exportBtn)
+                    .append($deleteBtn);
             }
         } else {
             // blueprint entry without associated account information
             h3.classList.add("unused-blueprint");
             h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
-            div.appendChild(exportBtn);
-            div.appendChild(deleteBtn);
+            $(div).append($exportBtn)
+                .append($deleteBtn);
         }
         accountList.appendChild(h3);
         accountList.appendChild(div);
