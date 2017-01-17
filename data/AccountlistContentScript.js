@@ -61,14 +61,7 @@ function buildAccountList(pwHash, blueprintKeys) {
         let accountList = $("#accountList");
         accountList.accordion({
             collapsible: true,
-            active: false,
-            create: function () {
-                $(".ui-accordion-header").each(function () {
-                    if ($(this).hasClass("has-blueprint"))
-                        // add class so we get to see a blueprint icon for this entry
-                        $(this).find("span").addClass("has-blueprint");
-                })
-            }
+            active: false
         });
         $(".ui-accordion button").each(function(){
             let button = $(this);

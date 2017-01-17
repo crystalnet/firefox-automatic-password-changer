@@ -18,3 +18,14 @@
 .unused-blueprint.ui-accordion-header-active {
     color: white;
 }
+
+.ui-accordion-header.has-blueprint .ui-accordion-header-icon {
+    background-image: url("images/ui-icon_blueprint_16x16.png");
+    background-position: left;
+    width: 16px;
+    height: 16px;
+}
+
+#heading_accountlist {
+    font-family: Arial,Helvetica,sans-serif;
+}
