@@ -109,9 +109,9 @@ function buildAccountList(pwHash, blueprintKeys) {
 function addAccountSection(name, url, blueprintExists) {
     let accountList = document.getElementById('accountList');
     if (accountList != null) {
-        let h3 = document.createElement("H3");
-        let div = document.createElement("DIV");
-        div.setAttribute("id", "ID_" + url);
+        let itemHeader = document.createElement("H3");
+        let itemContent = document.createElement("DIV");
+        itemContent.setAttribute("id", "ID_" + url);
 
         let changeBtn, createPathBtn, recordBtn, $exportBtn, $deleteBtn;
         if(blueprintExists) {
@@ -128,13 +128,13 @@ function addAccountSection(name, url, blueprintExists) {
                 deleteBlueprint(url);
             });
             // add class so we get to see a blueprint icon for this entry
-            h3.classList.add("has-blueprint");
-            div.classList.add("has-blueprint");
+            itemHeader.classList.add("has-blueprint");
+            itemContent.classList.add("has-blueprint");
         }
 
         if(name !== "") {
             // account entry from password manager
-            h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
+            itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
             if(blueprintExists) {
                 changeBtn = document.createElement("BUTTON");
                 changeBtn.innerHTML = languageStrings["change_password_now_automatically"];
@@ -146,8 +146,8 @@ function addAccountSection(name, url, blueprintExists) {
                 createPathBtn.addEventListener('click', function () {
                     navigateToChangePW(url, name);
                 });
-                div.appendChild(changeBtn);
-                div.appendChild(createPathBtn);
+                itemContent.appendChild(changeBtn);
+                itemContent.appendChild(createPathBtn);
             }
             // always show "Record Blueprint" button for an account entry
             recordBtn = document.createElement("BUTTON");
@@ -156,20 +156,20 @@ function addAccountSection(name, url, blueprintExists) {
                 console.error("Record btn clicked");
                 startRecording(url);
             });
-            div.appendChild(recordBtn);
+            itemContent.appendChild(recordBtn);
             if(blueprintExists) {
-                $(div).append($exportBtn)
+                $(itemContent).append($exportBtn)
                     .append($deleteBtn);
             }
         } else {
             // blueprint entry without associated account information
-            h3.classList.add("unused-blueprint");
-            h3.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
-            $(div).append($exportBtn)
+            itemHeader.classList.add("unused-blueprint");
+            itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
+            $(itemContent).append($exportBtn)
                 .append($deleteBtn);
         }
-        accountList.appendChild(h3);
-        accountList.appendChild(div);
+        accountList.appendChild(itemHeader);
+        accountList.appendChild(itemContent);
     }
 }
 
