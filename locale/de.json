@@ -13,7 +13,6 @@
   "export_blueprint": "Blaupause exportieren",
   "delete_blueprint_warning": "Dies Blaupause für '{0}' wird gelöscht. Möchten sie fortfahren?",
   "delete_blueprint":"Blaupause löschen",
-  "manage_blueprints":"Blaupausen verwalten",
   "no_login_data":"Keine Account-Informationen im Passwort-Manager vorhanden.",
   "page": "Seite",
   "a_problem_appeared_when_changing_password": "Bei der Änderung des Passwords ist ein Fehler unterlaufen",

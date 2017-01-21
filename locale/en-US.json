@@ -13,7 +13,6 @@
   "export_blueprint": "Export Blueprint",
   "delete_blueprint_warning": "The blueprint for '{0}' will be deleted. Do you want to continue?",
   "delete_blueprint":"Delete Blueprint",
-  "manage_blueprints":"Manage Blueprints",
   "no_login_data":"No login data found in the password manager",
   "page": "Page",
   "a_problem_appeared_when_changing_password": "A problem appeared.",

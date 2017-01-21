@@ -44,29 +44,8 @@ function buildAccountList(pwHash, blueprintKeys) {
             collapsible: true,
             active: false
         });
-        let manageBlueprints = $("#btn_manage_blueprints").button({
-            label: languageStrings["manage_blueprints"],
-            icon: false
-        });
         // make everything visible after styling is done
         accountList.css("visibility", "visible");
-        manageBlueprints.css("visibility", "visible");
-        $("#label_btn_manage_blueprints").css("visibility", "visible");
-    });
-
-    let manageBlueprints = document.getElementById("btn_manage_blueprints");
-    // set initial visibility state
-    manageBlueprints.classList.add("manage-options-hidden");
-    manageBlueprints.addEventListener('click', function () {
-        let accountList = $("#accountList");
-        if (this.checked) {
-            accountList.addClass('manage-options-visible');
-            accountList.removeClass('manage-options-hidden');
-        }
-        else {
-            accountList.addClass('manage-options-hidden');
-            accountList.removeClass('manage-options-visible');
-        }
     });
 
     let bpImport = document.getElementById("btn_import_blueprints");
@@ -117,70 +96,73 @@ function getListItems(accountInformationEntries, blueprintEntries) {
  * @param blueprintExists true if the blueprint is known
  */
 function addAccountSection(name, url, blueprintExists) {
+    let hasAccountEntry = name !== "";
     let accountList = document.getElementById('accountList');
-    if (accountList != null) {
-        let itemHeader = document.createElement("H3");
-        let itemContent = document.createElement("DIV");
-        itemContent.setAttribute("id", "ID_" + url);
+    if (accountList == null) return;
 
+    let itemHeader = document.createElement("H3");
+    let itemContent = document.createElement("DIV");
+    itemContent.setAttribute("id", "ID_" + url);
+
+    if (hasAccountEntry) {
+        // account entry from password manager
+        itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
         if (blueprintExists) {
-            // add class so we get to see a blueprint icon for this entry
-            itemHeader.classList.add("has-blueprint");
-            itemContent.classList.add("has-blueprint");
-        }
-
-        if (name !== "") {
-            // account entry from password manager
-            itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp&nbsp<b>" + languageStrings["user"] + "</b>: " + name;
-            if (blueprintExists) {
-                let $changeBtn = $(document.createElement("DIV")).button({
-                    label: languageStrings["change_password_now_automatically"]
-                }).on('click', function () {
-                    changeThisPasswordAut(url, name);
-                });
-                let $createPathBtn = $(document.createElement("DIV")).button({
-                    label: languageStrings["change_password_now_manually"]
-                }).on('click', function () {
-                    navigateToChangePW(url, name);
-                });
-                $(itemContent).append($changeBtn)
-                    .append($createPathBtn);
-            }
-            // always show "Record Blueprint" button for an account entry
-            let $recordBtn = $(document.createElement("DIV")).button({
-                label: languageStrings["record_blueprint_btn"]
+            let $changeBtn = $(document.createElement("DIV")).button({
+                label: languageStrings["change_password_now_automatically"]
             }).on('click', function () {
-                console.error("Record btn clicked");
-                startRecording(url);
+                changeThisPasswordAut(url, name);
             });
-
-            $(itemContent).append($recordBtn);
-        } else {
-            // blueprint entry without associated account information
-            itemHeader.classList.add("unused-blueprint");
-            itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
+            let $createPathBtn = $(document.createElement("DIV")).button({
+                label: languageStrings["change_password_now_manually"]
+            }).on('click', function () {
+                navigateToChangePW(url, name);
+            });
+            $(itemContent).append($changeBtn)
+                .append($createPathBtn);
         }
+        // always show "Record Blueprint" button for an account entry
+        let $recordBtn = $(document.createElement("DIV")).button({
+            label: languageStrings["record_blueprint_btn"]
+        }).on('click', function () {
+            console.error("Record btn clicked");
+            startRecording(url);
+        });
 
-        if (blueprintExists) {
-            let $exportBtn = $(document.createElement("DIV")).button({
-                icon: "ui-icon-disk",
-                showLabel: false
-                // label: languageStrings["export_blueprint"]
-            }).addClass("manage-option export-blueprint-button").click(function () {
-                exportBlueprint(url);
-            });
-            let $deleteBtn = $(document.createElement("DIV")).button({
-                icon: "ui-icon-trash",
-                showLabel: false
-                // label: languageStrings["delete_blueprint"]
-            }).addClass("manage-option delete-blueprint-button").click(function () {
-                deleteBlueprint(url);
-            });
-            $(itemHeader).append($exportBtn)
-                .append($deleteBtn);
-        }
+        $(itemContent).append($recordBtn);
+    } else {
+        // blueprint entry without associated account information
+        itemHeader.classList.add("unused-blueprint");
+        itemHeader.innerHTML = "&nbsp<b>" + languageStrings["page"] + "</b>: " + url + "&nbsp&nbsp<i>" + languageStrings["no_login_data"] + "</i>";
+    }
 
-        accountList.appendChild(itemHeader);
+    if (blueprintExists) {
+        itemHeader.classList.add("has-blueprint");
+        itemContent.classList.add("has-blueprint");
+
+        let $exportBtn = $(document.createElement("DIV")).button({
+            icon: "ui-icon-disk",
+            showLabel: false
+            // label: languageStrings["export_blueprint"]
+        }).addClass("blueprint-dependent export-blueprint-button").click(function () {
+            exportBlueprint(url);
+        });
+        let $deleteBtn = $(document.createElement("DIV")).button({
+            icon: "ui-icon-trash",
+            showLabel: false
+            // label: languageStrings["delete_blueprint"]
+        }).addClass("blueprint-dependent delete-blueprint-button").click(function () {
+            deleteBlueprint(url);
+        });
+        $(itemHeader).append($exportBtn)
+            .append($deleteBtn);
+    } else {
+        itemHeader.classList.add("no-blueprint");
+        itemContent.classList.add("no-blueprint");
+    }
+
+    accountList.appendChild(itemHeader);
+    if (itemContent.hasChildNodes()) {
         accountList.appendChild(itemContent);
     }
 }
