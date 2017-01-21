@@ -1,7 +1,7 @@
-var assert = require("sdk/test/assert").Assert;
+const assert = require("sdk/test/assert").Assert;
 
 function tryPrintMessage(message) {
-    var optionalMessage = "";
+    let optionalMessage = "";
     if (typeof message !== 'undefined') {
         optionalMessage = "Message: '" + message + "'.";
     }
@@ -32,7 +32,7 @@ Object.defineProperty(assert.prototype, "sequenceShouldBe", {
         }
         // no need to test expectedArray for undefined, since that is the responsibility of the test developer
 
-        for (var i = 0; i < actualArray.length; i++) {
+        for (let i = 0; i < actualArray.length; i++) {
             if (i < expectedArray.length) {
                 if (actualArray[i] != expectedArray[i]) {
                     this.fail("TEST FAILED - actual was '" + actualArray[i] + "' but '" + expectedArray[i] + "' was expected. (index " + i + "). " + tryPrintMessage(optionalMessage));
