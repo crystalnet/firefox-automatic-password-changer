@@ -42,7 +42,8 @@ function buildAccountList(pwHash, blueprintKeys) {
         let accountList = $("#accountList");
         accountList.accordion({
             collapsible: true,
-            active: false
+            active: false,
+            heightStyle: "content"
         });
         // make everything visible after styling is done
         accountList.css("visibility", "visible");
@@ -146,14 +147,18 @@ function addAccountSection(name, url, blueprintExists) {
             // label: languageStrings["export_blueprint"]
         }).addClass("blueprint-dependent export-blueprint-button").click(function () {
             exportBlueprint(url);
-        });
+        }).prop("title", languageStrings["export-blueprint-tooltip"]);
+        $exportBtn.tooltip();
+
         let $deleteBtn = $(document.createElement("DIV")).button({
             icon: "ui-icon-trash",
             showLabel: false
             // label: languageStrings["delete_blueprint"]
         }).addClass("blueprint-dependent delete-blueprint-button").click(function () {
             deleteBlueprint(url);
-        });
+        }).prop("title", languageStrings["delete-blueprint-tooltip"]);
+        $deleteBtn.tooltip();
+
         $(itemHeader).append($exportBtn)
             .append($deleteBtn);
     } else {
@@ -162,9 +167,7 @@ function addAccountSection(name, url, blueprintExists) {
     }
 
     accountList.appendChild(itemHeader);
-    if (itemContent.hasChildNodes()) {
-        accountList.appendChild(itemContent);
-    }
+    accountList.appendChild(itemContent);
 }
 
 /**

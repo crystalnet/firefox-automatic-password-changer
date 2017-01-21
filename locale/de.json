@@ -35,5 +35,7 @@
   "imitator failed to save new password already changed": "Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort.Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite.",
   "label as": "Markieren als",
   "has_entry": "Es existiert ein Eintrag im Passwortmanager",
-  "has_no_entry": "Es existiert kein Eintrag im Passwortmanager"
+  "has_no_entry": "Es existiert kein Eintrag im Passwortmanager",
+  "delete-blueprint-tooltip":"Blaupause löschen",
+  "export-blueprint-tooltip":"Blaupause als JSON auf die Festplatte exportieren"
 }

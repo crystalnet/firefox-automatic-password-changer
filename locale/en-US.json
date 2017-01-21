@@ -35,5 +35,7 @@
   "imitator failed to save new password already changed": "The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website.",
   "label as": "Label as",
   "has_entry": "there is an entry in the passwordmanager",
-  "has_no_entry": "there is no entry in passwordmanager"
+  "has_no_entry": "there is no entry in passwordmanager",
+  "delete-blueprint-tooltip":"delete the blueprint",
+  "export-blueprint-tooltip":"export the blueprint as json to disk"
 }
