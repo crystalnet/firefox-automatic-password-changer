@@ -5,13 +5,15 @@
 let languageStrings = "";
 
 self.port.on("startBuildingAccountlist", function (payload) {
+    //note: remember that objects are just passed as arrays (without functions)
     let pwHash = payload[0];
     let blueprintKeys = payload[1];
     buildAccountList(pwHash, blueprintKeys);
 });
 
-self.port.on("languageStrings", function handleMyMessage(myMessagePayload) {
-    languageStrings = myMessagePayload;
+self.port.on("languageStrings", function handleMyMessage(payload) {
+    //note: remember that objects are just passed as arrays (without functions)
+    languageStrings = payload;
 });
 
 self.port.on("closing", function () {
@@ -199,8 +201,8 @@ function changeThisPasswordAut(url, username) {
  * @param url url for a login entry
  */
 function startRecording(url) {
-    // let message = languageStrings.format(languageStrings["acclmessage1"], url);
-    let box = window.confirm("test"); // actually we would like to use message from one line above here
+    let message = formatString(languageStrings["acclmessage1"], url);
+    let box = window.confirm(message);
     if (box == true) {
         console.log("lets record for url: " + url);
         self.port.emit("startRecord", url);
@@ -240,8 +242,8 @@ function importBlueprint() {
  * @param url for website of blueprint
  */
 function deleteBlueprint(url) {
-    // let message = languageStrings.format(languageStrings["delete_blueprint_warning"], url);
-    let box = window.confirm("test"); // actually we would like to use message from one line above here
+    let message = formatString(languageStrings["delete_blueprint_warning"], url);
+    let box = window.confirm(message);
     if (box == true) {
         console.log("deleting blueprint: " + url);
         self.port.emit("deleteBlueprint", url);
