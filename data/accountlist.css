@@ -19,8 +19,15 @@
 
 #heading_accountlist {
     font-family: Arial,Helvetica,sans-serif;
+    color: #2b2b2b;
 }
 
 .export-blueprint-button, .delete-blueprint-button{
     float: right;
+    height: 20px !important;
+    width: 20px !important;
+    border-radius: 1px;
+}
+.ui-corner-all{
+    border-radius: 1px;
 }
