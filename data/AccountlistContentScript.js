@@ -16,10 +16,6 @@ self.port.on("languageStrings", function handleMyMessage(payload) {
     languageStrings = payload;
 });
 
-self.port.on("closing", function () {
-    Clear();
-});
-
 /**
  * this function builds the account list dynamically
  * @param pwHash hashtable with login-entries from the password manager
@@ -233,11 +229,4 @@ function deleteBlueprint(url) {
         console.log("deleting blueprint: " + url);
         self.port.emit("deleteBlueprint", url);
     }
-}
-
-/**
- * destroy all objects and Listener if needed
- */
-function Clear() {
-
 }
