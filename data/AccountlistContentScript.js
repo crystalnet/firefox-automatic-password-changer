@@ -39,7 +39,10 @@ function buildAccountList(pwHash, blueprintKeys) {
         accountList.accordion({
             collapsible: true,
             active: false,
-            heightStyle: "content"
+            heightStyle: "content",
+            beforeActivate: function(event, ui) {
+                return !ui.newHeader.hasClass("unused-blueprint");
+            }
         });
         // make everything visible after styling is done
         accountList.css("visibility", "visible");
