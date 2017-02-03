@@ -1,4 +1,5 @@
 {
+  "panelWidth": 135, // set this value individually for each language, depending on the longest word in the menu
   "record": "Aufzeichnen",
   "accountlist": "Accountliste",
   "stop_recording": "Aufz. beenden",
@@ -36,7 +37,7 @@
   "label as": "Markieren als",
   "has_entry": "Es existiert ein Eintrag im Passwortmanager",
   "has_no_entry": "Es existiert kein Eintrag im Passwortmanager",
-  "delete-blueprint-tooltip":"Blaupause löschen",
+  "delete-blueprint-tooltip": "Blaupause löschen",
   "export-blueprint-tooltip": "Blaupause als JSON auf die Festplatte exportieren",
   "help": "Hilfe"
 }

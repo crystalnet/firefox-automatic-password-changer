@@ -22,7 +22,7 @@ function buildPanelHTML() {
     createOptionButton("accountlist", languageStrings["accountlist"], "images/list-v1_16.png", openAccounts);
     //createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
     createSeparator("myHr2");
-    createOptionButton("help", languageStrings["help"], "", openHelp)
+    createOptionButton("help", languageStrings["help"], "images/help-16.png", openHelp)
 }
 
 /**
