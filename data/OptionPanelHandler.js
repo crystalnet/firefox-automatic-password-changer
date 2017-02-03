@@ -18,9 +18,11 @@ self.port.on("switchRecordbuttonLabel", switchRecordButtonState);
  */
 function buildPanelHTML() {
     createOptionButton("record-button", languageStrings["record"], "images/recording_16x16.png", startRecord_endRecord);
-    createSeparator("myHr");
+    createSeparator("myHr1");
     createOptionButton("accountlist", languageStrings["accountlist"], "images/list-v1_16.png", openAccounts);
     //createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
+    createSeparator("myHr2");
+    createOptionButton("help", languageStrings["help"], "", openHelp)
 }
 
 /**
@@ -69,6 +71,13 @@ function createOptionButton(id, text, iconSrc, newFunction) {
  */
 function openAccounts() {
     self.port.emit("openAccountList");
+}
+
+/**
+ * function for clicking on menu option help
+ */
+function openHelp() {
+    self.port.emit("openHelp");
 }
 
 /**

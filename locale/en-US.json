@@ -37,5 +37,6 @@
   "has_entry": "there is an entry in the passwordmanager",
   "has_no_entry": "there is no entry in passwordmanager",
   "delete-blueprint-tooltip":"Delete the blueprint",
-  "export-blueprint-tooltip":"Export the blueprint as JSON to disk"
+  "export-blueprint-tooltip": "Export the blueprint as JSON to disk",
+  "help": "help"
 }

@@ -37,5 +37,6 @@
   "has_entry": "Es existiert ein Eintrag im Passwortmanager",
   "has_no_entry": "Es existiert kein Eintrag im Passwortmanager",
   "delete-blueprint-tooltip":"Blaupause löschen",
-  "export-blueprint-tooltip":"Blaupause als JSON auf die Festplatte exportieren"
+  "export-blueprint-tooltip": "Blaupause als JSON auf die Festplatte exportieren",
+  "help": "Hilfe"
 }

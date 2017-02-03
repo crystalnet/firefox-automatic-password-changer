@@ -1,0 +1,22 @@
+#frame {
+    width: 90%;
+    height: auto;
+    border: 1px solid black;
+}
+
+#step {
+    font-size: 14pt;
+    font-style: oblique;
+}
+
+.help {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b2b2b;
+}
+
+.has-blueprint-icon {
+    background-image: url("images/ui-icon_blueprint_16x16.png");
+    background-position: left;
+    width: 16px;
+    height: 16px;
+}
