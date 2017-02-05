@@ -1,5 +1,4 @@
 {
-  "panelWidth": 135, // set this value individually for each language, depending on the longest word in the menu
   "help-link": "help_de.html",
   "record": "Aufzeichnen",
   "accountlist": "Accountliste",

@@ -3,56 +3,54 @@
 <head>
     <meta charset="utf-8"/>
     <link href="help.css" type="text/css" rel="stylesheet">
-    <title id="Hilfeseite"></title>
+    <title>Hilfeseite</title>
 </head>
 
 <body>
-<h1 class="help">Hilfeseite</h1>
-<h3 class="help">Einen Blueprint aufzeichnen</h3>
-<ul class="help">
-    <li>Addonbutton auswählen</li>
-    <li>Aufzeichnen drücken</li>
+<h1>Hilfeseite</h1>
+<h3>Eine Blaupause aufzeichnen</h3>
+<p>Alle Aktionen während des Aufzeichnens müssen per Klick durchgeführt werden. Ausgenommen davon ist die Eingabe von Text.</p>
+<ol>
     <li>Die aufzuzeichnende Seite aufrufen.</li>
-    <li>Bis zur Loginmaske klicken</li>
-    <li>Rechtsklick auf das Feld der Emailadresse/Benutzername</li>
-    <li>Markieren als/Emailadresse/Benutzername</li>
-    <li>Rechtsklick auf das Feld des Passwortes</li>
-    <li>Entweder Passwort einfügen und geeignetes Passwort auswählen. oder</li>
-    <li>Markieren als aktuelles Passwort</li>
-    <li>Über Klicks zur Passwort-Ändern-Maske navigieren</li>
-    <li>Das Feld des aktuellen Passwortes:Rechtsklick/Markieren als/aktuelles Passwort</li>
-    <li>Die Felder des neuen Passwortes: Rechtsklick/Markieren als/neues Passwort</li>
-    <li>Dann die Eingaben von Hand tätigen</li>
-    <li>Passwortänderung abschließen</li>
-    <li>Ausloggen</li>
-    <li>Über den Addonbutton auf dem Optionsfeld die Aufzeichnung beenden</li>
-</ul>
-<h3 class="help">Das Passwort ändern</h3>
-<ul class="help">
-    <li>Addonbutton auswählen</li>
-    <li>Accountliste drücken</li>
-    <li>Auf den Passworteintrag der entsprechenden Seite klicken</li>
-    <li>(Es muss ein Blueprint für die Seite existieren. Ansonsten weiter unter -> "Blueprints verwalten")</li>
-    <li>Jetzt kann man "Passwort automatisch ändern" oder "Passwort jetzt manuell ändern" auswählen</li>
-    <li>Bei "Passwort jetzt manuell ändern" wird man auf die Seite geleitet, auf der man das Passwort manuell ändern
-        kann
-    </li>
-    <li>Bei "Passwort automatisch ändern" wird das Passwort automatisch geändert</li>
-</ul>
-<h3 class="help">Blueprints verwalten</h3>
-<ul class="help">
-    <li>Addonbutton auswählen</li>
-    <li>Accountliste drücken</li>
-    <li>Hier wird nun eine Übersicht der Passwortdatenbank angezeigt</li>
-    <li>Einträge mit diesem Symbol besitzen einen Blueprint:
-        <div class="has-blueprint-icon"></div>
-    </li>
-    <li>Diese können gelöscht</li>
-    <li>Oder auf die Festplatte exportiert werden</li>
-    <li>Alle anderen Einträge lassen sich aufklappen</li>
-    <li>Nach dem Aufklappen kann mit dem Button "Blaupause aufzeichnen" die noch nicht vorhandene Blaupause
-        aufgezeichnet werden
-    </li>
-</ul>
+    <li>Über den Addon-Button im Menü auf "Aufzeichnen" klicken.<br/>
+        <img src="images/start-recording.png"></li>
+    <li>Zur Loginmaske navigieren. Alternativ kann die Aufzeichnung auch erst auf dieser Seite begonnen werden.<br/>
+        Der Login muss allerdings auf jeden Fall Teil der Aufzeichnung sein.</li>
+    <li>Die Nutzerdaten eingeben und vor dem Absenden per Rechtsklick auf die Eingabefelder diese entsprechend als<br/>
+        Emailadresse/Benutzername bzw. aktuelles Passwort markieren. Sind die Felder korrekt markiert, werden diese gelb hinterlegt.<br/>
+        <img src="images/label-login.png"></li>
+    <li>Zur Passwort-Ändern-Maske navigieren.</li>
+    <li>Aktuelles und neues Passwort eingeben und vor dem Absenden analog zur Loginmaske die Eingabefelder per Rechtsklick markieren.</li>
+    <li>Passwortänderung abschließen und Ausloggen.</li>
+    <li>Über den Addon-Button im Menü die Aufzeichnung beenden.</li>
+</ol>
+<h3>Die Accountliste</h3>
+<p>Die Accountliste ist über den Addon-Menüpunkt "Accountliste" zu erreichen.</p>
+<img src="images/open-accountlist.png">
+<p>Der Button rechts oben ermöglicht das Importieren von Blaupausen.</p>
+<img src="images/import-blueprint.png">
+<p>Es gibt drei mögliche Arten von Einträgen auf der Liste:</p>
+<ol>
+    <li class="acc-list-entry">Es liegen für eine Webseite Logindaten im Firefox-Passwortmanager vor und es ist eine Blaupause vorhanden.</li>
+    <img src="images/accountlistItem1.png">
+    <ul>
+        <li>Das Vorhandensein einer Blaupause für diese Webseite wird durch ein Icon angezeigt (1).</li>
+        <li>Bei einem Klick auf (2) ändert das Addon automatisch das Passwort für diese Webseite. Hierbei wird ein automatisch generiertes Passwort genutzt.</li>
+        <li>Ein Klick auf (3) öffnet einen Tab, in dem die Passwort-Ändern-Maske der Webseite aufgerufen wird, damit das Passwort manuell geändert werden kann.</li>
+        <li>Der Button (4) ermöglicht es, für diese Webseite eine neue Blaupause aufzunehmen. Die alte Blaupause wird dabei überschrieben.</li>
+        <li>Löschen oder Exportieren der Blaupause ist mittels (5) möglich.</li>
+    </ul>
+    <li class="acc-list-entry">Im Firefox-Passwortmanager liegen Logindaten für die Webseite vor, es ist jedoch keine passende Blaupause vorhanden.</li>
+    <img src="images/accountlistItem2.png">
+    <ul>
+        <li>Ein Klick auf (1) startet die Aufnahme einer Blaupause für diese Webseite.</li>
+    </ul>
+    <li class="acc-list-entry">Es liegt eine Blaupause für eine Webseite vor, für die keine Logindaten im Firefox-Passwortmanager vorhanden sind. Dies kann z.B. der Fall sein, wenn eine Blaupause importiert wurde.</li>
+    <img src="images/accountlistItem3.png">
+    <ul>
+        <li>Ein Icon zeigt an, dass für diese Webseite eine Blaupause vorliegt.</li>
+        <li>Mittels (2) kann die Blaupause gelöscht oder exportiert werden.</li>
+    </ul>
+</ol>
 </body>
 </html>

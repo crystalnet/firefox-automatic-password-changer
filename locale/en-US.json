@@ -1,6 +1,5 @@
 {
   "help-link": "help_en-US.html",
-  "panelWidth": 125, // set this value individually for each language, depending on the longest word in the menu
   "record": "Record",
   "accountlist": "Accountlist",
   "stop_recording": "Stop recording",
