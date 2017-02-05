@@ -1,4 +1,4 @@
-const assert = require("sdk/test/assert").Assert;
+const assert = require("assert");
 
 function tryPrintMessage(message) {
     let optionalMessage = "";
