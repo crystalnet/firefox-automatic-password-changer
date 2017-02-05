@@ -23,4 +23,4 @@ The add-on was tested with:
 
 #License
 
-Firefox-automatic-password-changer is lisenced under the GPLv2.
+Firefox-automatic-password-changer is licenced under the GPLv2.
