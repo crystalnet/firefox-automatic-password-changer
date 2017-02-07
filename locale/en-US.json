@@ -1,4 +1,5 @@
 {
+  "help-link": "help_en-US.html",
   "record": "Record",
   "accountlist": "Accountlist",
   "stop_recording": "Stop recording",
@@ -21,7 +22,7 @@
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The Password Changer will now start a new recording on '{0}'. Do you want to continue?",
   "acclmessage2": "This entry will be deleted out of this list and out of the password manager of firefox.",
-  "acclmessage3": "The password will be changed automatically if a blueprint exists. This happens live in an active window. Because of a bug in the Firefox API, this can't be done ain the background.",
+  "acclmessage3": "The password will be changed automatically if a blueprint exists. This happens live in an active window. Because of a bug in the Firefox API, this can't be done the background.",
   "acclmessage4": "You will be navigated to the form with which you can change your password on your own.",
   "title_accountlist": "Accountlist",
   "heading_accountlist": "Automatic Password Changer",
@@ -34,8 +35,9 @@
   "imitator failed to save new password old deleted": "The old password was deleted, but the new password could not be saved. Please use the password reset function of the website.",
   "imitator failed to save new password already changed": "The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website.",
   "label as": "Label as",
-  "has_entry": "there is an entry in the passwordmanager",
-  "has_no_entry": "there is no entry in passwordmanager",
-  "delete-blueprint-tooltip":"Delete the blueprint",
-  "export-blueprint-tooltip":"Export the blueprint as JSON to disk"
+  "has_entry": "There is an entry in the passwordmanager",
+  "has_no_entry": "There is no entry in passwordmanager",
+  "delete-blueprint-tooltip": "Delete the blueprint",
+  "export-blueprint-tooltip": "Export the blueprint as JSON to disk",
+  "help": "Help"
 }

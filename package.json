@@ -1,11 +1,11 @@
 {
   "locales": {
     "de": {
-      "title": "Passwort Reset in Firefox",
+      "title": "Passwort Changer",
       "description": "Dieses Add-On ermöglicht es Ihnen, ihre Passwörter automatisch abzuändern."
     },
     "en": {
-      "title": "Password reset in firefox",
+      "title": "Password Changer",
       "description": "This add-on allows you to automatically change your passwords."
     }
   },

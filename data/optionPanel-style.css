@@ -9,20 +9,20 @@ body {
 
 .icon {
     float: left;
-    padding-top: 2px;
+    padding: 2px 10px 0px 0px;
 }
 
 .menu-item {
     font-family: "Helvetica", "comic sans ms", "Open Sans Light", "X-LocaleSpecific-Light", "Open Sans", "X-LocaleSpecific", "sans-serif";
     display: block;
     font-size: 15px;
-    width: 96%;
     height: 20px;
     background-color: #f8f8f8;
     text-align: center;
     border-radius: 5px;
     clear: both;
     cursor: pointer;
+    padding: 0px 2px;
 }
 
 .menu-item:hover {
