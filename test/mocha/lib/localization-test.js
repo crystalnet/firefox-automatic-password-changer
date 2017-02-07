@@ -1,15 +1,14 @@
-const assert = require('assert');
-require('../assertExtension');
-const {Translator, LanguageCodes} = require('../../lib/Translator');
+const should = require('should');
+const {Translator, LanguageCodes} = require('../../../lib/Translator');
 
 // add new languages here
 const languageArray = [LanguageCodes.de, LanguageCodes.en_US];
 
 describe('Translator', function () {
-    it('localization files should have the same fields set', function(){
+    it('localization files should have the same fields set', function () {
         // fill languages
         let langs = [];
-        for(let i=0;i<languageArray.length;i++){
+        for (let i = 0; i < languageArray.length; i++) {
             langs[i] = new Translator(languageArray[i]);
         }
 
@@ -34,7 +33,7 @@ describe('Translator', function () {
                 for (let lang = 0; lang < langs.length; lang++) {
                     if (langs[lang] === maxlang) continue;
                     // if assert fails, check languageArray for actual name of failed language
-                    assert.shouldNotBe(typeof (langs[lang][phrase]), 'undefined', 'phrase: "' + phrase + '" lang: "' + languageArray[lang]);
+                    should.exists(langs[lang][phrase], 'phrase: "' + phrase + '" lang: "' + languageArray[lang]);
                 }
             }
         }
