@@ -81,22 +81,6 @@ exports["test imitator is password change"] = function (assert, done) {
     done();
 };
 
- exports["test imitator getMainPageFromLink"] = function(assert, done){
-     assert.announce("test imitator getMainPageFromLink");
-    var test_imitator = new imitator(this, "test", "https://www.google.de");
-     var link = test_imitator.testhook.getMainPageFromLink("http://facebook.com/dingsda?ee=aa");
-     assert.shouldBe(link, "http://facebook.com");
-    done();
- };
-
-exports["test imitator getMainPageFromLink should be empty for empty input"] = function (assert, done) {
-    assert.announce("test imitator getMainPageFromLink should be empty for empty input");
-    var test_imitator = new imitator(this, "test", "https://www.google.de");
-    var link = test_imitator.testhook.getMainPageFromLink("");
-    assert.shouldBe(link, "");
-    done();
-};
-
 exports["test imitator getLastIndexOfInput 1"] = function (assert, done) {
     assert.announce("test imitator getLastIndexOfInput 1");
     var test_imitator = new imitator(this, "test", "https://www.google.de");

@@ -107,26 +107,6 @@ describe('Recorder', function () {
 //     };
 // })();
 //
-// exports["test recorder isactive should only be active if the recorder is started"] = function (assert) {
-//     assert.announce("test recorder isactive should only be active if the recorder is started");
-//     let recorder = new Recorder();
-//
-//     assert.shouldBe(recorder.RecorderIsActive(), false);
-//     recorder.StartRecording();
-//     assert.shouldBe(recorder.RecorderIsActive(), true);
-//     recorder.StopRecording();
-//     assert.shouldBe(recorder.RecorderIsActive(), false);
-//
-// };
-//
-// exports["test recorder getMainPageFromLink should extract host"] = function (assert) {
-//     assert.announce("test recorder getMainPageFromLink should extract host");
-//     let recorder = new Recorder();
-//     let result = recorder.testhook.getMainPageFromLink("https://www.facebook.com/settings/password");
-//
-//     assert.shouldBe(result, "https://www.facebook.com");
-// };
-//
 // // countAllChildrenOfType tests
 // exports["test recorder countAllChildrenOfType should find top-layer"] = function (assert) {
 //     assert.announce("test recorder countAllChildrenOfType should find top-layer");
