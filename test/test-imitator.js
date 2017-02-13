@@ -39,16 +39,6 @@ exports["test change site function"] = function (assert, done) {
     done();
 };
  **/
-exports["test imitator sleep exactly 2000"] = function (assert, done) {
-    assert.announce("test imitator sleep exactly 2000");
-    var test_imitator = new imitator(this, "http://google.de", "test");
-    var start = new Date().getTime();
-    var milliseconds = 2000;
-    test_imitator.testhook.sleep(milliseconds);
-    var end = new Date().getTime();
-    assert.shouldBe(start + milliseconds, end);
-    done();
-};
 
 exports["test imitator determineEventAfterSubmit"] = function (assert, done) {
     assert.announce("test imitator determineEventAfterSubmit");
