@@ -38,11 +38,11 @@ exports["test recorder isactive should only be active if the recorder is started
     assert.announce("test recorder isactive should only be active if the recorder is started");
     let recorder = new Recorder();
 
-    assert.shouldBe(recorder.RecorderIsActive(), false);
-    recorder.StartRecording();
-    assert.shouldBe(recorder.RecorderIsActive(), true);
-    recorder.StopRecording();
-    assert.shouldBe(recorder.RecorderIsActive(), false);
+    assert.shouldBe(recorder.recorderIsActive(), false);
+    recorder.startRecording();
+    assert.shouldBe(recorder.recorderIsActive(), true);
+    recorder.stopRecording();
+    assert.shouldBe(recorder.recorderIsActive(), false);
 
 };
 
@@ -182,7 +182,7 @@ function test_one_message_combination_for(recorder, assert, injectedHashTable,
     assert.sequenceShouldBe(injectedHashTable.getItem(index), tableEntry_header.concat(expectedInsert), "combination is " + combinationToString);
 
     // test if webpage was set
-    assert.shouldNotBe(recorder.GetWebPage(), "", "webpage was empty for " + combinationToString);
+    assert.shouldNotBe(recorder.getWebPage(), "", "webpage was empty for " + combinationToString);
 
     // test if modes were reset
     var branch = recorder.testhook.extractSubmitBranch();
