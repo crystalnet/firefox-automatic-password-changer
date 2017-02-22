@@ -125,7 +125,7 @@ function addAccountSection(name, url, blueprintExists) {
         let $recordBtn = $(document.createElement("DIV")).button({
             label: languageStrings["record_blueprint_btn"]
         }).on('click', function () {
-            console.error("Record btn clicked");
+            console.log("Record btn clicked");
             startRecording(url);
         });
 
