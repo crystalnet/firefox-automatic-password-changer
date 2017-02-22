@@ -1,4 +1,8 @@
-const assert = require("sdk/test/assert").Assert;
+/*
+ * This provides should behavior for jpm tests
+ */
+
+const assert = require("sdk/test/assert");
 
 function tryPrintMessage(message) {
     let optionalMessage = "";

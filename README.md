@@ -18,6 +18,9 @@ Run add-on in the test environment:
 Steps 1) and 2) above.
 3) Run the command "jpm run".
 
+The add-on was tested with:
+ * Firefox Developer Edition 53.0a2 (2017-02-05) (32-Bit)
+
 #License
 
-Firefox-automatic-password-changer is lisenced under the GPLv2.
+Firefox-automatic-password-changer is licenced under the GPLv2.

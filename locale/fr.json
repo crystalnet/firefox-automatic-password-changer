@@ -1,0 +1,43 @@
+{
+  "help-link": "help_fr.html",
+  "record": "Enregistrer",
+  "accountlist": "Liste des comptes"
+  "stop_recording": "Terminer l'enregistrement",
+  "user": "Utilisateur",
+  "url": "URL",
+  "username slash mail": "Utilisateur/adresse mail",
+  "current password": "Mot de passe actuel",
+  "new password": "Nouveau mot de passe",
+  "change_password_now_automatically": "Changer automatiquement le mot de passe",
+  "change_password_now_manually": "Changer manuellement le mot de passe",
+  "record_blueprint_btn": "Enregistrer l'historique de connexion",
+  "export_blueprint": "Exporter l'historique de connexion",
+  "delete_blueprint_warning": "L'historique de connexion pour '{0}' va être supprimé. Voulez-vous continuer ?",
+  "delete_blueprint": "Supprimer l'historique de connexion",
+  "no_login_data": "Aucun identifiant de connexion disponible.",
+  "page": "page",
+  "a_problem_appeared_when_changing_password": "Une erreur est survenue lors du changement du mot de passe.",
+  "save blueprint": "Sauvegarder l'historique de connexion",
+  "blueprint imported": "L'historique de connexion a été importé.",
+  "password_has_been_successfully_changed": "Le mot de passe a été modifié avec succès.",
+  "acclmessage1": "Le modificateur de mots de passe commence un enregistrement sur '{0}'. Voulez-vous continuer ?",
+  "acclmessage2": "Cette entrée sera supprimée de cette liste ainsi que du gestionnaire de mots de passe de Firefox.",
+  "acclmessage3": "Si l'historique de connexion est disponible, le mot de passe sera modifié dans cette fenêtre. En raison d'un bug sur Firefox API, cette action ne peut se produire en arrière-plan. Merci de votre compréhension."
+  "acclmessage4": "Vous allez maintenant être automatiquement redirigé vers la page où vous pourrez modifier votre mot de passe.",
+  "title_accountlist": "Liste des comptes",
+  "heading_accountlist": "Modificateur automatique de mots de passe"
+  "btn_import_blueprints": "Importer l'historique de connexion",
+  "btn_show_blueprints": "Afficher l'historique de connexion",
+  "title_blueprints": "Historiques de connexion",
+  "heading_blueprints": "Ces pages sont disponibles sous forme d'historiques de connexion.",
+  "imitator change failed": "Une erreur est survenue lors du changement du mot de passe. Bien qu'ayant pu être modifié, la modification pas été enregistrée dans le gestionnaire de mots de passe.",
+  "imitator change failed new password is": "Le nouveau mot de passe serait dans ce cas '{0}'.",
+  "imitator failed to save new password old deleted": "L'ancien mot de passe a été supprimé mais le nouveau n'a pas été enregistré. Veuillez utiliser la fonction de réinitialisation du mot de passe.",
+  "imitator failed to save new password already changed": "Le mot de passe a probablement été modifié mais n'a pas pu être enregistré dans le gestionnaire de mots de passe. Veuillez utiliser la fonction de réinitialisation du mot de passe.",
+  "label as": "Marquer comme",
+  "has_entry": "Une entrée existe dans le gestionnaire de mots de passe.",
+  "has_no_entry": "Aucune entrée dans le gestionnaire de mots de passe.",
+  "delete-blueprint-tooltip": "Supprimer l'historique de connexion",
+  "export-blueprint-tooltip": "Exporter l'historique de connexion au format JSON sur le disque dur"
+  "help": "Aide"
+}
