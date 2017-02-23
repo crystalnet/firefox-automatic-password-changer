@@ -39,5 +39,7 @@
   "has_no_entry": "There is no entry in passwordmanager",
   "delete-blueprint-tooltip": "Delete the blueprint",
   "export-blueprint-tooltip": "Export the blueprint as JSON to disk",
-  "help": "Help"
+  "help": "Help",
+  "generate_pwd": "Generate new password",
+  "reuse_pwd": "Use last generated password"
 }

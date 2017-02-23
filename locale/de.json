@@ -39,5 +39,7 @@
   "has_no_entry": "Es existiert kein Eintrag im Passwortmanager",
   "delete-blueprint-tooltip": "Blaupause löschen",
   "export-blueprint-tooltip": "Blaupause als JSON auf die Festplatte exportieren",
-  "help": "Hilfe"
+  "help": "Hilfe",
+  "generate_pwd": "Neues Passwort generieren",
+  "reuse_pwd": "Zuletzt generiertes Passwort verwenden"
 }

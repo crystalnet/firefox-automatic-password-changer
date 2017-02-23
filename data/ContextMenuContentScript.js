@@ -1,26 +1,27 @@
 /**
  * this is a content script for contextmenu functionalities
- * it is attached to the contextmenu when a recorder object is recording
- * there are 3 events it listens for
- * usernameOrEmail = user marked a input field as a username input field
- * currentPassword = user marked a input field as a actual password input field
- * newPassword = user marked a input field as a new password input field
  */
 self.on("click", function (node, data) {
     switch (data) {
         case "usernameOrEmail":
-            postMessage(node, "U");
+            self.postMessage(["tagging", getNumberOfInput(node), "U"]);
             break;
         case "currentPassword":
-            postMessage(node, "C");
+            self.postMessage(["tagging", getNumberOfInput(node), "C"]);
             break;
         case "newPassword":
-            postMessage(node, "N");
+            self.postMessage(["tagging", getNumberOfInput(node), "N"]);
+            break;
+        case "generatePwd":
+            self.postMessage(["password", "generatePwd", getNumberOfInput(node)]);
+            break;
+        case "reusePwd":
+            self.postMessage(["password", "reusePwd", getNumberOfInput(node)]);
             break;
     }
 });
 
-function postMessage(node, tag) {
+function getNumberOfInput(node) {
     // nodeNumber is the position of the node inside the collection of all
     // input elements; we use this number to identify the node on the page
     let nodeNumber;
@@ -31,5 +32,5 @@ function postMessage(node, tag) {
             break;
         }
     }
-    self.postMessage([nodeNumber, tag]);
+    return nodeNumber;
 }

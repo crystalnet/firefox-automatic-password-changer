@@ -1,9 +1,13 @@
 /*
- This is a content script that the recorder attaches to a webpage at recording a new blueprint.
- if contextmenu is used an inputfield will be marked yellow as visual feedback for user
+ This is a content script that is attached to a webpage when handling context menu action
  */
-self.port.on("ContextMenuClick", function (message) {
-    let position = message[0];
+
+self.port.on("RecordingContextMenuClick", function (message) {
     let inputs = document.getElementsByTagName("input");
-    inputs[position].style.backgroundColor = "yellow";
+    inputs[message[1]].style.backgroundColor = "yellow";
+});
+
+self.port.on("PasswordContextMenuClick", function (message) {
+    let inputs = document.getElementsByTagName("input");
+    inputs[message[2]].value = message[3];
 });
