@@ -18,6 +18,12 @@ self.on("click", function (node, data) {
         case "reusePwd":
             self.postMessage(["password", "reusePwd", getNumberOfInput(node)]);
             break;
+        case "startRecording":
+            self.postMessage(["startStopRecord"]);
+            break;
+        case "stopRecording":
+            self.postMessage(["startStopRecord"]);
+            break;
     }
 });
 
