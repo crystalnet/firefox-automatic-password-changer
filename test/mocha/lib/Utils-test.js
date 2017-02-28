@@ -11,14 +11,14 @@ describe('Utils', function () {
         it('should extract host correctly', function () {
             utils.getMainPageFromLink("https://www.facebook.com/settings/password").should.be.equal("https://www.facebook.com")
         });
-        
-        it('should be empty for empty input',function () {
+
+        it('should be empty for empty input', function () {
             utils.getMainPageFromLink("").should.be.equal("");
         });
     });
-    
-    describe('sleep',function () {
-        it('should sleep exactly the milliseconds specified in the parameter',function () {
+
+    describe('sleep', function () {
+        it('should sleep exactly the milliseconds specified in the parameter', function () {
             let start = new Date().getTime();
             const milliseconds = 2000;
             utils.sleep(milliseconds);
@@ -28,14 +28,36 @@ describe('Utils', function () {
         })
     });
 
-    describe('removeTrailingSlash',function () {
-        it('should remove trailing slash',function () {
+    describe('removeTrailingSlash', function () {
+        it('should remove trailing slash', function () {
             utils.removeTrailingSlash('https://www.url.com/').should.be.equal('https://www.url.com');
         });
 
-        it('should leave url as is if no trailing slash is present',function () {
+        it('should leave url as is if no trailing slash is present', function () {
             let url = 'https://www.url.com';
             utils.removeTrailingSlash(url).should.be.equal(url);
+        });
+    });
+
+    describe('arraysEqual', function () {
+        it('should not throw error on null', function () {
+            utils.arraysEqual(null,[]).should.be.false();
+            utils.arraysEqual([],null).should.be.false();
+            utils.arraysEqual(null,[1]).should.be.false();
+            utils.arraysEqual([1],null).should.be.false();
+        });
+        it('should return true if both are null', function () {
+            utils.arraysEqual(null,null).should.be.true();
+        });
+        it('should return false if arrays have different lengths', function () {
+            utils.arraysEqual([1],[1,2]).should.be.false();
+        });
+        it('should return true if arrays are equal', function () {
+            utils.arraysEqual([1,4,3], [1,4,3]).should.be.true();
+        });
+        it('should return false if arrays are not equal', function () {
+            utils.arraysEqual([1,4,3], [1,1,2]).should.be.false();
+            utils.arraysEqual([1,4,3], [1,1,1]).should.be.false();
         });
     });
 });
