@@ -17,17 +17,6 @@ describe('Utils', function () {
         });
     });
 
-    describe('sleep', function () {
-        it('should sleep exactly the milliseconds specified in the parameter', function () {
-            let start = new Date().getTime();
-            const milliseconds = 2000;
-            utils.sleep(milliseconds);
-            let end = new Date().getTime();
-            let diff = end - start;
-            diff.should.be.equal(milliseconds);
-        })
-    });
-
     describe('removeTrailingSlash', function () {
         it('should remove trailing slash', function () {
             utils.removeTrailingSlash('https://www.url.com/').should.be.equal('https://www.url.com');
