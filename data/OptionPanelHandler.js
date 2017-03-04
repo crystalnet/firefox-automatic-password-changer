@@ -10,7 +10,7 @@ self.port.on("languageStrings", function handleMyMessage(localizationObject) {
 // listen to startBuilding event after show event
 self.port.on("startBuilding", buildPanelHTML);
 
-self.port.on("switchRecordbuttonLabel", switchRecordButtonState);
+self.port.on("switchRecordButtonLabel", switchRecordButtonState);
 
 self.port.on("infoMessage", function(payload) {
     addInfoMessage(payload[0], payload[1], payload[2]);
