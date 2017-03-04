@@ -9,7 +9,6 @@ self.port.on("languageStrings", function handleMyMessage(localizationObject) {
 
 // listen to startBuilding event after show event
 self.port.on("startBuilding", buildPanelHTML);
-//self.port.on("hide",deletePanelContent);
 
 self.port.on("switchRecordbuttonLabel", switchRecordButtonState);
 
@@ -20,7 +19,6 @@ function buildPanelHTML() {
     createOptionButton("record-button", languageStrings["record"], "images/recording_16x16.png", startRecord_endRecord);
     createSeparator("myHr1");
     createOptionButton("accountlist", languageStrings["accountlist"], "images/list-v1_16.png", openAccounts);
-    //createOptionButton("on-off-button","Deaktivieren","icon-16.png",activate_deaktivate);
     createSeparator("myHr2");
     createOptionButton("help", languageStrings["help"], "images/help-16.png", openHelp)
 }
@@ -95,18 +93,13 @@ function startRecord_endRecord(evt) {
 function switchRecordButtonState() {
     let recordButton = document.getElementById("record-button");
     let image = document.createElement("IMG");
-    //let iconSrc = recordButton.getElementsByTagName("IMG");
-    //image.setAttribute("src",recordButton.getElementsByTagName("IMG")[0].src);
     image.setAttribute("class", "icon");
-
     if (recordButton.innerHTML.indexOf(languageStrings["record"]) === 0) {
         recordButton.innerHTML = languageStrings["stop_recording"];
         image.setAttribute("src", "images/stop.png");
-        recordButton.appendChild(image);
-    }
-    else {
+    } else {
         recordButton.innerHTML = languageStrings["record"];
         image.setAttribute("src", "images/recording_16x16.png");
-        recordButton.appendChild(image);
     }
+    recordButton.appendChild(image);
 }
