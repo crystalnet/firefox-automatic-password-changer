@@ -99,7 +99,7 @@ function addInfoMessage(domain, message, messageGUID) {
         infoMessage.innerHTML = message;
 
         let button = document.createElement("BUTTON");
-        button.innerHTML = "Visit Website";
+        button.innerHTML = languageStrings["visit_website"];
         let buttonContainer = document.createElement("DIV");
         buttonContainer.setAttribute("class", "buttonContainer");
         buttonContainer.appendChild(button);

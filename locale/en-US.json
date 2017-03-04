@@ -41,5 +41,6 @@
   "export-blueprint-tooltip": "Export the blueprint as JSON to disk",
   "help": "Help",
   "generate_pwd": "Generate new password",
-  "reuse_pwd": "Use last generated password"
+  "reuse_pwd": "Use last generated password",
+  "visit_website": "Visit website"
 }

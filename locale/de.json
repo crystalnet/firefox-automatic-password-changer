@@ -41,5 +41,6 @@
   "export-blueprint-tooltip": "Blaupause als JSON auf die Festplatte exportieren",
   "help": "Hilfe",
   "generate_pwd": "Neues Passwort generieren",
-  "reuse_pwd": "Zuletzt generiertes Passwort verwenden"
+  "reuse_pwd": "Zuletzt generiertes Passwort verwenden",
+  "visit_website": "Webseite besuchen"
 }
