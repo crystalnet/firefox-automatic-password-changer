@@ -144,7 +144,9 @@ function addAccountSection(name, url, blueprintExists) {
             icon: "ui-icon-disk",
             showLabel: false
             // label: languageStrings["export_blueprint"]
-        }).addClass("blueprint-dependent export-blueprint-button").click(function () {
+        }).addClass("blueprint-dependent export-blueprint-button").click(function (event) {
+            // stop bubbling of click event to prevent opening or collapsing of accordion section
+            event.stopPropagation();
             exportBlueprint(url);
         }).prop("title", languageStrings["export-blueprint-tooltip"]);
         $exportBtn.tooltip();
@@ -153,7 +155,9 @@ function addAccountSection(name, url, blueprintExists) {
             icon: "ui-icon-trash",
             showLabel: false
             // label: languageStrings["delete_blueprint"]
-        }).addClass("blueprint-dependent delete-blueprint-button").click(function () {
+        }).addClass("blueprint-dependent delete-blueprint-button").click(function (event) {
+            // stop bubbling of click event to prevent opening or collapsing of accordion section
+            event.stopPropagation();
             deleteBlueprint(url);
         }).prop("title", languageStrings["delete-blueprint-tooltip"]);
         $deleteBtn.tooltip();
