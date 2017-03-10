@@ -33,7 +33,7 @@ describe('Translator', function () {
                 for (let lang = 0; lang < langs.length; lang++) {
                     if (langs[lang] === maxlang) continue;
                     // if assert fails, check languageArray for actual name of failed language
-                    should.exists(langs[lang][phrase], 'phrase: "' + phrase + '" lang: "' + languageArray[lang]);
+                    should.exists(langs[lang][phrase], 'phrase: "' + phrase + '" lang: "' + languageArray[lang]+'"');
                 }
             }
         }
