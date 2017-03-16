@@ -39,5 +39,8 @@
   "has_no_entry": "Non esiste una registrazione nel manager delle password.",
   "delete-blueprint-tooltip": "Cancellare blueprint",
   "export-blueprint-tooltip": "Esportare blueprint come JSON al disco rigido",
-  "help": "Aiuto"
+  "help": "Aiuto",
+  "generate_pwd": "Generare nuova password",
+  "reuse_pwd": "Utilizzare la password ultimamente generata",
+  "visit_website": "visitare il sito"
 }

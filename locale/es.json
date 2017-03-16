@@ -39,5 +39,8 @@
   "has_no_entry": "No existe una inscripción en el administrador de contraseñas.",
   "delete-blueprint-tooltip": "Borrar blueprint",
   "export-blueprint-tooltip": "Exportar blueprint como JSON al disco duro",
-  "help": "Ayuda"
+  "help": "Ayuda",
+  "generate_pwd": "Generar nueva contraseña",
+  "reuse_pwd": "Utilizar la contraseña generada por último",
+  "visit_website": "visitar el sitio web"
 }
