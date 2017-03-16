@@ -39,5 +39,8 @@
   "has_no_entry": "Aucune entrée dans le gestionnaire de mots de passe.",
   "delete-blueprint-tooltip": "Supprimer l'historique de connexion",
   "export-blueprint-tooltip": "Exporter l'historique de connexion au format JSON sur le disque dur",
-  "help": "Aide"
+  "help": "Aide",
+  "generate_pwd": "Générer un nouveau mot de passe",
+  "reuse_pwd": "Utiliser le dernier mot de passe généré",
+  "visit_website": "Aller sur le site"
 }
