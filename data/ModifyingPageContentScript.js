@@ -18,14 +18,11 @@ self.port.on("xyCoords", function (message) {
 
     // perform click
     let element = document.elementFromPoint(xCoord, yCoord);
-    if (element != null) {
-        // some stuff for google special case
-        let googleAccountButton = window.content.document.querySelector("a[href^='https://accounts.google.com/SignOutOptions']");
-        if (element.parentNode.isSameNode(googleAccountButton)) {
-            let event = document.createEvent('Event');
-            event.initEvent('mouseover', true, true);
-            element.dispatchEvent(event);
-        }
+    if (element !== null) {
+        // dispatch mouseover event before clicking, as this is required sometimes
+        let event = document.createEvent('Event');
+        event.initEvent('mouseover', true, true);
+        element.dispatchEvent(event);
         element.click();
         self.port.emit("clickDone");
     } else {
