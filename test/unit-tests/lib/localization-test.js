@@ -1,4 +1,4 @@
-const sourcepath = "../../../";
+const sourcepath = '../../../';
 
 const should = require('should');
 const {Translator, LanguageCodes} = require(sourcepath + 'lib/Translator');

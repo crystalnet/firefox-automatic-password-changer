@@ -1,7 +1,7 @@
-const sourcepath = "../../../";
+const sourcepath = '../../../';
 
 const proxyquire = require('proxyquire').noCallThru();
-const HashTable = require(sourcepath + "lib/Hashtable");
+const HashTable = require(sourcepath + 'lib/Hashtable');
 const should = require('should');
 const {Translator} = require(sourcepath + 'lib/Translator');
 
@@ -69,7 +69,7 @@ const sdkDependenciesStub = {
     })
 };
 
-const Recorder = proxyquire(sourcepath + "lib/Recorder", sdkDependenciesStub);
+const Recorder = proxyquire(sourcepath + 'lib/Recorder', sdkDependenciesStub);
 
 describe('Recorder', function () {
     describe('RecorderIsActive', function () {
