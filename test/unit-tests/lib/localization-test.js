@@ -4,7 +4,7 @@ const should = require('should');
 const {Translator, LanguageCodes} = require(sourcepath + 'lib/Translator');
 
 // add new languages here
-const languageArray = [LanguageCodes.de, LanguageCodes.en_US];
+const languageArray = [LanguageCodes.de, LanguageCodes.en_US, LanguageCodes.fr, LanguageCodes.es, LanguageCodes.it];
 
 describe('Translator', function () {
     it('localization files should have the same fields set', function () {
