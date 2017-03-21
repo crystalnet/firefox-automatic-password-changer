@@ -36,6 +36,12 @@ const sdkDependenciesStub = {
                         addEventListener: function () {
                         },
                         removeEventListener: function () {
+                        },
+                        body:{
+                            addEventListener: function () {
+                            },
+                            removeEventListener: function () {
+                            },
                         }
                     }
                 }
