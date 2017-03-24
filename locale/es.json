@@ -22,7 +22,7 @@
   "password_has_been_successfully_changed": "La contraseña ha sido cambiado con éxito.",
   "acclmessage1": "El cambiador de contraseñas comienza una nueva grabación en '{0}'. Desea continuar?",
   "acclmessage2": "Esta inscripción será eliminada de esta lista y del administrador de contraseñas de Firefox.",
-  "acclmessage3": "Si existe el blueprint, la contraseña cambia automáticamente . Eso sucede en vivo en la ventana abierta. Por un bug en la API de Firefox no sucede en el fondo, rogamos su comprensión.",
+  "acclmessage3": "La contraseña cambia automáticamente. Eso sucede en vivo en la ventana abierta. Por un bug en la API de Firefox no sucede en el fondo, rogamos su comprensión.",
   "acclmessage4": "Se le lleva automáticamente al formulario, con el cual usted puede después cambiar su contraseña.",
   "title_accountlist": "Lista de cuentas",
   "heading_accountlist": "Cambiador automático de contraseñas",
