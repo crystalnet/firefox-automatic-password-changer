@@ -22,7 +22,7 @@
   "password_has_been_successfully_changed": "Password was successfully changed",
   "acclmessage1": "The Password Changer will now start a new recording on '{0}'. Do you want to continue?",
   "acclmessage2": "This entry will be deleted out of this list and out of the password manager of firefox.",
-  "acclmessage3": "The password will be changed automatically if a blueprint exists. This happens live in an active window. Because of a bug in the Firefox API, this can't be done the background.",
+  "acclmessage3": "The password will be changed automatically. This happens live in an active window. Because of a bug in the Firefox API, this can't be done the background.",
   "acclmessage4": "You will be navigated to the form with which you can change your password on your own.",
   "title_accountlist": "Accountlist",
   "heading_accountlist": "Automatic Password Changer",

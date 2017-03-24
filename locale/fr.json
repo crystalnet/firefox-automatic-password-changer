@@ -22,7 +22,7 @@
   "password_has_been_successfully_changed": "Le mot de passe a été modifié avec succès.",
   "acclmessage1": "Le modificateur de mots de passe commence un enregistrement sur '{0}'. Voulez-vous continuer ?",
   "acclmessage2": "Cette entrée sera supprimée de cette liste ainsi que du gestionnaire de mots de passe de Firefox.",
-  "acclmessage3": "Si l'historique de connexion est disponible, le mot de passe sera modifié dans cette fenêtre. En raison d'un bug sur Firefox API, cette action ne peut se produire en arrière-plan. Merci de votre compréhension.",
+  "acclmessage3": "Le mot de passe sera modifié dans cette fenêtre. En raison d'un bug sur Firefox API, cette action ne peut se produire en arrière-plan. Merci de votre compréhension.",
   "acclmessage4": "Vous allez maintenant être automatiquement redirigé vers la page où vous pourrez modifier votre mot de passe.",
   "title_accountlist": "Liste des comptes",
   "heading_accountlist": "Modificateur automatique de mots de passe",
