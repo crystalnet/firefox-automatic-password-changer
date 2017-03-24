@@ -32,6 +32,9 @@ To run the mocha unit tests in Webstorm, all you need to do is add a debug confi
 and set the "Test Directory" to "ADDONDIRECTORY\test\unit-tests" and check "Include subdirectories".
 Now the tests can be run by hitting the run button for the created configuration.
 
+To see the `console.log` output, go to "about:config" and add a new key named "extensions.sdk.console.logLevel".
+Then set its value to `info`.
+
 ## Integration Tests
 To execute integration tests with jpm execute:
 
