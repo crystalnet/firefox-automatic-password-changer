@@ -22,7 +22,7 @@
   "password_has_been_successfully_changed": "La password è stata cambiata con successo.",
   "acclmessage1": "Il cambia password inizia una nuova ripresa su '{0}'. Vorrebbe continuare?",
   "acclmessage2": "Questa registrazione viene cancellata da quest' elenco e dal manager delle password di Firefox.",
-  "acclmessage3": "Se il blueprint esiste la password viene cambiata automaticamente. Questo succede in diretta nella finestra aperta. A causa di un bug nel API di Firefox non può succedere in fondo, per favore abbia comprensione.",
+  "acclmessage3": "La password viene cambiata automaticamente. Questo succede in diretta nella finestra aperta. A causa di un bug nel API di Firefox non può succedere in fondo, per favore abbia comprensione.",
   "acclmessage4": "Lei è condotta automaticamente al modulo con cui può cambiare la Sua password Lei stessa.",
   "title_accountlist": "Elenco di account",
   "heading_accountlist": "Cambia password automatico",
