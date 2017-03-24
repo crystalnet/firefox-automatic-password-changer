@@ -2,7 +2,7 @@
   "locales": {
     "de": {
       "title": "Passwort Changer",
-      "description": "Dieses Add-On ermöglicht es Ihnen, ihre Passwörter automatisch abzuändern."
+      "description": "Dieses Add-On ermöglicht es Ihnen, ihre Passwörter automatisch ändern zu lassen."
     },
     "en": {
       "title": "Password Changer",
@@ -10,14 +10,14 @@
     }
   },
   "name": "firefox-automatic-password-changer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "./lib/passwordChanger.js",
-  "author": "Ger4ik",
+  "author": "SECUSO Research Group TU-Darmstadt",
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
   },
-  "license": "MIT",
+  "license": "GPLv2",
   "dependencies": {
     "menuitem": "0.0.5"
   },
