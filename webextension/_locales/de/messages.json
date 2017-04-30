@@ -1,0 +1,137 @@
+{
+  "extensionDescription": {
+    "message": "Dieses Add-On ermöglicht es Ihnen, ihre Passwörter automatisch ändern zu lassen."
+  },
+  "help-link": {
+    "message": "/html-pages/help-pages/help_de.html"
+  },
+  "record": {
+    "message": "Aufzeichnen"
+  },
+  "accountlist": {
+    "message": "Accountliste"
+  },
+  "stop_recording": {
+    "message": "Aufz. beenden"
+  },
+  "user": {
+    "message": "Benutzer"
+  },
+  "url": {
+    "message": "URL"
+  },
+  "username slash mail": {
+    "message": "Benutzername/Email"
+  },
+  "current password": {
+    "message": "Aktuelles Passwort"
+  },
+  "new password": {
+    "message": "Neues Passwort"
+  },
+  "change_password_now_automatically": {
+    "message": "Passwort jetzt automatisch ändern"
+  },
+  "change_password_now_manually": {
+    "message": "Passwort jetzt manuell ändern"
+  },
+  "record_blueprint_btn": {
+    "message": "Blaupause aufzeichnen"
+  },
+  "export_blueprint": {
+    "message": "Blaupause exportieren"
+  },
+  "delete_blueprint_warning": {
+    "message": "Die Blaupause für $1 wird gelöscht. Möchten sie fortfahren?"
+  },
+  "delete_blueprint": {
+    "message": "Blaupause löschen"
+  },
+  "no_login_data": {
+    "message": "Keine Account-Informationen im Passwort-Manager vorhanden."
+  },
+  "page": {
+    "message": "Seite"
+  },
+  "a_problem_appeared_when_changing_password": {
+    "message": "Bei der Änderung des Passwords ist ein Fehler unterlaufen"
+  },
+  "save blueprint": {
+    "message": "Speichere Blaupause"
+  },
+  "blueprint imported": {
+    "message": "Die Blaupause wurde importiert."
+  },
+  "password_has_been_successfully_changed": {
+    "message": "Passwort wurde erfolgreich geändert."
+  },
+  "acclmessage1": {
+    "message": "Der Password Changer startet nun eine neue Aufnahme auf $1. Wollen Sie fortfahren?"
+  },
+  "acclmessage2": {
+    "message": "Dieser Eintrag wird sowohl aus dieser Liste, als auch aus dem Passwortmanager von Firefox entfernt."
+  },
+  "acclmessage3": {
+    "message": "Das Passwort wird automatisch geändert. Dies geschieht live im offenen Fenster. Aufgrund eines Bugs im der Firefox API kann dies nicht im Hintergrund geschehen, bitte haben Sie Verständnis."
+  },
+  "acclmessage4": {
+    "message": "Sie werden nun automatisch zum Formular navigiert, mit dem Sie anschließend Ihr Passwort selbst ändern können."
+  },
+  "title_accountlist": {
+    "message": "Accountliste"
+  },
+  "heading_accountlist": {
+    "message": "Automatic Password Changer"
+  },
+  "btn_import_blueprints": {
+    "message": "Blaupause importieren"
+  },
+  "btn_show_blueprints": {
+    "message": "Blaupausen anzeigen"
+  },
+  "title_blueprints": {
+    "message": "Blaupausen"
+  },
+  "heading_blueprints": {
+    "message": "Diese Seiten sind als Blaupausen vorhanden"
+  },
+  "imitator change failed": {
+    "message": "Bei der Änderung des Passwords ist ein Fehler unterlaufen. Es könnte trotzdem geändert worden sein, in diesem Fall ist die Änderung aber nicht im Passwort-Manager eingetragen worden."
+  },
+  "imitator change failed new password is": {
+    "message": "Das neue Passwort wäre in diesem Fall $1."
+  },
+  "imitator failed to save new password old deleted": {
+    "message": "Das alte Passwort wurde gelöscht, aber das neue konnte nicht eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite."
+  },
+  "imitator failed to save new password already changed": {
+    "message": "Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort.Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite."
+  },
+  "label as": {
+    "message": "Markieren als"
+  },
+  "has_entry": {
+    "message": "Es existiert ein Eintrag im Passwortmanager"
+  },
+  "has_no_entry": {
+    "message": "Es existiert kein Eintrag im Passwortmanager"
+  },
+  "delete-blueprint-tooltip": {
+    "message": "Blaupause löschen"
+  },
+  "export-blueprint-tooltip": {
+    "message": "Blaupause als JSON auf die Festplatte exportieren"
+  },
+  "help": {
+    "message": "Hilfe"
+  },
+  "generate_pwd": {
+    "message": "Neues Passwort generieren"
+  },
+  "reuse_pwd": {
+    "message": "Zuletzt generiertes Passwort verwenden"
+  },
+  "visit_website": {
+    "message": "Webseite besuchen"
+  }
+}

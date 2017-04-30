@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "version": "0.8",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "developer": {
+    "name": "SECUSO Research Group TU-Darmstadt",
+    "url": "https://github.com/SecUSo/firefox-automatic-password-changer"
+  },
+  "default_locale": "en",
+  "icons": {
+    "16": "/images/icons/icon-16.png",
+    "32": "/images/icons/icon-32.png",
+    "64": "/images/icons/icon-64.png"
+  },
+
+  "permissions": [
+    "downloads"
+  ],
+
+  "browser_action": {
+    "browser_style": false,
+    "default_icon": {
+      "16": "/images/icons/icon_gray-16.png",
+      "32": "/images/icons/icon_gray-32.png",
+      "64": "/images/icons/icon_gray-64.png"
+    },
+    "default_title": "Password Changer",
+    "default_popup": "/html-pages/option-panel/optionPanel.html"
+  },
+
+  "background": {
+    "scripts": ["/background/passwordChanger.js"]
+  }
+}

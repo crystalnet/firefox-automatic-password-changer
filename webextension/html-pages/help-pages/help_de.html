@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link href="help.css" type="text/css" rel="stylesheet">
+    <title>Hilfeseite</title>
+</head>
+
+<body>
+<h1>Hilfeseite</h1>
+<h3>Passwörter generieren</h3>
+<p>Bei Rechtsklick auf ein Eingabefeld kann das Add-On zum Generieren eines Passwortes genutzt werden, indem man auf die Option "Neues Passwort generieren" klickt.
+    Nachdem diese Option einmal ausgewählt wurde, ist bei einem weiteren Rechtsklick auf ein Eingabefeld die Option "Zuletzt generiertes Passwort verwenden" auswählbar.
+    Auf diese Weise ist es möglich, Passwort-Formulare auszufüllen, die eine erneute Eingabe des Passwortes verlangen.<br/><br/>
+    Die Optionen zum Passwort-Generieren stehen jederzeit zur Verfügung, unabhängig davon, ob gerade eine Blaupause aufgezeichnet wird oder nicht.</p>
+<img src="../../images/help-page/generate-password.png">
+<img src="../../images/help-page/reuse-generated-password.png">
+<h3>Eine Blaupause aufzeichnen</h3>
+<p>Alle Aktionen während des Aufzeichnens müssen per Klick durchgeführt werden. Ausgenommen davon ist die Eingabe von Text.</p>
+<ol>
+    <li>Die aufzuzeichnende Seite aufrufen.</li>
+    <li>Über den Add-On-Button im Menü auf "Aufzeichnen" klicken oder per Rechtsklick im Kontextmenü die Option "Aufzeichnen" wählen.<br/>
+        <img src="../../images/help-page/start-recording.png"><img src="../../images/help-page/start-recording-menu.png" style="margin-left: 20px;"></li>
+    <li>Zur Loginmaske navigieren. Alternativ kann die Aufzeichnung auch erst auf dieser Seite begonnen werden.
+        Der Login muss allerdings auf jeden Fall Teil der Aufzeichnung sein.</li>
+    <li>Die Nutzerdaten eingeben und vor dem Absenden per Rechtsklick auf die Eingabefelder diese entsprechend als
+        "Benutzername/Email" bzw. "Aktuelles Passwort" markieren. Sind die Felder korrekt markiert, werden diese gelb hinterlegt.<br/>
+        <img src="../../images/help-page/label-login.png"></li>
+    <li>Zur Passwort-Ändern-Maske navigieren.</li>
+    <li>Aktuelles und neues Passwort eingeben und vor dem Absenden analog zur Loginmaske die Eingabefelder per Kontextmenü markieren.</li>
+    <li>Passwortänderung abschließen und Ausloggen.</li>
+    <li>Über den Add-On-Button im Menü oder per Rechtsklick im Kontextmenü die Aufzeichnung beenden.</li>
+</ol>
+<h3>Accountliste</h3>
+<p>Die Accountliste wird mit einem Klick auf den Add-On-Menüpunkt "Accountliste" geöffnet.</p>
+<img src="../../images/help-page/open-accountlist.png">
+<p>Der Button rechts oben ermöglicht das Importieren von Blaupausen.</p>
+<p>Es gibt drei mögliche Arten von Einträgen auf der Liste:</p>
+<ol>
+    <li class="acc-list-entry">Es liegen für eine Webseite Logindaten im Firefox-Passwortmanager vor und es ist eine Blaupause vorhanden.</li>
+    <img src="../../images/help-page/accountlistItem1.png">
+    <ul>
+        <li>Das Vorhandensein einer Blaupause für diese Webseite wird durch ein Icon angezeigt (1).</li>
+        <li>Bei einem Klick auf (2) ändert das Add-On automatisch das Passwort für diese Webseite. Hierbei wird ein automatisch generiertes Passwort genutzt.</li>
+        <li>Ein Klick auf (3) öffnet einen Tab, in dem die Passwort-Ändern-Maske der Webseite aufgerufen wird, damit das Passwort manuell geändert werden kann.</li>
+        <li>Der Button (4) ermöglicht es, für diese Webseite eine neue Blaupause aufzunehmen. Die alte Blaupause wird dabei überschrieben.</li>
+        <li>Löschen oder Exportieren der Blaupause ist mittels (5) möglich.</li>
+    </ul>
+    <li class="acc-list-entry">Im Firefox-Passwortmanager liegen Logindaten für die Webseite vor, es ist jedoch keine passende Blaupause vorhanden.</li>
+    <img src="../../images/help-page/accountlistItem2.png">
+    <ul>
+        <li>Ein Klick auf (1) startet die Aufnahme einer Blaupause für diese Webseite.</li>
+    </ul>
+    <li class="acc-list-entry">Es liegt eine Blaupause für eine Webseite vor, für die keine Logindaten im Firefox-Passwortmanager vorhanden sind. Dies kann z.B. der Fall sein, wenn eine Blaupause importiert wurde.</li>
+    <img src="../../images/help-page/accountlistItem3.png">
+    <ul>
+        <li>Ein Icon zeigt an, dass für diese Webseite eine Blaupause vorliegt (1).</li>
+        <li>Mittels (2) kann die Blaupause gelöscht oder exportiert werden.</li>
+    </ul>
+</ol>
+</body>
+</html>

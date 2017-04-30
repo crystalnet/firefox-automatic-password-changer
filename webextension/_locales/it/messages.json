@@ -1,0 +1,131 @@
+{
+  "record": {
+    "message": "Riprendere"
+  },
+  "accountlist": {
+    "message": "Elenco di account"
+  },
+  "stop_recording": {
+    "message": "Finire ripresa"
+  },
+  "user": {
+    "message": "Utente"
+  },
+  "url": {
+    "message": "URL"
+  },
+  "username slash mail": {
+    "message": "Nome utente/E-Mail"
+  },
+  "current password": {
+    "message": "Password attuale"
+  },
+  "new password": {
+    "message": "Nouva password"
+  },
+  "change_password_now_automatically": {
+    "message": "Cambiare password automaticamente adesso"
+  },
+  "change_password_now_manually": {
+    "message": "Cambiare password manualmente adesso"
+  },
+  "record_blueprint_btn": {
+    "message": "Riprendere blueprint"
+  },
+  "export_blueprint": {
+    "message": "Esportare blueprint"
+  },
+  "delete_blueprint_warning": {
+    "message": "Questo blueprint per $1 viene cancellata. Vorrebbe continuare?"
+  },
+  "delete_blueprint": {
+    "message": "Cancellare blueprint"
+  },
+  "no_login_data": {
+    "message": "Non esistono informazioni di account nel manager delle password."
+  },
+  "page": {
+    "message": "Pagina"
+  },
+  "a_problem_appeared_when_changing_password": {
+    "message": "Al cambio della password un errore è sorto."
+  },
+  "save blueprint": {
+    "message": "Salvare blueprint"
+  },
+  "blueprint imported": {
+    "message": "Il blueprint è stato importato."
+  },
+  "password_has_been_successfully_changed": {
+    "message": "La password è stata cambiata con successo."
+  },
+  "acclmessage1": {
+    "message": "Il cambia password inizia una nuova ripresa su $1. Vorrebbe continuare?"
+  },
+  "acclmessage2": {
+    "message": "Questa registrazione viene cancellata da quest' elenco e dal manager delle password di Firefox."
+  },
+  "acclmessage3": {
+    "message": "La password viene cambiata automaticamente. Questo succede in diretta nella finestra aperta. A causa di un bug nel API di Firefox non può succedere in fondo, per favore abbia comprensione."
+  },
+  "acclmessage4": {
+    "message": "Lei è condotta automaticamente al modulo con cui può cambiare la Sua password Lei stessa."
+  },
+  "title_accountlist": {
+    "message": "Elenco di account"
+  },
+  "heading_accountlist": {
+    "message": "Cambia password automatico"
+  },
+  "btn_import_blueprints": {
+    "message": "Importare blueprint"
+  },
+  "btn_show_blueprints": {
+    "message": "Far vedere i blueprint"
+  },
+  "title_blueprints": {
+    "message": "Blueprint"
+  },
+  "heading_blueprints": {
+    "message": "Queste pagine esistono come blueprint"
+  },
+  "imitator change failed": {
+    "message": "Al cambio della password un errore è sorto. Nonostante ciò può essere stata cambiata, ma in questo caso il cambio non è stato registrato nel manager delle password."
+  },
+  "imitator change failed new password is": {
+    "message": "In questo caso la nuova password sarebbe $1."
+  },
+  "imitator failed to save new password old deleted": {
+    "message": "La password precedente è stata cancellata, ma quella nuova non si poteva registrare. Per favore, utilizze la funzione della pagina web per resettare la password."
+  },
+  "imitator failed to save new password already changed": {
+    "message": "La password è probabilmente stata cambiata, ma non se la poteva registrare nel manager delle password. Per favore, utilizze la funzione della pagina web per resettare la password."
+  },
+  "label as": {
+    "message": "Marcare come"
+  },
+  "has_entry": {
+    "message": "Esiste una registrazione nel manager delle password."
+  },
+  "has_no_entry": {
+    "message": "Non esiste una registrazione nel manager delle password."
+  },
+  "delete-blueprint-tooltip": {
+    "message": "Cancellare blueprint"
+  },
+  "export-blueprint-tooltip": {
+    "message": "Esportare blueprint come JSON al disco rigido"
+  },
+  "help": {
+    "message": "Aiuto"
+  },
+  "generate_pwd": {
+    "message": "Generare nuova password"
+  },
+  "reuse_pwd": {
+    "message": "Utilizzare la password ultimamente generata"
+  },
+  "visit_website": {
+    "message": "visitare il sito"
+  }
+}
