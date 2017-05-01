@@ -9,6 +9,13 @@ function handleMessage(request, sender, sendResponse) {
             break;
         case "switchRecorderStatus":
             recorderStatus = !recorderStatus;
+            // trigger badge change
+            if (recorderStatus)
+                badge.activateRecording();
+            else
+                badge.deactivateRecording();
             break;
     }
 }
+
+badge.set(0);

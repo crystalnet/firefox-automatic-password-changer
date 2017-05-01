@@ -30,6 +30,6 @@
   },
 
   "background": {
-    "scripts": ["/background/passwordChanger.js"]
+    "scripts": ["/background/badge.js", "/background/passwordChanger.js"]
   }
 }
