@@ -30,6 +30,6 @@
   },
 
   "background": {
-    "scripts": ["/background/badge.js", "/background/passwordChanger.js"]
+    "scripts": ["/background/hashtable.js", "/background/badge.js", "/background/passwordChanger.js"]
   }
 }
