@@ -12,7 +12,7 @@ function initDone(page) {
 }
 
 /**
- * add missing parts to panel HTML
+ * Add missing parts to panel HTML
  */
 function complementPanelHTML() {
     let iconSrc = "../../images/icons/stop.png";
@@ -45,7 +45,7 @@ function handleError(error) {
 }
 
 /**
- * creates buttons in panel menu
+ * Creates buttons in panel menu
  * @param id ID of the new element
  * @param text innerHTML text of element
  * @param iconSrc path to icon for element
@@ -64,7 +64,7 @@ function complementOptionButton(id, text, iconSrc, newFunction) {
 }
 
 /**
- * appends a separator and an info message to the options panel
+ * Appends a separator and an info message to the options panel
  * @param domain
  * @param message
  * @param messageGUID
@@ -133,7 +133,7 @@ function visitWebsite(event) {
 }
 
 /**
- * removes an info message and its corresponding separator
+ * Removes an info message and its corresponding separator
  * @param event the event triggered by clicking on the dismiss icon
  */
 function removeInfoMessage(event) {
@@ -150,14 +150,14 @@ function removeInfoMessage(event) {
 }
 
 /**
- * function for clicking on menu option Accountlist
+ * Function for clicking on menu option Accountlist
  */
 function openAccounts() {
     // TODO
 }
 
 /**
- * function for clicking on menu option help
+ * Function for clicking on menu option help
  */
 function openHelp() {
     let tab = browser.tabs.create({
@@ -169,7 +169,7 @@ function openHelp() {
 }
 
 /**
- * function for start-endRecording
+ * Function for start-endRecording
  */
 function startRecord_endRecord() {
     backgroundPage.toggleRecorder();

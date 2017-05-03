@@ -14,9 +14,7 @@
     "64": "/images/icons/icon-64.png"
   },
 
-  "permissions": [
-    "downloads"
-  ],
+  "permissions": ["downloads", "contextMenus", "activeTab"],
 
   "browser_action": {
     "browser_style": false,
@@ -30,6 +28,13 @@
   },
 
   "background": {
-    "scripts": ["/background/hashtable.js", "/background/badge.js", "/background/passwordChanger.js"]
-  }
+    "scripts": ["/background/passwordGenerator.js", "/background/hashtable.js", "/background/badge.js", "/background/passwordChanger.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/content-scripts/contextMenuContentScript.js"]
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 /**
- * got idea for hashtable implementation from http://www.mojavelinux.com/articles/javascript_hashes.html
+ * Got idea for hashtable implementation from http://www.mojavelinux.com/articles/javascript_hashes.html
  */
 class HashTable {
     constructor(obj) {

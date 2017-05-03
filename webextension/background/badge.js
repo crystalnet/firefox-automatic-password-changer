@@ -1,6 +1,6 @@
 class Badge {
     /**
-     * initializes counterValue variable
+     * Initializes counterValue variable
      */
     constructor() {
         this.counterValue = 0;
@@ -8,7 +8,7 @@ class Badge {
     }
 
     /**
-     *  increments badge counter of button
+     *  Increments badge counter of button
      */
     increment() {
         this.counterValue++;
@@ -16,7 +16,7 @@ class Badge {
     }
 
     /**
-     * decrements badge counter of button
+     * Decrements badge counter of button
      */
     decrement() {
         if (this.counterValue > 0) {
@@ -26,7 +26,7 @@ class Badge {
     }
 
     /**
-     * sets the counter of the button to a specific value
+     * Sets the counter of the button to a specific value
      * @param value
      */
     set(value) {
@@ -35,7 +35,7 @@ class Badge {
     }
 
     /**
-     * displays the correct badge text and color, depending on the internal state of the badge object
+     * Displays the correct badge text and color, depending on the internal state of the badge object
      */
     display() {
         if (this.recording) {
@@ -51,7 +51,7 @@ class Badge {
     }
 
     /**
-     * displays the recording icon
+     * Displays the recording icon
      */
     activateRecording() {
         this.recording = true;
@@ -59,7 +59,7 @@ class Badge {
     }
 
     /**
-     * stops displaying the recording icon and restores the badge as it was before
+     * Stops displaying the recording icon and restores the badge as it was before
      * activateRecording was called
      */
     deactivateRecording() {
@@ -69,6 +69,6 @@ class Badge {
 }
 
 // We create a single badge object here, which can then be accessed in any other background script directly,
-// because all background scripts are executed in the same scope. All other privileged add-on code can also
+// because all background scripts are executed in the same scope; All other privileged add-on code can also
 // access this scope via runtime.getBackgroundPage()
 const badge = new Badge();

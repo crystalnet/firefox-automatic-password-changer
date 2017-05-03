@@ -9,6 +9,16 @@ function toggleRecorder() {
         badge.activateRecording();
     else
         badge.deactivateRecording();
+    // update the startStopRecording item title
+    let messageString = getRecorderStatus() ? "stop_recording" : "record";
+    browser.contextMenus.update("startStopRecording", {
+        title: browser.i18n.getMessage(messageString)
+    });
+    // hide or show labelAs submenu
+    let contexts = getRecorderStatus() ? ["editable", "password"] : ["page_action"];
+    browser.contextMenus.update("labelAs", {
+        contexts: contexts
+    });
 }
 function getRecorderStatus() {
     return recorderStatus;
@@ -29,13 +39,17 @@ let portToLegacyAddOn;
                 break;
         }
     });
+    // get all domains the user has stored login credentials for, so we can call the
+    // queryInfoWebservice function, which then sets the correct badge on the add-on button
     portToLegacyAddOn.postMessage({
         content: "getLoginDomains"
     });
+    // build the context menu
+    buildContextMenu();
 })();
 
 /**
- * gets info messages for domains from a webservice
+ * Gets info messages for domains from a webservice
  */
 function queryInfoWebservice(domains) {
     // TODO When the webservice is running in the future, do a request here to get actual info messages
@@ -51,7 +65,7 @@ function queryInfoWebservice(domains) {
 }
 
 /**
- *
+ * Handles necessary steps when user dismissed a message, so it is not shown to him any more
  * @param messageGUID
  */
 function dismissInfoMessage(messageGUID) {
@@ -61,9 +75,95 @@ function dismissInfoMessage(messageGUID) {
 }
 
 /**
- * getter for messagesToDisplay
+ * Getter for messagesToDisplay
  * @returns {HashTable}
  */
 function getMessagesToDisplay() {
     return messagesToDisplay;
+}
+
+/**
+ * Builds  the context menu
+ * We create all necessary context menu items at once, to get the correct display order;
+ * page_action context is used to hide items which should currently not be displayed;
+ * We update the context of those items whenever necessary;
+ * This is done, because unlike the SDK, the WebExtensions API does not support predicate contexts
+ */
+function buildContextMenu() {
+    browser.contextMenus.create({
+        id: "topLevelItem",
+        title: browser.i18n.getMessage("extensionName"),
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "labelAs",
+        parentId: "topLevelItem",
+        title: browser.i18n.getMessage("label as"),
+        contexts: ["page_action"]
+    });
+    browser.contextMenus.create({
+        parentId: "labelAs",
+        title: browser.i18n.getMessage("username slash mail"),
+        contexts: ["editable"]
+    });
+    browser.contextMenus.create({
+        parentId: "labelAs",
+        title: browser.i18n.getMessage("current password"),
+        contexts: ["editable", "password"]
+    });
+    browser.contextMenus.create({
+        id: "labelAsNewPassword",
+        parentId: "labelAs",
+        title: browser.i18n.getMessage("new password"),
+        contexts: ["page_action"]
+    });
+    browser.contextMenus.create({
+        id: "startStopRecording",
+        parentId: "topLevelItem",
+        title: browser.i18n.getMessage("record"),
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "generatePassword",
+        parentId: "topLevelItem",
+        title: browser.i18n.getMessage("generate_pwd"),
+        contexts: ["editable", "password"]
+    });
+    browser.contextMenus.create({
+        id: "reuseGeneratedPassword",
+        parentId: "topLevelItem",
+        title: browser.i18n.getMessage("reuse_pwd"),
+        contexts: ["page_action"]
+    });
+    browser.contextMenus.onClicked.addListener(function(info, tab) {
+        switch (info.menuItemId) {
+            case "startStopRecording":
+                // start or stop the recorder; handling the corresponding context menu changes is done
+                // in toggleRecorder, because it also has to be done, when using the main menu
+                toggleRecorder();
+                break;
+            case "generatePassword":
+                // make reuseGeneratedPassword item visible
+                browser.contextMenus.update("reuseGeneratedPassword", {
+                    contexts: ["editable", "password"]
+                });
+                // send generated password to contextMenuContentScript
+                browser.tabs.sendMessage(tab.id, {
+                    case: "password",
+                    content: passwordGenerator.generatePassword()
+                });
+                break;
+            case "reuseGeneratedPassword":
+                // make reuseGeneratedPassword item invisible
+                browser.contextMenus.update(info.menuItemId, {
+                    contexts: ["page_action"]
+                });
+                // send last generated password to contextMenuContentScript
+                browser.tabs.sendMessage(tab.id, {
+                    case: "password",
+                    content: passwordGenerator.getLastPassword()
+                });
+                break;
+        }
+    });
 }
