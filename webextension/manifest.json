@@ -14,7 +14,7 @@
     "64": "/images/icons/icon-64.png"
   },
 
-  "permissions": ["downloads", "contextMenus", "activeTab"],
+  "permissions": ["downloads", "contextMenus", "activeTab", "storage"],
 
   "browser_action": {
     "browser_style": false,
@@ -28,7 +28,13 @@
   },
 
   "background": {
-    "scripts": ["/background/passwordGenerator.js", "/background/hashtable.js", "/background/badge.js", "/background/passwordChanger.js"]
+    "scripts": [
+      "/background/hashtable.js",
+      "/background/blueprintStorageAccess.js",
+      "/background/badge.js",
+      "/background/passwordGenerator.js",
+      "/background/passwordChanger.js"
+    ]
   },
 
   "content_scripts": [
