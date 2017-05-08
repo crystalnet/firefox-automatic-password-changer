@@ -1,12 +1,32 @@
 class BlueprintStorageAccess {
-    constructor(obj) {
-        this.storedBlueprints = obj;
+    constructor() {
+        // get content from persistent storage to build the blueprint live collection
+        let getting = browser.storage.local.get("PWCPaths");
+        getting.then(function(item) {
+            if (typeof item.PWCPaths !== "undefined") {
+                // PWCPaths object found in storage, rebuild hash table structure out of it
+                let pwcPaths = item.PWCPaths.items;
+                let blueprints = {};
+                for (let domain in pwcPaths) {
+                    if (pwcPaths.hasOwnProperty(domain)) {
+                        // rebuild individual blueprints
+                        blueprints[domain] = new HashTable(pwcPaths[domain].items);
+                    }
+                }
+                // rebuild blueprint collection
+                blueprintStorageAccess.storedBlueprints = new HashTable(blueprints);
+            } else {
+                blueprintStorageAccess.storedBlueprints = new HashTable();
+            }
+        }, function() {
+            console.log("Getting the PWCPaths object from persistent storage failed");
+        });
     }
 
     /**
      * Saves a blueprint-entry in storage
      * @param url URL of website where password should be changed. Identifier for the blueprint
-     * @param blueprintObject Hashtable that contains the blueprint for password change
+     * @param blueprintObject HashTable that contains the blueprint for password change
      */
     saveBlueprint(url, blueprintObject) {
         // blueprintObject might be null if sanityCheck after recording failed
@@ -24,7 +44,7 @@ class BlueprintStorageAccess {
     /**
      * Gets a stored blueprint.
      * @param url Identifier for the blueprint.
-     * @returns Hashtable object with blueprint
+     * @returns HashTable object with blueprint
      */
     getBlueprint(url) {
         return this.storedBlueprints.getItem(url);
@@ -55,7 +75,7 @@ class BlueprintStorageAccess {
 
     /**
      * Returns a HashTable containing all blueprints (also HashTable objects).
-     * @return {*|Hashtable}
+     * @returns {*}
      */
     getAllBlueprints() {
         return this.storedBlueprints;
@@ -82,30 +102,4 @@ class BlueprintStorageAccess {
 // We create a single blueprintStorageAccess object here, which can then be accessed in any other background script directly,
 // because all background scripts are executed in the same scope; All other privileged add-on code can also
 // access this scope via runtime.getBackgroundPage()
-let blueprintStorageAccess = null;
-
-(function initBlueprintStorageAccess() {
-    // get content from persistent storage to build the blueprint live collection
-    // we can't do this in the constructor of the BlueprintStorageAccess class, because of the
-    // asynchronous behaviour of storage.local.get(), which prevents setting the "storedBlueprints" property of the class
-    let getting = browser.storage.local.get("PWCPaths");
-    getting.then(function(item) {
-        if (typeof item.PWCPaths !== "undefined") {
-            // PWCPaths object found in storage, rebuild hashtable structure out of it
-            let pwcPaths = item.PWCPaths.items;
-            let blueprints = {};
-            for (let domain in pwcPaths) {
-                if (pwcPaths.hasOwnProperty(domain)) {
-                    // rebuild individual blueprints
-                    blueprints[domain] = new HashTable(pwcPaths[domain].items);
-                }
-            }
-            // rebuild blueprint collection
-            blueprintStorageAccess = new BlueprintStorageAccess(new HashTable(blueprints));
-        } else {
-            blueprintStorageAccess = new BlueprintStorageAccess(new HashTable());
-        }
-    }, function() {
-        console.log("Getting the PWCPaths object from persistent storage failed");
-    });
-})();
+let blueprintStorageAccess = new BlueprintStorageAccess();

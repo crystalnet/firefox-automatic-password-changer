@@ -29,7 +29,7 @@
 
   "background": {
     "scripts": [
-      "/background/hashtable.js",
+      "/background/hashTable.js",
       "/background/blueprintStorageAccess.js",
       "/background/badge.js",
       "/background/passwordGenerator.js",
