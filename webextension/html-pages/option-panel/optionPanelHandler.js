@@ -7,8 +7,8 @@ let backgroundPage;
 })();
 
 function initDone(page) {
-   backgroundPage = page;
-   complementPanelHTML();
+    backgroundPage = page;
+    complementPanelHTML();
 }
 
 /**
@@ -17,7 +17,7 @@ function initDone(page) {
 function complementPanelHTML() {
     let iconSrc = "../../images/icons/stop.png";
     let label = browser.i18n.getMessage("stop_recording");
-    if (backgroundPage.getRecorderStatus() === false) {
+    if (backgroundPage.getRecorder().recorderStatus() === false) {
         iconSrc = "../../images/icons/recording_16x16.png";
         label = browser.i18n.getMessage("record");
     }

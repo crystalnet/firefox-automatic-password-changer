@@ -14,7 +14,7 @@
     "64": "/images/icons/icon-64.png"
   },
 
-  "permissions": ["downloads", "contextMenus", "activeTab", "storage"],
+  "permissions": ["downloads", "contextMenus", "activeTab", "storage", "tabs", "<all_urls>"],
 
   "browser_action": {
     "browser_style": false,
@@ -34,6 +34,7 @@
       "/background-scripts/blueprintStorageAccess.js",
       "/background-scripts/badge.js",
       "/background-scripts/passwordGenerator.js",
+      "/background-scripts/recorder.js",
       "/background-scripts/passwordChanger.js"
     ]
   },
@@ -41,7 +42,8 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["/content-scripts/contextMenuContentScript.js"]
+      "js": ["/content-scripts/contextMenuContentScript.js"],
+      "run_at": "document_end"
     }
   ]
 }

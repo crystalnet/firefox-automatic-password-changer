@@ -1,28 +1,6 @@
-// this stuff is only for testing the label and badge switching in the add-on menu
-// it should be moved to the recorder after porting it
-let recorderStatus = false;
-// starts the recorder, if it is inactive and stops it otherwise
-function toggleRecorder() {
-    recorderStatus = !recorderStatus;
-    // trigger badge change
-    if (recorderStatus)
-        badge.activateRecording();
-    else
-        badge.deactivateRecording();
-    // update the startStopRecording item title
-    let messageString = getRecorderStatus() ? "stop_recording" : "record";
-    browser.contextMenus.update("startStopRecording", {
-        title: browser.i18n.getMessage(messageString)
-    });
-    // hide or show labelAs submenu
-    let contexts = getRecorderStatus() ? ["editable", "password"] : ["page_action"];
-    browser.contextMenus.update("labelAs", {
-        contexts: contexts
-    });
-}
-function getRecorderStatus() {
-    return recorderStatus;
-}
+/**
+ * This is the starting point and main administration script of the add-on
+ */
 
 // all these variables can be accessed in any other background script directly,
 // because all background scripts are executed in the same scope; All other privileged
@@ -30,6 +8,7 @@ function getRecorderStatus() {
 const blueprintStorageAccess = new BlueprintStorageAccess();
 const badge = new Badge();
 const passwordGenerator = new PasswordGen(12, 8, 4, 0);
+const recorder = new Recorder();
 let messagesToDisplay = new HashTable();
 let messagesDismissedByUser = [];
 let portToLegacyAddOn;
@@ -79,7 +58,7 @@ function dismissInfoMessage(messageGUID) {
 }
 
 /**
- * Getter for messagesToDisplay
+ * Getter for messagesToDisplay, so we can access it in optionPanelHandler
  * @returns {HashTable}
  */
 function getMessagesToDisplay() {
@@ -106,11 +85,13 @@ function buildContextMenu() {
         contexts: ["page_action"]
     });
     browser.contextMenus.create({
+        id: "labelAsUsername",
         parentId: "labelAs",
         title: browser.i18n.getMessage("username slash mail"),
         contexts: ["editable"]
     });
     browser.contextMenus.create({
+        id: "labelAsCurrentPassword",
         parentId: "labelAs",
         title: browser.i18n.getMessage("current password"),
         contexts: ["editable", "password"]
@@ -168,6 +149,68 @@ function buildContextMenu() {
                     content: passwordGenerator.getLastPassword()
                 });
                 break;
+            case "labelAsUsername":
+                handleLabelAsContextMenuClick("U", tab.id);
+                break;
+            case "labelAsCurrentPassword":
+                handleLabelAsContextMenuClick("C", tab.id);
+                break;
+            case "labelAsNewPassword":
+                handleLabelAsContextMenuClick("N", tab.id);
+                break;
         }
+    });
+}
+
+/**
+ * Handles clicks in the labelAs submenu of the context menu
+ * @param label
+ * @param tabId
+ */
+function handleLabelAsContextMenuClick(label, tabId) {
+    // send highlight command to contextMenuContentScript
+    let sending = browser.tabs.sendMessage(tabId, {
+        case: "highlight"
+    });
+    sending.then(function(message) {
+        recorder.tagTracker.setItem(message.inputNumber, label);
+        // we get the number of the input element the context menu was invoked on as response
+        // and send this information to the RecorderContentScript
+        browser.tabs.sendMessage(tabId, {
+            type: "label",
+            inputNumber: message.inputNumber
+        });
+    }, function(error) {
+        console.log(`Labeling input element failed. Error: ${error}`);
+    });
+}
+
+/**
+ * Starts the recorder, if it is inactive and stops it otherwise;
+ * Also handles badge and context menu accordingly
+ */
+function toggleRecorder() {
+    let recorderStatus = recorder.recorderStatus();
+    if (recorderStatus) {
+        badge.deactivateRecording();
+        recorder.stopRecording();
+        // hide labelAsNewPassword context menu item
+        browser.contextMenus.update("labelAsNewPassword", {
+            contexts: ["page_action"]
+        });
+    } else {
+        badge.activateRecording();
+        recorder.startRecording();
+    }
+    /* actual recorderStatus is now flipped after starting or stopping recorder ! */
+    // update the startStopRecording item title
+    let messageString = !recorderStatus ? "stop_recording" : "record";
+    browser.contextMenus.update("startStopRecording", {
+        title: browser.i18n.getMessage(messageString)
+    });
+    // hide or show labelAs submenu
+    let contexts = !recorderStatus ? ["editable", "password"] : ["page_action"];
+    browser.contextMenus.update("labelAs", {
+        contexts: contexts
     });
 }
