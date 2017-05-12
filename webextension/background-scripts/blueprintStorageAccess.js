@@ -86,16 +86,24 @@ class BlueprintStorageAccess {
      * @param url Identifier of the blueprint that should be exported.
      */
     exportBlueprint(url) {
-        let blob = new Blob([JSON.stringify(this.getBlueprint(url))], {
-            "type": "text/plain;charset=utf8;"
-        });
-        let domain = url.split("//")[1];
-        let filename = "blueprint_for_" + domain.replace(/\./g, '_') + ".json";
-        browser.downloads.download({
-            url: URL.createObjectURL(blob),
-            filename: filename,
-            saveAs: true
-        });
+        let blueprint = this.getBlueprint(url);
+        if (typeof blueprint !== "undefined") {
+            // clone blueprint hash table object, as it is a reference and we don't
+            // want an url entry in the original blueprint in the live collection
+            let clonedBlueprint = new HashTable(blueprint.items);
+            // add url for using it as key when importing this blueprint
+            clonedBlueprint.setItem(blueprint.length, url);
+            let blob = new Blob([JSON.stringify(clonedBlueprint)], {
+                "type": "text/plain;charset=utf8;"
+            });
+            let domain = url.split("//")[1];
+            let filename = "blueprint_for_" + domain.replace(/\./g, '_') + ".json";
+            browser.downloads.download({
+                url: URL.createObjectURL(blob),
+                filename: filename,
+                saveAs: true
+            });
+        }
     }
 }
 
