@@ -24,8 +24,12 @@ function getRecorderStatus() {
     return recorderStatus;
 }
 
-/**************** actual content starting here ******************/
-
+// all these variables can be accessed in any other background script directly,
+// because all background scripts are executed in the same scope; All other privileged
+// add-on code can also access this scope via runtime.getBackgroundPage()
+const blueprintStorageAccess = new BlueprintStorageAccess();
+const badge = new Badge();
+const passwordGenerator = new PasswordGen(12, 8, 4, 0);
 let messagesToDisplay = new HashTable();
 let messagesDismissedByUser = [];
 let portToLegacyAddOn;

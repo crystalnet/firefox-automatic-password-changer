@@ -67,8 +67,3 @@ class Badge {
         this.display();
     }
 }
-
-// We create a single badge object here, which can then be accessed in any other background script directly,
-// because all background scripts are executed in the same scope; All other privileged add-on code can also
-// access this scope via runtime.getBackgroundPage()
-const badge = new Badge();
