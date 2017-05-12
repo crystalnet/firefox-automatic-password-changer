@@ -29,11 +29,11 @@
 
   "background": {
     "scripts": [
-      "/background/hashTable.js",
-      "/background/blueprintStorageAccess.js",
-      "/background/badge.js",
-      "/background/passwordGenerator.js",
-      "/background/passwordChanger.js"
+      "/background-scripts/hashTable.js",
+      "/background-scripts/blueprintStorageAccess.js",
+      "/background-scripts/badge.js",
+      "/background-scripts/passwordGenerator.js",
+      "/background-scripts/passwordChanger.js"
     ]
   },
 
