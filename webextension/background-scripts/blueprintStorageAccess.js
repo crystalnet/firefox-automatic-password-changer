@@ -51,17 +51,21 @@ class BlueprintStorageAccess {
     }
 
     /**
-     * Removes blueprint from persistent storage
+     * Removes blueprint from storage
      * @param url Base url for the blueprint. Identifier for the blueprint.
      */
     removeBlueprint(url) {
         // remove blueprint from the live collection
-        this.storedBlueprints.removeItem(url);
-        // update persistent storage
-        let setting = browser.storage.local.set({PWCPaths: this.storedBlueprints});
-        setting.then(null, function () {
-            console.log("Updating persistent storage after removing a blueprint failed");
-        });
+        let removeItem = this.storedBlueprints.removeItem(url);
+        let removeResult = typeof removeItem !== "undefined";
+        if (removeResult) {
+            // update persistent storage
+            let setting = browser.storage.local.set({PWCPaths: this.storedBlueprints});
+            setting.then(null, function () {
+                console.log("Updating persistent storage after removing a blueprint failed");
+            });
+        }
+        return removeResult;
     }
 
     /**

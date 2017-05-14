@@ -25,7 +25,7 @@ let portToLegacyAddOn;
     // get all domains the user has stored login credentials for, so we can call the
     // queryInfoWebservice function, which then sets the correct badge on the add-on button
     portToLegacyAddOn.postMessage({
-        content: "getLoginDomains"
+        type: "getLoginDomains"
     });
     // build the context menu
     buildContextMenu();
@@ -63,6 +63,22 @@ function dismissInfoMessage(messageGUID) {
  */
 function getMessagesToDisplay() {
     return messagesToDisplay;
+}
+
+/**
+ * Getter for portToLegacyAddOn, so we can access it in accountlistHandler
+ * @returns {HashTable}
+ */
+function getPortToLegacyAddOn() {
+    return portToLegacyAddOn;
+}
+
+/**
+ * Getter for portToLegacyAddOn, so we can access it in accountlistHandler
+ * @returns {HashTable}
+ */
+function getBlueprintStorageAccess() {
+    return blueprintStorageAccess;
 }
 
 /**

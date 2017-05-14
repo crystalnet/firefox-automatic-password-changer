@@ -153,7 +153,12 @@ function removeInfoMessage(event) {
  * Function for clicking on menu option Accountlist
  */
 function openAccounts() {
-    // TODO
+    let tab = browser.tabs.create({
+        url: "/html-pages/accountlist/accountlist.html"
+    });
+    tab.then(function() {
+        self.close();
+    }, handleError);
 }
 
 /**

@@ -45,5 +45,7 @@
       "js": ["/content-scripts/contextMenuContentScript.js"],
       "run_at": "document_end"
     }
-  ]
+  ],
+
+  "content_security_policy": "script-src 'self' https://*.jquery.com; object-src 'self'"
 }
