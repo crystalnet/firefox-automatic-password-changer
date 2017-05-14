@@ -92,12 +92,8 @@ class BlueprintStorageAccess {
     exportBlueprint(url) {
         let blueprint = this.getBlueprint(url);
         if (typeof blueprint !== "undefined") {
-            // clone blueprint hash table object, as it is a reference and we don't
-            // want an url entry in the original blueprint in the live collection
-            let clonedBlueprint = new HashTable(blueprint.items);
-            // add url for using it as key when importing this blueprint
-            clonedBlueprint.setItem(blueprint.length, url);
-            let blob = new Blob([JSON.stringify(clonedBlueprint)], {
+            let exportObject = {blueprintURL: url, blueprintItems: blueprint.items};
+            let blob = new Blob([JSON.stringify(exportObject)], {
                 "type": "text/plain;charset=utf8;"
             });
             let domain = url.split("//")[1];
