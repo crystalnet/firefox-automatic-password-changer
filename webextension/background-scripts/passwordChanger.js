@@ -69,14 +69,6 @@ function getMessagesToDisplay() {
  * Getter for portToLegacyAddOn, so we can access it in accountlistHandler
  * @returns {HashTable}
  */
-function getPortToLegacyAddOn() {
-    return portToLegacyAddOn;
-}
-
-/**
- * Getter for portToLegacyAddOn, so we can access it in accountlistHandler
- * @returns {HashTable}
- */
 function getBlueprintStorageAccess() {
     return blueprintStorageAccess;
 }

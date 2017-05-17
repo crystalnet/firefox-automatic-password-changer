@@ -8,7 +8,7 @@ let backgroundPage;
 
 function initDone(page) {
     backgroundPage = page;
-    let portToLegacyAddOn = backgroundPage.getPortToLegacyAddOn();
+    let portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy"});
     portToLegacyAddOn.onMessage.addListener(function(message) {
         if (message.type === "LoginCredentials") {
             // we got the necessary information from the legacy add-on, so now we can build the account list
