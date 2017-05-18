@@ -96,8 +96,9 @@ class BlueprintStorageAccess {
             let blob = new Blob([JSON.stringify(exportObject)], {
                 "type": "text/plain;charset=utf8;"
             });
+            let date = new Date();
             let domain = url.split("//")[1];
-            let filename = "blueprint_for_" + domain.replace(/\./g, '_') + ".json";
+            let filename = "blueprint_for_" + domain.replace(/\./g, '_') + "_" + date.toLocaleDateString() + "_" + date.toLocaleTimeString().replace(/:/g, "-") + ".json";
             browser.downloads.download({
                 url: URL.createObjectURL(blob),
                 filename: filename,
