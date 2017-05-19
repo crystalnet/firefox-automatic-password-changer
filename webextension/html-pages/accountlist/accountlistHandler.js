@@ -8,12 +8,15 @@ let backgroundPage;
 
 function initDone(page) {
     backgroundPage = page;
-    let portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy"});
+    // we use a port here, because getting the content from the password manager takes
+    // too long and as a result, a call to sendMessage() would not handle the response
+    let portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy-from-accountlistHandler"});
     portToLegacyAddOn.onMessage.addListener(function(message) {
-        if (message.type === "LoginCredentials") {
+        if (message.type === "LoginCredentials")
             // we got the necessary information from the legacy add-on, so now we can build the account list
             buildAccountList(message.content, Object.keys(backgroundPage.getBlueprintStorageAccess().getAllBlueprints().items));
-        }
+        // port is no longer needed
+        portToLegacyAddOn.disconnect();
     });
     // get all stored login credentials (list of [username, url])
     portToLegacyAddOn.postMessage({

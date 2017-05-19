@@ -14,7 +14,7 @@ let messagesDismissedByUser = [];
 let portToLegacyAddOn;
 
 (function init() {
-    portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy"});
+    portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy-from-passwordChanger"});
     portToLegacyAddOn.onMessage.addListener(function(message) {
         switch (message.type) {
             case "LoginDomains":
