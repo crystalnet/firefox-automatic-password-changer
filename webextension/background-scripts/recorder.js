@@ -37,7 +37,7 @@ class Recorder {
         // let the legacy add-on retrieve the currently stored login credentials from the password manager
         // we need this later when setting the password from the recording
         portToLegacyAddOn.postMessage({
-            content: "refreshPasswordList"
+            type: "refreshPasswordList"
         });
         // listener for tab changes, which is used to inject the recorderContentScript after a site load
         browser.tabs.onUpdated.addListener(this.injectContentScripts);
@@ -222,7 +222,7 @@ class Recorder {
                 blueprintStorageAccess.saveBlueprint(this.webPage, this.userWebPath);
                 // use legacy add-on code to store password
                 portToLegacyAddOn.postMessage({
-                    content: "setPassword",
+                    type: "setPassword",
                     data: this.loginData
                 });
                 // clear loginData
