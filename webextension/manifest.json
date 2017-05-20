@@ -14,7 +14,7 @@
     "64": "/images/icons/icon-64.png"
   },
 
-  "permissions": ["downloads", "contextMenus", "activeTab", "storage", "tabs", "<all_urls>"],
+  "permissions": ["downloads", "contextMenus", "storage", "tabs", "<all_urls>"],
 
   "browser_action": {
     "browser_style": false,
