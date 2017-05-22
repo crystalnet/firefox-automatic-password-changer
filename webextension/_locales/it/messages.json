@@ -101,6 +101,9 @@
   "imitator failed to save new password already changed": {
     "message": "La password è probabilmente stata cambiata, ma non se la poteva registrare nel manager delle password. Per favore, utilizze la funzione della pagina web per resettare la password."
   },
+  "recorder_failed_saving_new_password": {
+    "message": "La password nuova non si poteva registrare."
+  },
   "label as": {
     "message": "Marcare come"
   },

@@ -32,7 +32,7 @@ class Recorder {
             passwordField: "",
             usernameField: "",
             formSubmitURL: "",
-            formActiveURL: ""
+            url: ""
         };
         // let the legacy add-on retrieve the currently stored login credentials from the password manager
         // we need this later when setting the password from the recording
@@ -176,7 +176,7 @@ class Recorder {
         // store values we need for changing the password after recording stopped
         if (tag === "U" && !this.loginDone) {
             this.loginData.formSubmitURL = message.nodeFormAction;
-            this.loginData.formActiveURL = Utils.getMainPageFromLink(websiteTrunk);
+            this.loginData.url = Utils.getMainPageFromLink(websiteTrunk);
             this.loginData.username = message.nodeValue;
             this.loginData.usernameField = message.nodeName;
             // this will be the key in hash table in simple-storage
@@ -223,7 +223,8 @@ class Recorder {
                 // use legacy add-on code to store password
                 portToLegacyAddOn.postMessage({
                     type: "setPassword",
-                    data: this.loginData
+                    loginData: this.loginData,
+                    sender: "Recorder"
                 });
                 // clear loginData
                 this.loginDone = null;
@@ -357,6 +358,21 @@ browser.runtime.onMessage.addListener(function(message) {
         case "blurHappened":
             recorder.blurHappened(message);
             break;
+    }
+});
+
+// listen for answers from the legacy add-on
+portToLegacyAddOn.onMessage.addListener(function(message) {
+    // imitator also listens for "storePassword" messages, so we need to check the intended receiver
+    if (message.type === "storePassword" && message.status === "Error" && message.receiver === "Recorder") {
+        switch (message.errorCode) {
+            case "missingInformation":
+                Utils.showNotification(browser.i18n.getMessage("store_password_failed_missing_information"));
+                break;
+            default:
+                Utils.showNotification(browser.i18n.getMessage("recorder_failed_saving_new_password"));
+                break;
+        }
     }
 });
 

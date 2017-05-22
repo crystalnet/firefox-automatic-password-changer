@@ -14,7 +14,14 @@
     "64": "/images/icons/icon-64.png"
   },
 
-  "permissions": ["downloads", "contextMenus", "storage", "tabs", "<all_urls>"],
+  "permissions": [
+    "downloads",
+    "contextMenus",
+    "notifications",
+    "storage",
+    "tabs",
+    "<all_urls>"
+  ],
 
   "browser_action": {
     "browser_style": false,
@@ -35,7 +42,8 @@
       "/background-scripts/badge.js",
       "/background-scripts/passwordGenerator.js",
       "/background-scripts/recorder.js",
-      "/background-scripts/passwordChanger.js"
+      "/background-scripts/passwordChanger.js",
+      "/background-scripts/imitator.js"
     ]
   },
 

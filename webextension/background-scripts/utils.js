@@ -45,4 +45,20 @@ class Utils {
         }
         return true;
     }
+
+    /**
+     * Shows a notification to the user
+     * @param message The message to display
+     */
+    static showNotification(message) {
+        let creating = browser.notifications.create("note", {
+            type: "basic",
+            title: "Password Changer",
+            message: message,
+            iconUrl: browser.extension.getURL("images/icons/icon_gray-64.png")
+        });
+        creating.then(null, function(error) {
+            console.log(`Creating notification was not successful. ${error}`);
+        });
+    }
 }

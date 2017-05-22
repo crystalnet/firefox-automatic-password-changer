@@ -101,6 +101,9 @@
   "imitator failed to save new password already changed": {
     "message": "Le mot de passe a probablement été modifié mais n'a pas pu être enregistré dans le gestionnaire de mots de passe. Veuillez utiliser la fonction de réinitialisation du mot de passe."
   },
+  "recorder_failed_saving_new_password": {
+    "message": "Le nouveau mot de passe n'a pas été enregistré."
+  },
   "label as": {
     "message": "Marquer comme"
   },

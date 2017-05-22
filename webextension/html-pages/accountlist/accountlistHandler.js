@@ -173,8 +173,9 @@ function addAccountSection(name, url, blueprintExists) {
  * @param username Username for a login entry
  */
 function changeThisPasswordAut(url, username) {
-    window.alert(browser.i18n.getMessage("acclmessage3"));
-    // TODO
+    let box = window.confirm(browser.i18n.getMessage("acclmessage3"));
+    if (box === true)
+        backgroundPage.startImitation(username, url);
 }
 
 /**
@@ -182,8 +183,7 @@ function changeThisPasswordAut(url, username) {
  * @param url URL for a login entry
  */
 function startRecording(url) {
-    let message = browser.i18n.getMessage("acclmessage1", url);
-    let box = window.confirm(message);
+    let box = window.confirm(browser.i18n.getMessage("acclmessage1", url));
     if (box === true) {
         let querying = browser.tabs.query({currentWindow: true, active: true});
         querying.then(function(tabs) {
