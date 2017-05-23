@@ -209,20 +209,22 @@ function startRecording(url) {
  * @param url URL for a login entry
  */
 function navigateToChangePW(url) {
-    window.alert(browser.i18n.getMessage("acclmessage4"));
-    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-    if (typeof blueprint !== 'undefined') {
-        let pwChangeUrl = "";
-        for (let i = 0; i < blueprint.length; i++) {
-            let item = blueprint.getItem(i);
-            if (item[1] === "N") {
-                pwChangeUrl = item[4];
-                break;
+    let box = window.confirm(browser.i18n.getMessage("acclmessage4"));
+    if (box === true) {
+        let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+        if (typeof blueprint !== 'undefined') {
+            let pwChangeUrl = "";
+            for (let i = 0; i < blueprint.length; i++) {
+                let item = blueprint.getItem(i);
+                if (item[1] === "N") {
+                    pwChangeUrl = item[4];
+                    break;
+                }
             }
+            browser.tabs.create({
+                url: pwChangeUrl
+            });
         }
-        browser.tabs.create({
-            url: pwChangeUrl
-        });
     }
 }
 
