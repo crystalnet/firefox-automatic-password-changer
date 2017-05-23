@@ -48,12 +48,16 @@ function buildAccountList(loginCredentials, blueprintKeys) {
             return !ui.newHeader.hasClass("unused-blueprint");
         }
     });
-    $(document.getElementById("btn_import_blueprints")).button({
+    // style import button and add listener
+    $(document.getElementById("label_import_blueprints")).button({
         label: browser.i18n.getMessage("btn_import_blueprints")
-    }).on('click', importBlueprint);
+    });
+    document.getElementById("import_blueprints").addEventListener("change", importBlueprints, false);
+    // set correct title
     let title = document.getElementById("title_accountlist");
-    let heading_accountList = document.getElementById("heading_accountlist");
     title.innerHTML = browser.i18n.getMessage("title_accountlist");
+    // set correct heading
+    let heading_accountList = document.getElementById("heading_accountlist");
     heading_accountList.innerHTML = browser.i18n.getMessage("heading_accountlist");
     // make everything visible
     $("#content").css("visibility", "visible");
@@ -231,10 +235,12 @@ function exportBlueprint(url) {
 }
 
 /**
- * Trigger function for import of blueprint
+ * Trigger function for import of blueprints
  */
-function importBlueprint() {
-    // TODO
+function importBlueprints(event) {
+    backgroundPage.getBlueprintStorageAccess().importBlueprints(event.target.files);
+    // reload account list, so the change is visible to the user
+    browser.tabs.reload();
 }
 
 /**
@@ -246,6 +252,7 @@ function deleteBlueprint(url) {
     if (box === true) {
         let removeResult = backgroundPage.getBlueprintStorageAccess().removeBlueprint(url);
         if (removeResult)
+            // reload account list, so the change is visible to the user
             browser.tabs.reload();
     }
 }

@@ -36,10 +36,14 @@
     border-radius: 1px;
 }
 
-#btn_import_blueprints {
+#label_import_blueprints {
     float:right;
     position: relative;
     top: 5px;
+}
+
+#import_blueprints {
+    display: none;
 }
 
 #content {

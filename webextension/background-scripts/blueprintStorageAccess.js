@@ -86,7 +86,7 @@ class BlueprintStorageAccess {
     }
 
     /**
-     * Exports a stored blueprint to a new json file
+     * Exports a stored blueprint to a new JSON file
      * @param url Identifier of the blueprint that should be exported.
      */
     exportBlueprint(url) {
@@ -104,6 +104,30 @@ class BlueprintStorageAccess {
                 filename: filename,
                 saveAs: true
             });
+        }
+    }
+
+    /**
+     * Imports one or more blueprints into storage
+     * @param files  A FileList object returned by an input tag of type file
+     */
+    importBlueprints(files) {
+        for (let i = 0; i < files.length; i++) {
+            let reader = new FileReader();
+            reader.addEventListener("load", function() {
+                let blueprintImport;
+                try {
+                    blueprintImport = JSON.parse(reader.result);
+                } catch (e) {
+                    console.log("file does not contain a valid JSON string");
+                    return;
+                }
+                if (typeof blueprintImport.blueprintURL === "string" && typeof blueprintImport.blueprintItems === "object") {
+                    blueprintStorageAccess.saveBlueprint(blueprintImport.blueprintURL, new HashTable(blueprintImport.blueprintItems));
+                }
+
+            });
+            reader.readAsText(files[i]);
         }
     }
 }
