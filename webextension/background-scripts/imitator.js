@@ -20,11 +20,9 @@ class Imitator {
      * Starts the imitation process
      */
     startImitating() {
-        console.log("startImitating now executing");
         // we start imitation on site where user started recording
         let firstItem = this.blueprint.getItem(0);
         let startURL = firstItem[0] === "Click" ? firstItem[6] : firstItem[4];
-        console.log("startURL is " + startURL);
         // new browser window for imitation process
         let creating = browser.windows.create({
             url: startURL
@@ -48,7 +46,6 @@ class Imitator {
     injectContentScript(tabId, changeInfo, tabInfo) {
         if (tabId === imitator.imitationTabId && changeInfo.status === "loading" && typeof changeInfo.url !== "undefined") {
             // inject imitatorContentScript
-            console.log("injectContentScript now executing");
             let executing = browser.tabs.executeScript(imitator.imitationTabId, {
                 file: "../content-scripts/imitatorContentScript.js",
                 runAt: "document_idle"
@@ -63,20 +60,15 @@ class Imitator {
      * Executes the action described by the next blueprint item
      */
     executeImitationStep() {
-        console.log("executeImitationStep now executing");
-        console.log("actualStepNum: " + this.actualStepNum + ", maxStepNum: " + this.maxStepNum);
         if (this.actualStepNum < this.maxStepNum) {
             let item = this.blueprint.getItem(this.actualStepNum);
             let nextEvent = item[0];
-            console.log("next event is " + nextEvent);
             let sending = browser.tabs.sendMessage(this.imitationTabId, {type: "getWebPage"});
             sending.then(function(message) {
-                console.log("current website is " + message.webPage);
                 let currentWebsite = message.webPage;
                 let websiteTrunk = (currentWebsite.split("?"))[0];
                 switch (nextEvent) {
                     case "Input":
-                        console.log("now executing input case");
                         let tag = item[1];
                         let numberOfInputElements = item[2];
                         let positionOfInputElement = item[3];
@@ -127,7 +119,6 @@ class Imitator {
      * @param actualWidth The actual inner width of the window
      */
     changeWindowSize(desiredHeight, desiredWidth, actualHeight, actualWidth) {
-        console.log("changeWindowSize now executing");
         let widthDifference = desiredWidth - actualWidth;
         let heightDifference = desiredHeight - actualHeight;
         let getting = browser.windows.get(this.imitationWindowId);
@@ -149,7 +140,6 @@ class Imitator {
      * @param positionOfInputElement Identifies with input element should be filled
      */
     performInput(tag, numberOfInputElements, positionOfInputElement) {
-        console.log("performInput now executing");
         let valueToSend = "";
         switch (tag) {
             case "U":
@@ -180,7 +170,6 @@ class Imitator {
      * @param triggersSiteLoad String indicating whether or not this click will trigger a site load
      */
     performClick(xCoordinate, yCoordinate, mustScrollTop, triggersSiteLoad) {
-        console.log("performClick now executing");
         let sending = browser.tabs.sendMessage(this.imitationTabId, {
             type: "clickCoordinates",
             data: {xCoordinate: xCoordinate, yCoordinate: yCoordinate, mustScrollTop: mustScrollTop, triggersSiteLoad: triggersSiteLoad}
@@ -229,7 +218,7 @@ class Imitator {
 }
 
 let imitator;
-let imitationStepDelay = 2000;
+let imitationStepDelay = 1000;
 
 // listen for messages from imitatorContentScript
 browser.runtime.onMessage.addListener(function(message) {
@@ -241,7 +230,6 @@ browser.runtime.onMessage.addListener(function(message) {
             imitator.stopImitating("input should be filled, but site has changed since recording the blueprint");
             break;
         case "fillInputDone":
-            console.log("fillInputDone message received");
             setTimeout(function() {
                 imitator.executeImitationStep();
             }, imitationStepDelay);
@@ -295,7 +283,6 @@ portToLegacyAddOn.onMessage.addListener(function(message) {
  * @param url
  */
 function startImitation(username, url) {
-    console.log("now sending message type getSingleLoginCredential");
     portToLegacyAddOn.postMessage({
         type: "getSingleLoginCredential",
         username: username,
