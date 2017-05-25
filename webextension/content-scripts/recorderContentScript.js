@@ -40,8 +40,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  * Handles click events
  */
 function onClickEventHandler(event) {
-    // ignore right button click, which is used for context menu
-    if (event.button === 0) {
+    // ignore right button click and events triggered by javascript
+    if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0)) {
         browser.runtime.sendMessage({
             type: "clickHappened",
             webPage: window.content.location.href,
@@ -95,7 +95,7 @@ function onBlurEventHandler(event) {
  * Stop logging actions and remove all listener
  */
 function stopRecording() {
-    document.body.removeEventListener('click', onClickEventHandler, false);
+    document.removeEventListener('click', onClickEventHandler, true);
     document.removeEventListener('scroll', throttle, false);
     Array.prototype.forEach.call (document.getElementsByTagName("input"), function(node) {
         node.removeEventListener('blur', onBlurEventHandler, false);
@@ -106,26 +106,8 @@ function stopRecording() {
  * registers all necessary event handlers on the document object of the window
  */
 function registerEventHandlers() {
-    document.body.addEventListener('click', onClickEventHandler, false);
+    // we use event capturing phase for click events, because some elements cancel event bubbling
+    // this way we don't need special cases for single elements
+    document.addEventListener('click', onClickEventHandler, true);
     document.addEventListener('scroll', throttle, false);
-    // special case for google button which prevents bubbling of click event up to the document
-    let googleAccountButton = document.querySelector("a[href^='https://accounts.google.com/SignOutOptions']");
-    if (googleAccountButton !== null) {
-        googleAccountButton.addEventListener('click', onClickEventHandler, false);
-    }
-    // special case for ebay button which submits the new password form
-    let ebaySubmitButton = document.getElementById("sbtBtn");
-    if (ebaySubmitButton !== null) {
-        ebaySubmitButton.addEventListener('click', onClickEventHandler, false);
-    }
-    // special case for twitter 'egg' button
-    let twitterEggButton = document.getElementById("user-dropdown-toggle");
-    if (twitterEggButton !== null) {
-        twitterEggButton.addEventListener('click', onClickEventHandler, false);
-    }
-    // special case for stargames menu button
-    let stargamesButton = document.querySelector("a[data-gt-name='user-menu-btn']");
-    if (stargamesButton !== null) {
-        stargamesButton.addEventListener('click', onClickEventHandler, false);
-    }
 }
