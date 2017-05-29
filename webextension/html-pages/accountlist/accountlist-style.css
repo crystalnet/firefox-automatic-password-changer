@@ -1,0 +1,51 @@
+.no-blueprint .blueprint-dependent {
+    visibility: hidden;
+}
+
+.unused-blueprint.ui-accordion-header-collapsed {
+    color: gray;
+}
+
+.unused-blueprint.ui-accordion-header-active {
+    color: white;
+}
+
+.ui-accordion-header.has-blueprint .ui-accordion-header-icon {
+    background-image: url("../../images/icons/ui-icon_blueprint_16x16.png");
+    background-position: left;
+    width: 16px;
+    height: 16px;
+}
+
+#heading_accountlist {
+    font-family: Arial,Helvetica,sans-serif;
+    color: #2b2b2b;
+}
+
+.ui-accordion-content .ui-button{
+    margin: 2px 4px;
+}
+
+.export-blueprint-button, .delete-blueprint-button{
+    float: right;
+    height: 20px !important;
+    width: 20px !important;
+    border-radius: 1px;
+}
+.ui-corner-all{
+    border-radius: 1px;
+}
+
+#label_import_blueprints {
+    float:right;
+    position: relative;
+    top: 5px;
+}
+
+#import_blueprints {
+    display: none;
+}
+
+#content {
+    visibility: hidden;
+}

@@ -1,0 +1,134 @@
+{
+  "record": {
+    "message": "Grabar"
+  },
+  "accountlist": {
+    "message": "Lista de cuentas"
+  },
+  "stop_recording": {
+    "message": "Terminar grabación"
+  },
+  "user": {
+    "message": "Usuario"
+  },
+  "url": {
+    "message": "URL"
+  },
+  "username slash mail": {
+    "message": "Nombre de usuario/correo electrónico"
+  },
+  "current password": {
+    "message": "Contraseña actual"
+  },
+  "new password": {
+    "message": "Nueva contraseña"
+  },
+  "change_password_now_automatically": {
+    "message": "Cambiar contraseña automáticamente ahora"
+  },
+  "change_password_now_manually": {
+    "message": "Cambiar contraseña manualmente ahora"
+  },
+  "record_blueprint_btn": {
+    "message": "Grabar blueprint"
+  },
+  "export_blueprint": {
+    "message": "Exportar blueprint"
+  },
+  "delete_blueprint_warning": {
+    "message": "Este blueprint para $1 será borrado. Desea continuar?"
+  },
+  "delete_blueprint": {
+    "message": "Borrar blueprint"
+  },
+  "no_login_data": {
+    "message": "No existen datos de cuenta en el administrador de contraseñas."
+  },
+  "page": {
+    "message": "Página"
+  },
+  "a_problem_appeared_when_changing_password": {
+    "message": "Al cambiar la contraseña un error surgió."
+  },
+  "save blueprint": {
+    "message": "Guardar blueprint"
+  },
+  "blueprint imported": {
+    "message": "El blueprint ha sido importado"
+  },
+  "password_has_been_successfully_changed": {
+    "message": "La contraseña ha sido cambiado con éxito."
+  },
+  "acclmessage1": {
+    "message": "El cambiador de contraseñas comienza una nueva grabación en $1. Desea continuar?"
+  },
+  "acclmessage2": {
+    "message": "Esta inscripción será eliminada de esta lista y del administrador de contraseñas de Firefox."
+  },
+  "acclmessage3": {
+    "message": "La contraseña cambia automáticamente. Eso sucede en vivo en la ventana abierta. Por un bug en la API de Firefox no sucede en el fondo, rogamos su comprensión."
+  },
+  "acclmessage4": {
+    "message": "Se le lleva automáticamente al formulario, con el cual usted puede después cambiar su contraseña."
+  },
+  "title_accountlist": {
+    "message": "Lista de cuentas"
+  },
+  "heading_accountlist": {
+    "message": "Cambiador automático de contraseñas"
+  },
+  "btn_import_blueprints": {
+    "message": "Importar blueprint"
+  },
+  "btn_show_blueprints": {
+    "message": "mostrar blueprints"
+  },
+  "title_blueprints": {
+    "message": "Blueprints"
+  },
+  "heading_blueprints": {
+    "message": "Estas páginas existen como blueprints."
+  },
+  "imitator change failed": {
+    "message": "Al cambiar la contraseña un error surgió. Sin embargo podría haber sido cambiada, pero en este caso el cambio no se ha registrado en el administrador de contraseñas."
+  },
+  "imitator change failed new password is": {
+    "message": "La nueva contraseña en este caso sería $1."
+  },
+  "imitator failed to save new password old deleted": {
+    "message": "La contraseña antigua ha sido borrado, pero la nueva no se ha podido registrar. Favor de usar la función de resetear la contraseña de la página web."
+  },
+  "imitator failed to save new password already changed": {
+    "message": "La contraseña ha probablemente sido cambiada, pero no se la ha podido registrar en el administrador de contraseñas. Favor de usar la función de resetear la contraseña de la página web."
+  },
+  "recorder_failed_saving_new_password": {
+    "message": "La nueva contraseña no se ha podido registrar."
+  },
+  "label as": {
+    "message": "Marcar como"
+  },
+  "has_entry": {
+    "message": "Existe una inscripción en el administrador de contraseñas."
+  },
+  "has_no_entry": {
+    "message": "No existe una inscripción en el administrador de contraseñas."
+  },
+  "delete-blueprint-tooltip": {
+    "message": "Borrar blueprint"
+  },
+  "export-blueprint-tooltip": {
+    "message": "Exportar blueprint como JSON al disco duro"
+  },
+  "help": {
+    "message": "Ayuda"
+  },
+  "generate_pwd": {
+    "message": "Generar nueva contraseña"
+  },
+  "reuse_pwd": {
+    "message": "Utilizar la contraseña generada por último"
+  },
+  "visit_website": {
+    "message": "visitar el sitio web"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "extensionName": {
+    "message": "Password Changer"
+  },
+  "extensionDescription": {
+    "message": "This add-on allows you to automatically change your passwords."
+  },
+  "help-link": {
+    "message": "/html-pages/help-pages/help_en-US.html"
+  },
+  "record": {
+    "message": "Record"
+  },
+  "accountlist": {
+    "message": "Accountlist"
+  },
+  "stop_recording": {
+    "message": "Stop recording"
+  },
+  "user": {
+    "message": "User"
+  },
+  "url": {
+    "message": "URL"
+  },
+  "username slash mail": {
+    "message": "Username/Email"
+  },
+  "current password": {
+    "message": "Current Password"
+  },
+  "new password": {
+    "message": "New Password"
+  },
+  "change_password_now_automatically": {
+    "message": "Change Password automatically"
+  },
+  "change_password_now_manually": {
+    "message": "Change Password manually"
+  },
+  "record_blueprint_btn": {
+    "message": "Record Blueprint"
+  },
+  "export_blueprint": {
+    "message": "Export Blueprint"
+  },
+  "delete_blueprint_warning": {
+    "message": "The blueprint for $1 will be deleted. Do you want to continue?"
+  },
+  "delete_blueprint": {
+    "message": "Delete Blueprint"
+  },
+  "no_login_data": {
+    "message": "No login data found in the password manager"
+  },
+  "page": {
+    "message": "Page"
+  },
+  "a_problem_appeared_when_changing_password": {
+    "message": "A problem appeared."
+  },
+  "save blueprint": {
+    "message": "Save Blueprint"
+  },
+  "blueprint imported": {
+    "message": "The blueprint was imported."
+  },
+  "password_has_been_successfully_changed": {
+    "message": "Password was successfully changed"
+  },
+  "acclmessage1": {
+    "message": "The Password Changer will now start a new recording on $1. Do you want to continue?"
+  },
+  "acclmessage2": {
+    "message": "This entry will be deleted out of this list and out of the password manager of firefox."
+  },
+  "acclmessage3": {
+    "message": "The password will be changed automatically. This happens live in an active window. Because of a bug in the Firefox API, this can't be done the background."
+  },
+  "acclmessage4": {
+    "message": "You will be navigated to the form with which you can change your password on your own."
+  },
+  "title_accountlist": {
+    "message": "Accountlist"
+  },
+  "heading_accountlist": {
+    "message": "Automatic Password Changer"
+  },
+  "btn_import_blueprints": {
+    "message": "Import Blueprint"
+  },
+  "btn_show_blueprints": {
+    "message": "Show Blueprints"
+  },
+  "title_blueprints": {
+    "message": "Blueprints"
+  },
+  "heading_blueprints": {
+    "message": "These sites are available as blueprints"
+  },
+  "imitator change failed": {
+    "message": "There was an error while changing the password. It may be possible that the password was changed anyway, but the password was not saved in the password manager."
+  },
+  "imitator change failed new password is": {
+    "message": "In that case the password would be $1."
+  },
+  "imitator failed to save new password old deleted": {
+    "message": "The old password was deleted, but the new password could not be saved. Please use the password reset function of the website."
+  },
+  "imitator failed to save new password already changed": {
+    "message": "The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website."
+  },
+  "recorder_failed_saving_new_password": {
+    "message": "The new password could not be saved."
+  },
+  "store_password_failed_missing_information": {
+    "message": "The new password could not be stored in the password manager, because some necessary information to do so is missing."
+  },
+  "label as": {
+    "message": "Label as"
+  },
+  "has_entry": {
+    "message": "There is an entry in the passwordmanager"
+  },
+  "has_no_entry": {
+    "message": "There is no entry in passwordmanager"
+  },
+  "delete-blueprint-tooltip": {
+    "message": "Delete the blueprint"
+  },
+  "export-blueprint-tooltip": {
+    "message": "Export the blueprint as JSON to disk"
+  },
+  "help": {
+    "message": "Help"
+  },
+  "generate_pwd": {
+    "message": "Generate new password"
+  },
+  "reuse_pwd": {
+    "message": "Use last generated password"
+  },
+  "visit_website": {
+    "message": "Visit website"
+  }
+}
