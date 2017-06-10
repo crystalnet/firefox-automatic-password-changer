@@ -22,6 +22,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "ajv": "^5.1.5"
+  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "istanbul": "^0.4.5",
