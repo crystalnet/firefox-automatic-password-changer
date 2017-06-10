@@ -18,5 +18,16 @@
     "fennec": ">=38.0a1"
   },
   "license": "GPLv2",
-  "hasEmbeddedWebExtension": true
+  "hasEmbeddedWebExtension": true,
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "mocha-junit-reporter": "^1.13.0",
+    "should": "^11.2.1",
+    "spec-xunit-file": "0.0.1-3"
+  }
 }

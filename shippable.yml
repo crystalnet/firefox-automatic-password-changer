@@ -1,0 +1,33 @@
+# Language setting
+language: node_js
+
+# Version number
+node_js:
+  - 7.4.0
+
+# The path for Xunit to output test reports
+env:
+  global:
+    - TEST_RESULTS_DIR=$SHIPPABLE_REPO_DIR/shippable/testresults
+    - CODE_COVERAGE_DIR=$SHIPPABLE_REPO_DIR/shippable/codecoverage
+    - MODULES_DIR=$SHIPPABLE_REPO_DIR/node_modules/.bin/
+    - TESTS_DIR=$SHIPPABLE_REPO_DIR/test
+    - SOURCES_DIR=$SHIPPABLE_REPO_DIR/webextension
+
+# Branches to build
+branches:
+  only:
+    - PasswordGenerationInterface
+
+# Create directories for test and coverage reports
+before_script:
+  - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR
+
+# Running the tests with mochaJS
+script:
+  - $MODULES_DIR/mocha --recursive "$TESTS_DIR/**/*.js" -R mocha-junit-reporter --reporter-options mochaFile=$TEST_RESULTS_DIR/results.xml
+
+# Tell istanbul to generate a coverage report
+after_script:
+  - $MODULES_DIR/istanbul --include-all-sources cover -root "$SOURCES_DIR" $SHIPPABLE_REPO_DIR/node_modules/mocha/bin/_mocha -- -R spec-xunit-file --recursive "$TESTS_DIR/**/*.js"
+  - $MODULES_DIR/istanbul report cobertura --dir $CODE_COVERAGE_DIR
