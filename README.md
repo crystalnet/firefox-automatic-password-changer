@@ -1,6 +1,10 @@
 [Home](Home)
 # Firefox-automatic-password-changer
 
+[![Run Status](https://api.shippable.com/projects/593878529deb1b07005b31ff/badge?branch=PasswordGenerationInterface)](https://app.shippable.com/github/crystalnet/firefox-automatic-password-changer) 
+
+ [![Coverage Badge](https://api.shippable.com/projects/593878529deb1b07005b31ff/coverageBadge?branch=PasswordGenerationInterface)](https://app.shippable.com/github/crystalnet/firefox-automatic-password-changer) 
+
 firefox-automatic-password-changer is an add-on for Firefox. The add-on can learn from users how to change passwords on web pages. Subsequently, the add-on can automatically change these passwords on command.
 
 ## Installation
