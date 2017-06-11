@@ -43,5 +43,4 @@ describe('Player', function () {
             player._validatePassword('P@ssword123', player.blueprint).should.not.be.ok;
         });
     });
-
 });
