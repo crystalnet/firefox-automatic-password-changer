@@ -9,8 +9,8 @@ class Player {
      * whether the provided blueprint-string is a valid JSON-Password Composition Policy or not.
      * @param blueprintJson password policy specification blueprint (JSON String)
      */
-    constructor(blueprintJson) {
-        this.schema = JSON.parse('{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. Threre are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}');
+    constructor(blueprintJson, schema) {
+        this.schema = JSON.parse(schema);
         this.blueprint = this._parseBlueprint(blueprintJson, this.schema);
         // Ich glaube wir brauchen auch noch irgendwo den Username als Parameter, da wir den bei den RegExp
     }
@@ -23,7 +23,7 @@ class Player {
 
         while(!validation){
             try {
-                this.password(this._invokePasswordGenerator(this.blueprint));
+                this.password = this._invokePasswordGenerator(this.blueprint);
             } catch(err) {
                 validation = false;
             }
@@ -78,59 +78,52 @@ class Player {
      * @private
      */
     _validatePassword(password, blueprint) {
-        for (let requirement in blueprint[0].compositionRequirements) {
-            if (!this._test(password, requirement, blueprint)) {
+        for (let requirement of blueprint[0].compositionRequirements) {
+            if (!this._test(password, requirement, blueprint[0].allowedCharacterSets)) {
                 return false;
             }
         }
         return true;
     }
 
-    /**
-     * PSEUDO-FUNCTIONALITY
-     * checks whether the password meets the requirement, with respect to the composition policies in the blueprint
-     * @param password the password to be tested
-     * @param requirement Regular expression specifying password composition policy
-     * @param blueprint password composition specification blueprint containing information like minimum length and allowed character sets
-     * @returns {boolean}
-     * @private
-     */
-    _test(password, requirement, blueprint) {
+    _test(password, requirement, allowedCharacterSets) {
         let regExp = requirement.rule.regexp;
 
-        const az = blueprint[0].allowedCharacterSets.az;
-        const AZ = blueprint[0].allowedCharacterSets.AZ;
-        const num = blueprint[0].allowedCharacterSets.num;
-        const special = blueprint[0].allowedCharacterSets.special;
+        const az = allowedCharacterSets.az;
+        const AZ = allowedCharacterSets.AZ;
+        const num = allowedCharacterSets.num;
+        const special = allowedCharacterSets.special;
         const username = 'testusername';
-        const passwords = ['012345678', 'passsword', 'asdf', 'test', 'password123'];
+        const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
-        regExp.replace('[az]', az);
-        regExp.replace('[AZ]', AZ);
-        regExp.replace('[num]', num);
-        regExp.replace('[special]', special);
-        regExp.replace('[username]', username);
+        regExp = regExp.replace('az', az);
+        regExp = regExp.replace('AZ', AZ);
+        regExp = regExp.replace('num', num);
+        regExp = regExp.replace('special', special);
+        regExp = regExp.replace('[username]', username);
 
         if (regExp.includes('[password]')) {
-            newValue = '(';
-            for (password in passwords) {
-                newValue += password + '|'
+            let newValue = '(';
+            for (let pw of passwords) {
+                newValue += pw + '|'
             }
             newValue = newValue.substr(0, newValue.length - 1) + ')';
+            regExp = regExp.replace('[password]', newValue);
         }
 
         regExp = new RegExp(regExp, 'gi');
 
-        result = regExp.test(password);
+        let result = regExp.test(password);
 
+        //console.log(password,  ": ", regExp.toString(), ": ",requirement.kind,  ": ", result)
         if (requirement.kind === 'must') {
-            return !result
-        } else {
             return result
+        } else {
+            return !result
         }
     }
 
-    get password() {return this.password;}
+    get password() {return this.pw;}
 
     /**
      * sets the password to the passed password, if it satisfies the specifications in the blueprint
@@ -138,7 +131,7 @@ class Player {
      */
     set password(newPassword) {
         if (this._validatePassword(newPassword, this.blueprint)) {
-            this.password = newPassword;
+            this.pw = newPassword;
         } else {
             throw "New password is not valid";
         }
@@ -157,6 +150,7 @@ class Player {
 
         return minLength;
     }
+
 
     /**
      * Get method for password maximum length
@@ -192,7 +186,6 @@ class Player {
         }
 
     }
-
 }
 
 module.exports = Player;
