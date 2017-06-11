@@ -86,6 +86,14 @@ class Player {
         return true;
     }
 
+    /**
+     * tests the password on the passed regular expression requirement, with respect to the allowed  Character Sets.
+     * @param password the password to be tested
+     * @param requirement a regular expression
+     * @param allowedCharacterSets the allowed character sets
+     * @returns {boolean} only true if the password meets the specified requirements
+     * @private
+     */
     _test(password, requirement, allowedCharacterSets) {
         let regExp = requirement.rule.regexp;
 
