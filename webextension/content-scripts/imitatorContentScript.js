@@ -1,4 +1,3 @@
-
 // in some cases the tabs.onUpdated event can be fired multiple times without obvious reason
 // to prevent multiple injection of this script, we just need to declare some variable,
 // because tabs.executeScript fails, if it injects a script that tries to redeclare a variable
