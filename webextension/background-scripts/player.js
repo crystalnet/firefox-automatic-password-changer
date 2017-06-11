@@ -49,7 +49,7 @@ class Player {
             return blueprint;
         } else {
             console.log(validate.errors);
-            throw "Blueprint doesn't follow JSON schema"
+            throw  "Blueprint doesn't follow JSON schema"
         }
     }
 
@@ -106,7 +106,7 @@ class Player {
         const AZ = allowedCharacterSets.AZ;
         const num = allowedCharacterSets.num;
         const special = allowedCharacterSets.special;
-        const username = 'testusername';
+        const username = "testusernameA$0";
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
         regExp = regExp.replace('az', az);
