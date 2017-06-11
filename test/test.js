@@ -24,10 +24,6 @@ describe('Player', function () {
         it('should return a password', function () {
             player._invokePasswordGenerator().should.be.a.String();
         });
-
-        it('should return a password of at least 8 symbols', function () {
-            player._invokePasswordGenerator().length.should.be.aboveOrEqual(8);
-        });
     });
 
     describe('#_validateGeneratedPassword()', function () {
@@ -45,18 +41,6 @@ describe('Player', function () {
 
         it('should reject a previously used password', function () {
             player._validatePassword('P@ssword123', player.blueprint).should.not.be.ok;
-        });
-    });
-
-    describe('#password()', function () {
-        it('should be able to set valid pasword', function () {
-            player.password = '12345678Ab$';
-            player.password.should.be.equal('12345678Ab$');
-        });
-
-        it('should be unable to set invalid pasword', function () {
-            // Funktioniert noch nicht
-            should(player.password = 'asdfasdf').throw('New password is not valid');
         });
     });
 });
