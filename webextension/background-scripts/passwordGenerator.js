@@ -5,7 +5,8 @@ const PasswordGenCharset = {
    'upper': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
    'lower': 'abcdefghijklmnopqrstuvwxyz'.split(''),
    'digit': '0123456789'.split(''),
-   'punct': '!"§$%&/()=?-_,.;:#+*@[]|{}<>'.split('')
+   'punct': '!"§$%&/()=?-_,.;:#+*@[]|{}<>'.split(''),
+   'umlauts': 'äöüß'.split('')
 };
 
 
@@ -22,14 +23,14 @@ class PasswordGen {
 
 
    /**
-   * @param {Array|String} charsetsArray - Array containing charset objects (see below) or JSON string representing such an array.
    * @param {Number} pwdLength - password length
+   * @param {Array|String} charsetsArray - Array containing charset objects (see below) or JSON string representing such an array.
    * @returns Promise that returns generated password on resolve.
    * Note: charset object consists at least of properties 'char' and 'min', e.g. {char: 'upper', min: 3}
    *       value of property 'char' can be either a string with concatinated characters, e.g. 'abcdefg0123'
    *       or one of the aliases defined in PasswordGenCharset, e.g. 'upper'
    */
-   generatePassword(charsetsArray, pwdLength) {
+   generatePassword(pwdLength, charsetsArray) {
 
      let password = '';
 
@@ -37,6 +38,13 @@ class PasswordGen {
 
          let charsets = charsetsArray;
          let charsetsMaxLength = 0;
+
+         // if no charsets are specified, use all charsets in PasswordGenCharset
+         if(charsets === undefined) {
+            charsets = [];
+            for(let alias in PasswordGenCharset)
+                charsets.push({ char: PasswordGenCharset[alias], min: 0});
+         }
 
          // parse json for charsets if it's a string
          if(typeof charsetsArray === 'string')

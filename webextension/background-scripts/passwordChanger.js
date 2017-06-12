@@ -142,14 +142,14 @@ function buildContextMenu() {
                 });
                 // send generated password to contextMenuContentScript
                 // TODO: remove debug code and replace with real password policy.
-                passwordGenerator.generatePassword([
+                passwordGenerator.generatePassword(40,
+                    [
                       { char: "upper", min: 3 },
                       { char: "digit", min: 2 },
                       { char: "lower", min: 2 },
                       { char: "punct", min: 1 },
                       { char: "\u002f", min: 1 }
-                    ],
-                    10)
+                    ])
                     .then(password => browser.tabs.sendMessage(tab.id, {
                         case: "password",
                         content: password
