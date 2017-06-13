@@ -1,4 +1,5 @@
 /**
+ * Player class reads handles password specification blueprints (JSON-String) and the password generator
  * Created by crystalneth on 10-Jun-17.
  */
 
@@ -82,6 +83,18 @@ class Player {
      * @private
      */
     _validatePassword(password) {
+        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
+        charExp = new RegExp(charExp, 'g');
+       // console.log(password);
+       // console.log(charExp.test(password));
+       // console.log(charExp);
+
+
+        if((charExp.test(password))){
+           // console.log(password);
+            return false;
+        }
+
         for (let requirement of this.blueprint[0].compositionRequirements) {
             if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
                 return false;
@@ -102,6 +115,8 @@ class Player {
     _test(password, requirement, allowedCharacterSets) {
         let regExp = requirement.rule.regexp;
 
+
+
         const az = allowedCharacterSets.az;
         const AZ = allowedCharacterSets.AZ;
         const num = allowedCharacterSets.num;
@@ -109,11 +124,13 @@ class Player {
         const username = "testusernameA$0";
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
+
         regExp = regExp.replace('az', az);
         regExp = regExp.replace('AZ', AZ);
         regExp = regExp.replace('num', num);
         regExp = regExp.replace('special', special);
         regExp = regExp.replace('[username]', username);
+
 
         if (regExp.includes('[password]')) {
             let newValue = '(';
@@ -125,6 +142,8 @@ class Player {
         }
 
         regExp = new RegExp(regExp, 'gi');
+       // console.log(regExp);
+
 
         let result = regExp.test(password);
 
@@ -136,56 +155,6 @@ class Player {
         }
     }
 
-    /**
-     * Get method for password minimum length
-     *
-     * @returns {number} Password minimum length
-     * @constructor
-     */
-    getPasswordMinLength() {
-        if (!("undefined" === typeof this.blueprint[0].minLength)) {
-            return this.blueprint[0].minLength;
-        }
-        return 1;
-    }
-
-    /**
-     * Get method for password maximum length, returns maxLength = 16 if the blueprint provides no maxLength
-     *
-     * @returns {number} password maximum length
-     */
-    getPasswordMaxLength() {
-
-        if (!("undefined" === typeof this.blueprint[0].maxLength)) {
-             return this.blueprint[0].maxLength;
-    }
-        return 16;
-    }
-
-    /**
-     * //TODO needs overhaul and Tests
-     * Returns the allowed character set
-     *
-     * @returns {*} specified character set or a basic set if nothing was specified
-     */
-    getCharacterSet() {
-        //basic character set that is assumed, if nothing is specified in the JSON scheme
-        let baseCharSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
-        let charSet = "";
-        //add all specified Characters to the charSet-String that will be passed on to the Generator
-        if (this.blueprint[0].allowedCharacterSets !== null) {
-            for (c in this.blueprint[0].allowedCharacterSets) {
-                charSet += c;
-            }
-        }
-
-        //if no characters have been added to the set use the assumed basic set
-        if (charSet !== "") {
-            return charSet;
-        } else {
-            return baseCharSet;
-        }
-    }
 }
 
 module.exports = Player;
