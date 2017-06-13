@@ -70,7 +70,7 @@ class Player {
 
         // TODO replace with new password generator
         // return passwordGenerator.generatePassword(maxLength, alphabet);
-        return 'theS@festPassword1';
+        return 'theS@testPassword1';
     }
 
     /**
@@ -142,29 +142,28 @@ class Player {
      * @returns {number} Password minimum length
      * @constructor
      */
-    get passwordMinLength() {
-        let minLength = 1;
-        if (this.blueprint[0].minLength !== null) {
-            let minLength = this.blueprint[0].minLength;
+    getPasswordMinLength() {
+        if (!("undefined" === typeof this.blueprint[0].minLength)) {
+            return this.blueprint[0].minLength;
         }
-
-        return minLength;
+        return 1;
     }
 
     /**
-     * Get method for password maximum length
+     * Get method for password maximum length, returns maxLength = 16 if the blueprint provides no maxLength
      *
      * @returns {number} password maximum length
      */
-    get passwordMaxLength() {
-        let maxLength = 16;
-        if (this.blueprint[0].maxLength !== null) {
-            maxLength = pwScheme.items.maxLength;
-        }
-        return maxLength;
+    getPasswordMaxLength() {
+
+        if (!("undefined" === typeof this.blueprint[0].maxLength)) {
+             return this.blueprint[0].maxLength;
+    }
+        return 16;
     }
 
     /**
+     * //TODO needs overhaul and Tests
      * Returns the allowed character set
      *
      * @returns {*} specified character set or a basic set if nothing was specified
