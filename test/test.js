@@ -24,11 +24,14 @@ describe('Player', function () {
         it('should composition requirements as array', function () {
             player._parseBlueprint(data, player.schema)[0].compositionRequirements[0].rule.description.should.equal('May not be the same as your username or contain your username.');
         });
-        /**
+
         it('should not accept a faulty JSON blueprint', function () {
-            player._parseBlueprint(faulty, player.schema).should.throw("Blueprint doesn't follow JSON schema");
+            //(player._parseBlueprint(faulty, player.schema)).should.throw();
+            (function(){
+                player._parseBlueprint(faulty, player.schema);
+            }).should.throw('Blueprint doesn\'t follow JSON schema');
         });
-         */
+
     });
 
 
