@@ -49,7 +49,7 @@ class Player {
             return blueprint;
         } else {
             console.log(validate.errors);
-            throw  "Blueprint doesn't follow JSON schema"
+            throw  new Error("Blueprint doesn't follow JSON schema");
         }
     }
 
