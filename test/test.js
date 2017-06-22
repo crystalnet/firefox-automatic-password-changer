@@ -94,6 +94,34 @@ describe('Player', function () {
             player._validatePassword('P@ssword123', player.blueprint).should.be.false();
         });
     });
+    //#TODO: tests for the failExp descriptions
+    describe('#validateUserPassword()', function() {
+        it('should reject password containig excluded letters', function() {
+            abPlayer.validateUserPassword('0a++BCc7&$', abPlayer.blueprint).sat.should.be.false();
+        });
+
+        it('should reject a empty password', function() {
+            player.validateUserPassword('', player.blueprint).sat.should.be.false();
+        });
+        it('should reject an overlong password', function () {
+            player.validateUserPassword('0123456789Ab$012345678901234567890123456789').sat.should.be.false();
+        })
+        it('should accept a valid password', function () {
+            player.validateUserPassword('12345678Ab$', player.blueprint).sat.should.be.true();
+        });
+        it('should reject the username as password', function () {
+            player.validateUserPassword('testusernameA$0', player.blueprint).sat.should.be.false();
+        });
+        it('should reject a password with only lowercase letters', function () {
+            player.validateUserPassword('asdfasdf', player.blueprint).sat.should.be.false();
+        });
+
+        it('should reject a previously used password', function () {
+            player.validateUserPassword('P@ssword123', player.blueprint).sat.should.be.false();
+        });
+    });
+
+
 
 });
 

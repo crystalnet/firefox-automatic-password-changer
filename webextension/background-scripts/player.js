@@ -33,11 +33,11 @@ class Player {
     }
 
     /**
-     * Validates the password policy blueprint against the Password Composition Policy schema
+     * Validates the password policy blueprint against the Password Composition Policy schema.
      *
-     * @param blueprintJson JSON String of the password composition policy blueprint
-     * @param schema JSON schema, the blueprint is validated against
-     * @returns (Object) the parsed blueprint as object
+     * @param blueprintJson JSON String of the password composition policy blueprint.
+     * @param schema JSON schema, the blueprint is validated against.
+     * @returns (Object) the parsed blueprint as object.
      * @private
      */
     _parseBlueprint(blueprintJson) {
@@ -75,7 +75,8 @@ class Player {
     }
 
     /**
-     * Tests the password on all the Regular Expressions contained in the blueprint, that specify the password compostion policies.
+     * Tests the password on the Regular Expressions contained in the blueprint, that specify the password compostion policies.
+     * Stops after the first failed Regular Expression.
      * Note that some policies can't be tested, like (May not be the same as the last 5 passwords used." As the old passwords are not stored in the password manager.
      *
      * @param password Password to be tested
@@ -101,6 +102,51 @@ class Player {
             }
         }
         return true;
+    }
+
+    /**
+     * Tests the password on all the Regular Expressions contained in the blueprint, that specify the password compostion policies.
+     * Collects the descriptions of the failed requirements in an array and returns them.
+     * Also returns a boolean that is true, if no requirement was failed, and is false otherwise.
+     * @param password
+     * @returns {{sat: boolean, failReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint. failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
+     */
+    validateUserPassword(password) {
+        let unSatReq = [];
+        let satisfied = true;
+        let minLength = this.blueprint[0].minLength;
+        let maxLength = this.blueprint[0].maxLength;
+        if(minLength !== 'undefined'){
+            if(password.length< minLength){
+                satisfied = false;
+                unSatReq.push("Must contain at least "+minLength+" letters.");
+            }
+        }
+        if(maxLength !== 'undefined'){
+            if(password.length>maxLength){
+                satisfied = false;
+                unSatReq.push("May not contain more than "+maxLength+" letters.");
+            }
+        }
+        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
+        charExp = new RegExp(charExp, 'g');
+
+        let check = password.match(charExp);
+
+        if(check !== null){
+            // console.log(password);
+            satisfied = false;
+            check = [...new Set(check)].toString();
+            unSatReq.push("Your password must not contain: " +check);
+        }
+
+        for (let requirement of this.blueprint[0].compositionRequirements) {
+            if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
+                satisfied = false;
+                unSatReq.push(requirement.rule.description);
+            }
+        }
+        return {sat: satisfied, failReq : unSatReq};
     }
 
     /**
