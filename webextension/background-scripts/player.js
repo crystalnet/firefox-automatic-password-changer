@@ -162,13 +162,22 @@ class Player {
     _validatePassword(password) {
         let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
-       // console.log(password);
-       // console.log(charExp.test(password));
-       // console.log(charExp);
+        let minLength = this.blueprint[0].minLength;
+        let maxLength = this.blueprint[0].maxLength;
+        if(minLength !== 'undefined'){
+            if(password.length< minLength){
+                return false;
+            }
+        }
+        if(maxLength !== 'undefined'){
+            if(password.length>maxLength){
+               return false;
+            }
+        }
 
 
         if((charExp.test(password))){
-           // console.log(password);
+
             return false;
         }
 
@@ -210,7 +219,7 @@ class Player {
         let check = password.match(charExp);
 
         if(check !== null){
-            // console.log(password);
+
             satisfied = false;
             check = [...new Set(check)].toString();
             unSatReq.push("Your password must not contain: " +check);
