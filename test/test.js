@@ -16,12 +16,12 @@ describe('Player', function () {
 
 
     //tests for the parse blueprint function
-    describe('#_parseBlueprint()', function () {
+    describe('#_parseBlueprint()', function() {
         it('should have a to z property', function () {
             player._parseBlueprint(data, player.schema)[0].allowedCharacterSets.az.should.equal('abcdefghijklmnopqrstuvwxyz');
         });
 
-        it('should composition requirements as array', function () {
+        it('should composition requirements as array', function() {
             player._parseBlueprint(data, player.schema)[0].compositionRequirements[0].rule.description.should.equal('May not be the same as your username or contain your username.');
         });
 
