@@ -68,7 +68,7 @@ class Player {
 
     _invokePasswordGenerator() {
 
-        //const passwordGenerator = new PasswordGen();
+        const passwordGenerator = new PasswordGen();
         let arrayOfChars = [];
         let lowerCaseCounter = 0;
         let upperCaseCounter = 0;
@@ -84,8 +84,8 @@ class Player {
                 //go through every element of array
                 for(let arrCount = 0; arrCount < array.length; arrCount++) {
 
-                    //check whether the element a of array is included in regexp
-                    //if so, check which element a is and add num of the rule to the counter
+                    //check whether the element array[arrCount] is included in regexp
+                    //if so, check which element array[arrCount] is and add num of the rule to the counter
                     if(regexp.includes(array[arrCount])) {
 
                         switch (array[arrCount]) {
@@ -143,8 +143,14 @@ class Player {
             }
         });
 
-        //return passwordGenerator.generatePassword(maxLength, arrayOfChars);
-        return arrayOfChars;
+        let password = "";
+        // invokes method generatePassword of class PasswordGen and resolves the returned promise
+        let result = Promise.resolve(passwordGenerator.generatePassword(maxLength, arrayOfChars));
+        // password is then assigned to the value of the promise
+        result.then(function(result){
+            password = result;
+        });
+        return password;
 
     }
 
@@ -285,6 +291,8 @@ class Player {
             return !result
         }
     }
+
+
 
 }
 

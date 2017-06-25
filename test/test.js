@@ -56,14 +56,6 @@ describe('Player', function () {
     });
 
 
-    //not much functionality to be tested as the generator is not yet implemented (currently always returns theS@testPassword1
-    /*describe('#_invokePasswordGenerator()', function () {
-        it('should return a password', function () {
-            player._invokePasswordGenerator().should.be.a.String();
-        });
-    });
-    */
-
     //the following tests call _validateGeneratedPassword() but necessarily test the _test() function too, as the validation function just calls upon the test function for each regular expression.
     describe('#_validateGeneratedPassword()', function () {
         it('should reject password containig excluded letters', function () {
@@ -117,10 +109,5 @@ describe('Player', function () {
         });
     });
 
-    describe('#_invokePasswordGenerator()', function(){
-        it('should return array', function(){
-            should.deepEqual([{char:"abcdefghijklmnopqrstuvwxyz", min: 1},{char:"ABCDEFGHIJKLMNOPQRSTUVWXYZ", min: 1}, {char:"0123456789", min: 1}, {char:"!@#$%^*._", min: 1}], player._invokePasswordGenerator());
-        });
-    });
 });
 
