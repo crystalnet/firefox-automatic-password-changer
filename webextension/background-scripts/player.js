@@ -74,7 +74,7 @@ class Player {
         let upperCaseCounter = 0;
         let digitCounter = 0;
         let specialCounter = 0;
-        let RequirementSet = this.blueprint[0].compositionRequirements;
+        let RequirementSet = this.blueprint[0].pwdPolicy[0].compositionRequirements;
         let array = ['[az]', '[AZ]', '[num]', '[special]'];
 // go through the array of requirements
         for(let count = 0; count < RequirementSet.length; count++){
@@ -113,7 +113,7 @@ class Player {
         }
 
 
-        let characterSets = this.blueprint[0].allowedCharacterSets;
+        let characterSets = this.blueprint[0].pwdPolicy[0].allowedCharacterSets;
 //go through every property of the object characterSets of the blueprint
         Object.keys(characterSets).forEach((prop) => {
             if (characterSets.hasOwnProperty(prop)) {
@@ -166,10 +166,11 @@ class Player {
      * @private
      */
     _validatePassword(password) {
-        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
+        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
+        let charExp = new RegExp("[^"+ pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
-        let minLength = this.blueprint[0].minLength;
-        let maxLength = this.blueprint[0].maxLength;
+        let minLength = pwdPolicy.minLength;
+        let maxLength = pwdPolicy.maxLength;
         if(minLength !== 'undefined'){
             if(password.length< minLength){
                 return false;
@@ -187,8 +188,8 @@ class Player {
             return false;
         }
 
-        for (let requirement of this.blueprint[0].compositionRequirements) {
-            if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
+        for (let requirement of pwdPolicy.compositionRequirements) {
+            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
                 return false;
             }
         }
@@ -205,8 +206,8 @@ class Player {
     validateUserPassword(password) {
         let unSatReq = [];
         let satisfied = true;
-        let minLength = this.blueprint[0].minLength;
-        let maxLength = this.blueprint[0].maxLength;
+        let minLength = this.blueprint[0].pwdPolicy[0].minLength;
+        let maxLength = this.blueprint[0].pwdPolicy[0].maxLength;
         if(minLength !== 'undefined'){
             if(password.length< minLength){
                 satisfied = false;
@@ -219,7 +220,8 @@ class Player {
                 unSatReq.push("May not contain more than "+maxLength+" letters.");
             }
         }
-        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
+        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
+        let charExp = new RegExp("[^"+ pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
 
         let check = password.match(charExp);
@@ -231,8 +233,8 @@ class Player {
             unSatReq.push("Your password must not contain: " +check);
         }
 
-        for (let requirement of this.blueprint[0].compositionRequirements) {
-            if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
+        for (let requirement of pwdPolicy.compositionRequirements) {
+            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
                 satisfied = false;
                 unSatReq.push(requirement.rule.description);
             }
@@ -258,7 +260,7 @@ class Player {
         const AZ = allowedCharacterSets.AZ;
         const num = allowedCharacterSets.num;
         const special = allowedCharacterSets.special;
-        const username = "testusernameA$0";
+        const username = "testusernameA§0";
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
 
