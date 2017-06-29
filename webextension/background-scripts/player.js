@@ -74,7 +74,7 @@ class Player {
         let upperCaseCounter = 0;
         let digitCounter = 0;
         let specialCounter = 0;
-        let RequirementSet = this.blueprint[0].pwdPolicy[0].compositionRequirements;
+        let RequirementSet = this.blueprint[0].compositionRequirements;
         let array = ['[az]', '[AZ]', '[num]', '[special]'];
 // go through the array of requirements
         for(let count = 0; count < RequirementSet.length; count++){
@@ -113,7 +113,7 @@ class Player {
         }
 
 
-        let characterSets = this.blueprint[0].pwdPolicy[0].allowedCharacterSets;
+        let characterSets = this.blueprint[0].allowedCharacterSets;
 //go through every property of the object characterSets of the blueprint
         Object.keys(characterSets).forEach((prop) => {
             if (characterSets.hasOwnProperty(prop)) {
@@ -166,11 +166,10 @@ class Player {
      * @private
      */
     _validatePassword(password) {
-        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
-        let charExp = new RegExp("[^"+ pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special+"]");
+        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
-        let minLength = pwdPolicy.minLength;
-        let maxLength = pwdPolicy.maxLength;
+        let minLength = this.blueprint[0].minLength;
+        let maxLength = this.blueprint[0].maxLength;
         if(minLength !== 'undefined'){
             if(password.length< minLength){
                 return false;
@@ -188,8 +187,8 @@ class Player {
             return false;
         }
 
-        for (let requirement of pwdPolicy.compositionRequirements) {
-            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
+        for (let requirement of this.blueprint[0].compositionRequirements) {
+            if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
                 return false;
             }
         }
@@ -201,45 +200,60 @@ class Player {
      * Collects the descriptions of the failed requirements in an array and returns them.
      * Also returns a boolean that is true, if no requirement was failed, and is false otherwise.
      * @param password
-     * @returns {{sat: boolean, failReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint. failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
+     * @returns {{sat: boolean, failReq: Array, passReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint.
+     *                                                           failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
+     *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.
      */
     validateUserPassword(password) {
         let unSatReq = [];
+        let satReq =[];
         let satisfied = true;
-        let minLength = this.blueprint[0].pwdPolicy[0].minLength;
-        let maxLength = this.blueprint[0].pwdPolicy[0].maxLength;
+        let minLength = this.blueprint[0].minLength;
+        let maxLength = this.blueprint[0].maxLength;
         if(minLength !== 'undefined'){
             if(password.length< minLength){
                 satisfied = false;
                 unSatReq.push("Must contain at least "+minLength+" letters.");
+            }else{
+                satReq.push("Must contain at least "+minLength+" letters.");
             }
         }
         if(maxLength !== 'undefined'){
             if(password.length>maxLength){
                 satisfied = false;
                 unSatReq.push("May not contain more than "+maxLength+" letters.");
+            }else{
+                satReq.push("May not contain more than "+maxLength+" letters.");
             }
         }
-        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
-        let charExp = new RegExp("[^"+ pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special+"]");
+        let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
 
         let check = password.match(charExp);
 
         if(check !== null){
-
             satisfied = false;
             check = [...new Set(check)].toString();
-            unSatReq.push("Your password must not contain: " +check);
+            unSatReq.push("Your password contains: "+ check +" , please do not use these characters.");
         }
 
-        for (let requirement of pwdPolicy.compositionRequirements) {
-            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
+        let ascii = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        ascii = ascii.match(charExp);
+        if(ascii !== null) {
+            ascii = [...new Set(ascii)].toString();
+            satReq.push("You can't use: " + ascii + "in your password.");
+        }
+
+
+        for (let requirement of this.blueprint[0].compositionRequirements) {
+            if (!this._test(password, requirement, this.blueprint[0].allowedCharacterSets)) {
                 satisfied = false;
                 unSatReq.push(requirement.rule.description);
+            }else{
+                satReq.push(requirement.rule.description);
             }
         }
-        return {sat: satisfied, failReq : unSatReq};
+        return {sat: satisfied, failReq : unSatReq, passReq: satReq};
     }
 
     /**
@@ -260,7 +274,7 @@ class Player {
         const AZ = allowedCharacterSets.AZ;
         const num = allowedCharacterSets.num;
         const special = allowedCharacterSets.special;
-        const username = "testusernameA§0";
+        const username = "testusernameA$0";
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
 
