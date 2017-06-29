@@ -18,6 +18,7 @@ module.exports = function(config) {
         // Test dependencies
         'node_modules/expect.js/index.js',
         'node_modules/sinon-chrome/bundle/sinon-chrome-webextensions.min.js',
+        'node_modules/ajv/dist/ajv.min.js',
 
         // Source
         'webextension/background-scripts/passwordGenerator.js',

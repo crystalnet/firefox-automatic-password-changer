@@ -36,12 +36,14 @@
 
   "background": {
     "scripts": [
+      "/external-scripts/ajv.min.js",
       "/background-scripts/utils.js",
       "/background-scripts/hashTable.js",
       "/background-scripts/blueprintStorageAccess.js",
       "/background-scripts/badge.js",
       "/background-scripts/passwordGenerator.js",
       "/background-scripts/recorder.js",
+      "/background-scripts/player.js",
       "/background-scripts/passwordChanger.js",
       "/background-scripts/imitator.js",
       "/external-scripts/argon2.js",

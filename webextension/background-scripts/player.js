@@ -2,8 +2,6 @@
  * Player class reads handles password specification blueprints (JSON-String) and the password generator
  * Created by crystalneth on 10-Jun-17.
  */
-
-
 class Player {
 
     /**
@@ -43,7 +41,7 @@ class Player {
      * @private
      */
     _parseBlueprint(blueprintJson) {
-        const Ajv = require('ajv');
+        //const Ajv = require('ajv');
         const ajv = new Ajv();
         const validate = ajv.compile(this.schema);
         const blueprint = JSON.parse(blueprintJson);
@@ -309,9 +307,4 @@ class Player {
             return !result
         }
     }
-
-
-
 }
-
-module.exports = Player;

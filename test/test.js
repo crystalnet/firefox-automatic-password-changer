@@ -2,7 +2,6 @@
  * Created by crystalneth on 10-Jun-17.
  */
 
-const should = require('should');
 describe('Player', function () {
 
     const Player = require('../webextension/background-scripts/player.js');
