@@ -11,9 +11,9 @@ function initDone(page) {
     // we use a port here, because getting the content from the password manager takes
     // too long and as a result, a call to sendMessage() would not handle the response
     let portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy-from-accountlistHandler"});
-    portToLegacyAddOn.onMessage.addListener(function(message) {
+    portToLegacyAddOn.onMessage.addListener(function (message) {
         if (message.type === "LoginCredentials")
-            // we got the necessary information from the legacy add-on, so now we can build the account list
+        // we got the necessary information from the legacy add-on, so now we can build the account list
             buildAccountList(message.content, Object.keys(backgroundPage.getBlueprintStorageAccess().getAllBlueprints().items));
         // port is no longer needed
         portToLegacyAddOn.disconnect();
@@ -44,7 +44,7 @@ function buildAccountList(loginCredentials, blueprintKeys) {
         collapsible: true,
         active: false,
         heightStyle: "content",
-        beforeActivate: function(event, ui) {
+        beforeActivate: function (event, ui) {
             return !ui.newHeader.hasClass("unused-blueprint");
         }
     });
@@ -118,7 +118,8 @@ function addAccountSection(name, url, blueprintExists) {
             let $createPathBtn = $(document.createElement("DIV")).button({
                 label: browser.i18n.getMessage("change_password_now_manually")
             }).on('click', function () {
-                navigateToChangePW(url);
+                // navigateToChangePW(url);
+                openPasswordChangeDialog(url, name);
             });
             $(itemContent).append($changeBtn)
                 .append($createPathBtn);
@@ -171,6 +172,52 @@ function addAccountSection(name, url, blueprintExists) {
     accountList.appendChild(itemContent);
 }
 
+function openPasswordChangeDialog(url, name) {
+    let changePasswordMessage = browser.i18n.getMessage("change-password");
+    let cancelMessage = browser.i18n.getMessage("cancel");
+
+    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+    let newPassword = changePasswordForm.find("#new-password");
+    player = new Player(blueprint, schema);
+
+    const changePasswordForm = $("#manual-password-change-dialog-form");
+    changePasswordForm.find("#url").val(url);
+
+    for (requirement in )
+
+
+    changePassword = function () {
+
+        player.validateUserPassword(newPassword);
+
+    };
+
+    changePasswordForm.dialog({
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+            changePasswordMessage: changePassword,
+            cancelMessage: function () {
+                changePasswordForm.dialog("close");
+            }
+        },
+        close: function () {
+            form[0].reset();
+            allFields.removeClass("ui-state-error");
+        }
+    });
+
+    const form = changePasswordForm.find("form").on("submit", function (event) {
+        event.preventDefault();
+        changePassword();
+    });
+
+    changePasswordForm.removeAttribute("style");
+    changePasswordForm.dialog("open");
+}
+
 /**
  * Trigger function for automatic change password
  * @param url URL for a login entry
@@ -190,11 +237,11 @@ function startRecording(url) {
     let box = window.confirm(browser.i18n.getMessage("acclmessage1", url));
     if (box === true) {
         let querying = browser.tabs.query({currentWindow: true, active: true});
-        querying.then(function(tabs) {
+        querying.then(function (tabs) {
             let creating = browser.tabs.create({
                 url: url
             });
-            creating.then(function() {
+            creating.then(function () {
                 // close the account list tab
                 browser.tabs.remove(tabs[0].id);
                 // trigger recording on newly opened tab
@@ -254,7 +301,7 @@ function deleteBlueprint(url) {
     if (box === true) {
         let removeResult = backgroundPage.getBlueprintStorageAccess().removeBlueprint(url);
         if (removeResult)
-            // reload account list, so the change is visible to the user
+        // reload account list, so the change is visible to the user
             browser.tabs.reload();
     }
 }
