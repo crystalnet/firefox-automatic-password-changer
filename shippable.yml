@@ -45,3 +45,4 @@ integrations:
       recipients:
         - fffjjj@gmx.de
       on_failure: always
+      on_success: never

@@ -51,14 +51,14 @@ module.exports = function (config) {
         },
 
         junitReporter: {
-            outputDir: 'testresults/', // results will be saved as $outputDir/$browserName.xml
+            outputDir: 'shippable/testresults/', // results will be saved as $outputDir/$browserName.xml
             outputFile: 'results.xml',
             useBrowserName: false
         },
 
         coverageReporter: {
             type : 'cobertura',
-            dir : 'codecoverage/',
+            dir : 'shippable/codecoverage/',
             subdir: '.',
             file : 'results.xml'
         },
