@@ -41,7 +41,7 @@ describe('Player', function () {
 
     });
 
-    /*describe('#_invokePasswordGenerator()', function () {
+    describe('#_invokePasswordGenerator()', function () {
 
         it('should return a password', function () {
 
@@ -50,7 +50,7 @@ describe('Player', function () {
         });
 
     });
-    */
+
 
     describe('#_new_Player()', function () {
         it('should not accept a faulty JSON as Input', function () {

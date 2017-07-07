@@ -2,6 +2,8 @@
  * Player class reads handles password specification blueprints (JSON-String) and the password generator
  * Created by crystalneth on 10-Jun-17.
  */
+
+
 class Player {
 
     /**
