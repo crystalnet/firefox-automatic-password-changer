@@ -69,6 +69,7 @@ class Player {
     _invokePasswordGenerator() {
 
         const passwordGenerator = new PasswordGen();
+        let maxLength = this.blueprint[0].pwdPolicy[0].compositionRequirements.maxLength;
         let arrayOfChars = [];
         let lowerCaseCounter = 0;
         let upperCaseCounter = 0;
