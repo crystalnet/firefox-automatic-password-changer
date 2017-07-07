@@ -172,50 +172,60 @@ function addAccountSection(name, url, blueprintExists) {
     accountList.appendChild(itemContent);
 }
 
-function openPasswordChangeDialog(url, name) {
-    let changePasswordMessage = browser.i18n.getMessage("change-password");
-    let cancelMessage = browser.i18n.getMessage("cancel");
-
-    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-    let newPassword = changePasswordForm.find("#new-password");
-    player = new Player(blueprint, schema);
+function changePassword(newPassword, url){
 
     const changePasswordForm = $("#manual-password-change-dialog-form");
+
     changePasswordForm.find("#url").val(url);
 
-    for (requirement in )
+    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
 
-
-    changePassword = function () {
+        player = new Player(blueprint, schema);
 
         player.validateUserPassword(newPassword);
 
-    };
+}
 
-    changePasswordForm.dialog({
-        autoOpen: false,
-        height: 400,
-        width: 350,
+function openPasswordChangeDialog(url, name) {
+
+    $("#manual-password-change-dialog-form").dialog({
+
+        height: 500,
+        width: 450,
         modal: true,
         buttons: {
-            changePasswordMessage: changePassword,
-            cancelMessage: function () {
-                changePasswordForm.dialog("close");
+
+            "change Password": function() {
+                let password =($(this).find('#new-password'));
+                changePassword(password, url);
+            },
+            Cancel : function () {
+                $(this).dialog("close");
+            },
+            "generate Password": function(){
+
             }
         },
-        close: function () {
-            form[0].reset();
-            allFields.removeClass("ui-state-error");
-        }
-    });
+         close: function () {
+         form[0].reset();
+         allFields.removeClass("ui-state-error");
+
+    }});
 
     const form = changePasswordForm.find("form").on("submit", function (event) {
         event.preventDefault();
         changePassword();
     });
 
+    /*let changePasswordMessage = browser.i18n.getMessage("change-password");
+    let cancelMessage = browser.i18n.getMessage("cancel");
+
+    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+    let newPassword = changePasswordForm.find("#new-password");
+
     changePasswordForm.removeAttribute("style");
     changePasswordForm.dialog("open");
+    */
 }
 
 /**
