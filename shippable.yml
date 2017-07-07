@@ -29,11 +29,14 @@ before_script:
 
 # Running the tests with mochaJS
 script:
-  - npm test
+  #use xvfb (X Virtual Framebuffer) to imitate a display
+  - "export DISPLAY=:99.0"
+  #run tests
+  - xvfb-run --server-args="-ac" npm test
 
 # Tell istanbul to generate a coverage report
 after_script:
-  - npm run coverage
+  - xvfb-run --server-args="-ac" npm run coverage
 
 integrations:
   notifications:
