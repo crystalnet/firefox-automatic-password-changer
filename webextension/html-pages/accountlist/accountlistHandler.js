@@ -188,22 +188,27 @@ function changePassword(newPassword, url){
 
 function openPasswordChangeDialog(url, name) {
 
+
+    password = $("#manual-password-change-dialog-form").find('#new-password');
+    url =  $("#manual-password-change-dialog-form").find('#url').val(url);
+    allFields = $( [] ).add(url).add( password );
+
     $("#manual-password-change-dialog-form").dialog({
 
-        height: 500,
+        height: 600,
         width: 450,
         modal: true,
         buttons: {
 
-            "change Password": function() {
-                let password =($(this).find('#new-password'));
-                changePassword(password, url);
-            },
             Cancel : function () {
                 $(this).dialog("close");
             },
-            "generate Password": function(){
+            "Generate Password": function(){
 
+        },
+           "Change Password": function() {
+                //let password =($(this).find('#new-password'));
+                //changePassword(password, url);
             }
         },
          close: function () {
@@ -212,22 +217,25 @@ function openPasswordChangeDialog(url, name) {
 
     }});
 
-    const form = changePasswordForm.find("form").on("submit", function (event) {
+
+    const form = $("#manual-password-change-dialog-form").find("form").on("submit", function (event) {
         event.preventDefault();
         changePassword();
     });
+    $("#password-strength").progressbar({
+        value:50
+    });
+    //$("#manual-password-change-dialog-form").removeAttribute("style");
+    $("#manual-password-change-dialog-form").dialog("open");
 
-    /*let changePasswordMessage = browser.i18n.getMessage("change-password");
+  /*  let changePasswordMessage = browser.i18n.getMessage("change-password");
     let cancelMessage = browser.i18n.getMessage("cancel");
-
     let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
     let newPassword = changePasswordForm.find("#new-password");
 
-    changePasswordForm.removeAttribute("style");
-    changePasswordForm.dialog("open");
-    */
-}
+    changePasswordForm.removeAttribute("style");*/
 
+}
 /**
  * Trigger function for automatic change password
  * @param url URL for a login entry

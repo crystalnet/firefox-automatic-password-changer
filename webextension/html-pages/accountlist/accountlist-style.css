@@ -49,3 +49,31 @@
 #content {
     visibility: hidden;
 }
+
+#url,#new-password{
+    padding: 10px;
+    margin: 10px;
+}
+input[type = text]{
+    width:90%;
+    padding:3px 0;
+    border-radius:5px;
+}
+input[type = password]{
+    width:90%;
+    padding:3px 0;
+    border-radius:5px;
+}
+.ui-dialog-buttonset {width:100%}
+
+.ui-dialog-buttonset .ui-button:first-child{float:left}
+.ui-dialog-buttonset .ui-button:last-child {float:right}
+.ui-dialog-buttonset .ui-button:nth-child(2n){
+
+}
+
+#password-strength{
+    padding : 10px;
+    height: 40px;
+    border-style: hidden;
+}
