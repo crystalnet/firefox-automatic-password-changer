@@ -172,26 +172,11 @@ function addAccountSection(name, url, blueprintExists) {
     accountList.appendChild(itemContent);
 }
 
-function changePassword(newPassword, url){
 
-    const changePasswordForm = $("#manual-password-change-dialog-form");
-
-    changePasswordForm.find("#url").val(url);
-
-    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-
-        player = new Player(blueprint, schema);
-
-        player.validateUserPassword(newPassword);
-
-}
 
 function openPasswordChangeDialog(url, name) {
 
-
-    password = $("#manual-password-change-dialog-form").find('#new-password');
     url =  $("#manual-password-change-dialog-form").find('#url').val(url);
-    allFields = $( [] ).add(url).add( password );
 
     $("#manual-password-change-dialog-form").dialog({
 
@@ -200,40 +185,61 @@ function openPasswordChangeDialog(url, name) {
         modal: true,
         buttons: {
 
-            Cancel : function () {
+            Cancel: function () {
                 $(this).dialog("close");
+                $("#requirements").html("");
             },
-            "Generate Password": function(){
+            "change Password": function () {
 
-        },
-           "Change Password": function() {
-                //let password =($(this).find('#new-password'));
-                //changePassword(password, url);
+                let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+                let userPassword = $("#manual-password-change-dialog-form").find("#new-password");
+                player = new Player(blueprint, schema);
+                let resultReqsTest = player.validateUserPassword(userPassword);
+                //...
+            },
+            "Generate Password": function () {
+                testPassword = "ncjlsd78onj12s";
+                password = $("#manual-password-change-dialog-form").find("#new-password").val(testPassword);
+                allFields = $( [] ).add(url).add(password);
             }
         },
          close: function () {
          form[0].reset();
          allFields.removeClass("ui-state-error");
+         $("#requirements").html("");
 
     }});
 
 
     const form = $("#manual-password-change-dialog-form").find("form").on("submit", function (event) {
         event.preventDefault();
-        changePassword();
     });
+
+
     $("#password-strength").progressbar({
-        value:50
+        value: 70,
     });
-    //$("#manual-password-change-dialog-form").removeAttribute("style");
+
+    $("#requirements").text(function(){
+
+        let list ="";
+        //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+        let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
+        let b = JSON.parse(blueprint);
+        let requirements = b[0].compositionRequirements;
+        for(let count = 0; count < requirements.length; count++){
+            let r = requirements[count];
+            let d = r.rule.description;
+            list +="<li>"+d+"</li>";
+
+    }
+    $("#requirements").append(list);
+    });
+
+
+    $("#manual-password-change-dialog-form").removeAttribute("style");
     $("#manual-password-change-dialog-form").dialog("open");
 
-  /*  let changePasswordMessage = browser.i18n.getMessage("change-password");
-    let cancelMessage = browser.i18n.getMessage("cancel");
-    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-    let newPassword = changePasswordForm.find("#new-password");
-
-    changePasswordForm.removeAttribute("style");*/
 
 }
 /**
