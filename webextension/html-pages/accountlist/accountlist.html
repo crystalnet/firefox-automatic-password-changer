@@ -20,16 +20,20 @@
         <div id="accountList"></div>
     </div>
 
-    <div id="manual-password-change-dialog-form" style="display: none ">
+    <div id="manual-password-change-dialog-form" title="Manual Password Change" style="display: none ">
         <p class="validateTips"></p>
         <form>
             <fieldset>
-                <label for="url">Website</label>
+                <label for="url">Website:</label>
                 <input type="text" name="url" id="url" class="text ui-widget-content ui-corner-all">
-                <label for="new-password">New Password</label>
+                <label for="new-password">New Password:</label>
                 <input type="password" name="new-password" id="new-password" class="text ui-widget-content ui-corner-all">
-                <div id="password-strength">Strength</div>
+                <div id ="generatePasswordBtn" ></div>
+                <div id="password-strength">Strength:</div>
+                <div id= "requirementsTitle"></div>
                 <div id="requirements"></div>
+
+
 
                 <!-- Allow form submission with keyboard without duplicating the dialog button -->
                 <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">

@@ -95,6 +95,7 @@ input[type = password]{
     list-style-type: square;
     list-style-position: inside;
     position: relative;
+    color: black;
 
 }
 
