@@ -186,27 +186,29 @@ function openPasswordChangeDialog(url, name) {
         buttons: {
 
             Cancel: function () {
-                $(this).dialog("close");
+
                 $("#requirements").html("");
+                $("#requirementsTitle").html("");
+                $(this).dialog("close");
+
             },
-            "change Password": function () {
+            "Change Password": function () {
 
                 let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
                 let userPassword = $("#manual-password-change-dialog-form").find("#new-password");
                 player = new Player(blueprint, schema);
                 let resultReqsTest = player.validateUserPassword(userPassword);
                 //...
-            },
-            "Generate Password": function () {
-                testPassword = "ncjlsd78onj12s";
-                password = $("#manual-password-change-dialog-form").find("#new-password").val(testPassword);
-                allFields = $( [] ).add(url).add(password);
+
+
             }
         },
          close: function () {
+
+             $("#requirements").html("");
+             $("#requirementsTitle").html("");
          form[0].reset();
          allFields.removeClass("ui-state-error");
-         $("#requirements").html("");
 
     }});
 
@@ -215,15 +217,30 @@ function openPasswordChangeDialog(url, name) {
         event.preventDefault();
     });
 
+    $("#generatePasswordBtn").button({
+        label: "Generate Password"
+    }).on('click', function(){
+        //aus testgründen wird das Testpasswort verwendet, später muss dann genPassword = player.generatePassword() aufgerufen und val(genPassword) eingesetzt werden
+        testPassword = "ncjlsd78onj12s";
+        password = $("#manual-password-change-dialog-form").find("#new-password").val(testPassword);
+        allFields = $( [] ).add(url).add(password);
+    });
 
     $("#password-strength").progressbar({
-        value: 70,
+        //nur zu Testzwecken bereits festgelegt, später wird value durch satisfiedReqs.length/requirements.length * 100 berechnet
+        value: 100,
     });
+
+    $("#requirementsTitle").text(function () {
+
+    $(this).append("Requirements:");
+});
 
     $("#requirements").text(function(){
 
         let list ="";
         //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+        //für testzwecke wird vorgefertigter Blueprint verwendet
         let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
         let b = JSON.parse(blueprint);
         let requirements = b[0].compositionRequirements;
