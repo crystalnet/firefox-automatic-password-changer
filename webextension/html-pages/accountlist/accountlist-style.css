@@ -50,52 +50,71 @@
     visibility: hidden;
 }
 
-#url,#new-password{
-    padding: 10px;
-    margin: 10px;
-}
 input[type = text]{
     width:90%;
     padding:3px 0;
-    border-radius:5px;
+    border-radius:10px;
+    top: -15px;
 }
 input[type = password]{
     width:90%;
     padding:3px 0;
-    border-radius:5px;
-}
-.ui-dialog-buttonset {
-    width:100%;
-    border-style: hidden;
+    border-radius:10px;
+    top : -15px;
 }
 
-.ui-dialog-buttonset .ui-button:first-child{
-    float:left;
-    position:relative;
+#url-heading{
+    position: relative;
+    top: 5px;
 }
-.ui-dialog-buttonset .ui-button:last-child {
-    bottom: 50%;
+
+#heading_password{
+    position: relative;
+    top: 5px;
+}
+#password-strength-heading{
+    top: 5px;
     position: relative;
 }
-.ui-dialog-buttonset .ui-button:nth-child(2n){
-    float: right;
-    position: relative;
-
-}
-
 #password-strength{
-    padding : 10px 0;
+    padding : 0px 0;
     height: 30px;
-    margin: 10px;
     position: relative;
+    top: -7px;
 }
 
-#requirements{
+#requirementsHeading{
+    top: 10px;
+}
+
+#requirementsNotSat{
     margin: 10px;
     list-style-type: square;
     list-style-position: inside;
     position: relative;
     color: black;
+    top: -5px;
+}
 
+#requirementsSat{
+    margin: 10px;
+    list-style-type: square;
+    list-style-position: inside;
+    position: relative;
+    color: mediumseagreen;
+}
+#changePasswordBtn{
+    float: right;
+    position: relative;
+    top: 10px;
+}
+#CancelBtn{
+    float: left;
+    position: relative;
+    top: 10px;
+}
+#generatePasswordBtn{
+    position: relative;
+    top: 10px;
 }
 
