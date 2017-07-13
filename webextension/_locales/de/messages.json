@@ -139,5 +139,24 @@
   },
   "visit_website": {
     "message": "Webseite besuchen"
+  },
+  "change_Password":{
+    "message": "Passwort ändern"
+  },
+  "cancel_dialog":{
+    "message": "Abbrechen"
+  },
+  "password_strength":{
+    "message": "Passwortstärke"
+  },
+  "requirements":{
+    "message": "Passwortanforderungen:"
+  },
+  "website":{
+    "message": "Webseite"
+  },
+
+  "manual-password-change":{
+    "message": "Manuelle Passworteingabe"
   }
 }

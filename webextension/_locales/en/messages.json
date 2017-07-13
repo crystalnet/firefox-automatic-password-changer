@@ -142,5 +142,23 @@
   },
   "visit_website": {
     "message": "Visit website"
+  },
+  "change_Password":{
+    "message": "Change password"
+  },
+  "cancel_dialog":{
+    "message": "Cancel"
+  },
+  "password_strength":{
+    "message": "Strength"
+  },
+  "requirements":{
+    "message": "Requirements"
+  },
+  "website":{
+    "message": "Website"
+  },
+  "manual-password-change":{
+    "message": "Manual Password Change"
   }
 }
