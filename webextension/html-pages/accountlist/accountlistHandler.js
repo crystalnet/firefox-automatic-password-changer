@@ -172,7 +172,70 @@ function addAccountSection(name, url, blueprintExists) {
     accountList.appendChild(itemContent);
 }
 
+function checkRequirements(password, url){
 
+    $("#requirementsNotSat").html("");
+    $("#requirementsSat").html("");
+
+    // url =  $("#manual-password-change-dialog-form").find('#url').val(url);
+    //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+    /*const blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
+    const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
+    const player = new Player(blueprint, schema);
+    let checkedRequirements =player.validateUserPassword(password);
+
+    let arrayOfFailedReqs = checkedRequirements.failReq;
+    let failedList = "";
+
+    for(count = 0; count < arrayOfFailedReqs.length; count++) {
+        let d = arrayOfFailedReqs[count];
+        failedList += "<li>" + d + "</li>";
+    }
+    $("#requirementsNotSat").text(function(){
+        $(this).append(failedList);
+    });
+
+
+    let arrayOfSatReqs = checkedRequirements.passReq;
+    let satList = "";
+
+    for(count = 0; count < arrayOfSatReqs.length; count++){
+        let d = arrayOfSatReqs[count];
+        satList +="<li>"+d+"</li>";
+    }
+    $("#requirementsSat").text(function(){
+        $(this).append(satList);
+    });
+    */
+
+    let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
+    let b = JSON.parse(blueprint);
+    let requirements = b[0].compositionRequirements;
+
+    let list1 = "";
+    for(let count = 0; count < 3; count++){
+        let r = requirements[count];
+        let d = r.rule.description;
+        list1 +="<li>"+d+"</li>";
+
+    }
+    $("#requirementsNotSat").text(function(){
+        $(this).append(list1);
+    });
+
+
+    let list2 ="";
+    for(let count = 3; count < 5; count++) {
+        let r = requirements[count];
+        let d = r.rule.description;
+        list2 += "<li>" + d + "</li>";
+    }
+    $("#requirementsSat").text(function(){
+        $(this).append(list2);
+    });
+
+
+}
 
 function openPasswordChangeDialog(url, name) {
 
@@ -185,8 +248,8 @@ function openPasswordChangeDialog(url, name) {
         modal: true,
         close: function () {
 
-            $("#requirements").html("");
-            $("#requirementsTitle").html("");
+            $("#requirementsNotSat").html("");
+            $("#requirementsSat").html("");
             form[0].reset();
             allFields.removeClass("ui-state-error");
 
@@ -198,6 +261,8 @@ function openPasswordChangeDialog(url, name) {
         event.preventDefault();
     });
 
+    let password = "";
+    this.checkRequirements(password, url);
 
     let heading_url = document.getElementById("url-heading");
     heading_url.innerHTML = browser.i18n.getMessage("website");
@@ -227,8 +292,8 @@ function openPasswordChangeDialog(url, name) {
     $("#CancelBtn").button({
         label: browser.i18n.getMessage("cancel_dialog")
     }).on('click', function(){
-        $("#requirements").html("");
-        $("#requirementsTitle").html("");
+        $("#requirementsNotSat").html("");
+        $("#requirementsSat").html("");
         $("#manual-password-change-dialog-form").dialog("close");
 
     });
@@ -243,50 +308,6 @@ function openPasswordChangeDialog(url, name) {
 
     let heading_requirements = document.getElementById("requirementsHeading");
     heading_requirements.innerHTML = browser.i18n.getMessage("requirements");
-
-/*
-    let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-    let userPassword = $("#manual-password-change-dialog-form").find("#new-password");
-    player = new Player(blueprint, schema);
-    let resultReqsTest = player.validateUserPassword(userPassword);
-    //...
-    */
-
-   $("#requirementsNotSat").text(function(){
-
-        let list ="";
-        //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-        //für testzwecke wird vorgefertigter Blueprint verwendet
-        //let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
-        let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
-        let b = JSON.parse(blueprint);
-        let requirements = b[0].compositionRequirements;
-        for(let count = 0; count < 5; count++){
-            let r = requirements[count];
-            let d = r.rule.description;
-            list +="<li>"+d+"</li>";
-
-    }
-    $("#requirementsNotSat").append(list);
-
-    });
-
-   $("#requirementsSat").text(function(){
-
-        let list ="";
-        //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-        //für testzwecke wird vorgefertigter Blueprint verwendet
-        //let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
-        let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
-        let b = JSON.parse(blueprint);
-        let requirements = b[0].compositionRequirements;
-        for(let count = 0; count < 5; count++){
-            let r = requirements[count];
-            let d = r.rule.description;
-            list +="<li>"+d+"</li>";
-    }
-    $("#requirementsSat").append("");
-    });
 
 
     $("#manual-password-change-dialog-form").dialog('option', 'title', browser.i18n.getMessage("manual-password-change"));
