@@ -179,7 +179,7 @@ function checkRequirements(password, url){
 
     // url =  $("#manual-password-change-dialog-form").find('#url').val(url);
     //let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-    /*const blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
+    const blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
     const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
     const player = new Player(blueprint, schema);
     let checkedRequirements =player.validateUserPassword(password);
@@ -206,34 +206,6 @@ function checkRequirements(password, url){
     $("#requirementsSat").text(function(){
         $(this).append(satList);
     });
-    */
-
-    let blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
-    let b = JSON.parse(blueprint);
-    let requirements = b[0].compositionRequirements;
-
-    let list1 = "";
-    for(let count = 0; count < 3; count++){
-        let r = requirements[count];
-        let d = r.rule.description;
-        list1 +="<li>"+d+"</li>";
-
-    }
-    $("#requirementsNotSat").text(function(){
-        $(this).append(list1);
-    });
-
-
-    let list2 ="";
-    for(let count = 3; count < 5; count++) {
-        let r = requirements[count];
-        let d = r.rule.description;
-        list2 += "<li>" + d + "</li>";
-    }
-    $("#requirementsSat").text(function(){
-        $(this).append(list2);
-    });
-
 
 }
 
@@ -283,8 +255,11 @@ function openPasswordChangeDialog(url, name) {
     $("#generatePasswordBtn").button({
         label: browser.i18n.getMessage("generate_pwd")
     }).on('click', function(){
-        //aus testgründen wird das Testpasswort verwendet, später muss dann genPassword = player.generatePassword() aufgerufen und val(genPassword) eingesetzt werden
-        testPassword = "ncjlsd78onj12s";
+
+        const blueprint = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens eine Zahl enthalten.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Kleinbuchstaben enthalten.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens einen Großbuchstaben enthalten.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Das Passwort muss mindestens ein Sonderzeichen enthalten.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"Das Sonderzeichen darf nicht das erste Element des Passworts sein.","regexp":"^[special].*"}}]}]';
+        const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
+        const player = new Player(blueprint, schema);
+        testPassword = player.generatePassword();
         password = $("#manual-password-change-dialog-form").find("#new-password").val(testPassword);
         allFields = $( [] ).add(url).add(password);
     });
