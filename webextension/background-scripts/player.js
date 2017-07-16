@@ -15,7 +15,7 @@ class Player {
      */
     constructor(blueprintJson, schema) {
         this.schema = JSON.parse(schema);
-        this.blueprint = this._parseBlueprint(blueprintJson, this.schema);
+        this.blueprint = JSON.parse(blueprintJson);
     }
 
     /**
@@ -42,7 +42,7 @@ class Player {
      * @returns (Object) the parsed blueprint as object.
      * @private
      */
-    _parseBlueprint(blueprintJson) {
+   /* _parseBlueprint(blueprintJson) {
         const Ajv = require('ajv');
         const ajv = new Ajv();
         const validate = ajv.compile(this.schema);
@@ -56,7 +56,7 @@ class Player {
         }
     }
 
-
+/*
 
     /**
      * Invokes the password generator to generate a Password with the specified maximum length and allowed character set, which are specified in the blueprint
@@ -65,11 +65,10 @@ class Player {
      * @private
      */
 
-
     _invokePasswordGenerator() {
 
-        const passwordGenerator = new PasswordGen();
         let arrayOfChars = [];
+        let maxLength = this.blueprint[0].maxLength;
         let lowerCaseCounter = 0;
         let upperCaseCounter = 0;
         let digitCounter = 0;
@@ -166,10 +165,12 @@ class Player {
      * @private
      */
     _validatePassword(password) {
+
         let charExp = new RegExp("[^"+ this.blueprint[0].allowedCharacterSets.az +this.blueprint[0].allowedCharacterSets.AZ + this.blueprint[0].allowedCharacterSets.num + this.blueprint[0].allowedCharacterSets.special+"]");
         charExp = new RegExp(charExp, 'g');
         let minLength = this.blueprint[0].minLength;
         let maxLength = this.blueprint[0].maxLength;
+        console.log(password);
         if(minLength !== 'undefined'){
             if(password.length< minLength){
                 return false;
@@ -312,4 +313,4 @@ class Player {
 
 }
 
-module.exports = Player;
+//module.exports = Player;
