@@ -160,5 +160,8 @@
   },
   "manual-password-change":{
     "message": "Manual Password Change"
+  },
+  "requirements-not-sat":{
+    "message": "The given password does not fulfil all requirements. Please check your input again."
   }
 }
