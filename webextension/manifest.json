@@ -42,11 +42,11 @@
       "/background-scripts/blueprintStorageAccess.js",
       "/background-scripts/badge.js",
       "/background-scripts/passwordGenerator.js",
+      "/background-scripts/player.js",
       "/background-scripts/recorder.js",
       "/background-scripts/player.js",
       "/background-scripts/passwordChanger.js",
       "/background-scripts/imitator.js",
-      "/background-scripts/player.js",
       "/external-scripts/argon2.js",
       "/external-scripts/argon2-asm.min.js",
       "/external-scripts/salsa20.js"
