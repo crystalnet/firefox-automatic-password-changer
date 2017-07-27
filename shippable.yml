@@ -43,6 +43,10 @@ integrations:
     - integrationName: email
       type: email
       recipients:
-        - fffjjj@gmx.de
+        - ko.schmidt@stud.tu-darmstadt.de
+        - michaela@roni-dasgupta.de
+        - tumariuskleboth@gmail.com
+        - julia.stiegelmayer@gmx.de
+        - christiane.rosa@gmx.de
       on_failure: always
       on_success: never

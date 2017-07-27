@@ -23,7 +23,7 @@
     "build": "webpack",
     "test": "karma start --reporters dots,junit",
     "coverage": "karma start --reporters dots,coverage",
-    "lint": "eslint ."
+    "lint": "eslint webextension/player.js, "
   },
   "dependencies": {
     "ajv": "^5.2.0",
