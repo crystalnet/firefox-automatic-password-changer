@@ -2,8 +2,6 @@
  * Player class reads handles password specification blueprints (JSON-String) and the password generator
  * Created by crystalneth on 10-Jun-17.
  */
-
-
 class Player {
 
     /**
@@ -15,7 +13,7 @@ class Player {
      */
     constructor(blueprintJson, schema) {
         this.schema = JSON.parse(schema);
-        this.blueprint = this._parseBlueprint(blueprintJson, this.schema);
+        this.blueprint = this._parseBlueprint(blueprintJson);
     }
 
     /**
@@ -51,7 +49,7 @@ class Player {
             return blueprint;
         } else {
             console.log(validate.errors);
-            throw  new Error('Blueprint doesn\'t follow JSON schema');
+            throw new Error('Blueprint doesn\'t follow JSON schema');
         }
     }
 
@@ -186,7 +184,7 @@ class Player {
         let unSatReq = [];
         let satReq = [];
         let satisfied = true;
-        let inLength = pwdPolicy.minLength;
+        let minLength = pwdPolicy.minLength;
         let maxLength = pwdPolicy.maxLength;
         if (minLength !== 'undefined') {
             if (password.length < minLength) {

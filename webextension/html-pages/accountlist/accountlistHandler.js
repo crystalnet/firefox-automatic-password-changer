@@ -179,7 +179,6 @@ function checkRequirements(password) {
     $('#requirementsNotSat').html('');
     $('#requirementsSat').html('');
 
-
     const data = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
     const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
     let player = backgroundPage.createPlayer(data, schema);
@@ -224,16 +223,12 @@ function openPasswordChangeDialog(url, name) {
 
         //opens dialog window
         $('#manual-password-change-dialog-form').dialog({
-
             height: 670,
             width: 630,
             modal: true,
             close: function () {
-
                 form[0].reset();
                 allFields.removeClass('ui-state-error');
-
-
             }
         });
 
@@ -243,10 +238,10 @@ function openPasswordChangeDialog(url, name) {
 
         //open checkRequirements with empty password - adds list of requirements to dialog window
         let password = '';
-        this.checkRequirements(password);
+        //this.checkRequirements(password);
+        
 
         //calls constructor of player.js with fixed blueprint and schema for testing purpose
-
         const data = '[{"allowedCharacterSets":{"az":"abcdefghijklmnopqrstuvwxyz","AZ":"ABCDEFGHIJKLMNOPQRSTUVWXYZ","num":"0123456789","special":"!@#$%^*._"},"minLength":8,"maxLength":30,"compositionRequirements":[{"kind":"mustNot","num":1,"rule":{"description":"May not be the same as your username or contain your username.","regexp":".*[username].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one number.","regexp":".*[num].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one lower case letter.","regexp":".*[az].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one upper case letter.","regexp":".*[AZ].*"}},{"kind":"must","num":1,"rule":{"description":"Must contain at least one special character.","regexp":".*[special].*"}},{"kind":"mustNot","num":1,"rule":{"description":"The special character cannot be the first character in the password.","regexp":"^[special].*"}},{"kind":"mustNot","num":5,"rule":{"description":"May not be the same as any of the 5 previous passwords used.","regexp":"^[password]"}}]}]';
         const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
         let player = backgroundPage.createPlayer(data, schema);
@@ -255,35 +250,28 @@ function openPasswordChangeDialog(url, name) {
         let heading_url = document.getElementById('url-heading');
         heading_url.innerHTML = browser.i18n.getMessage('website');
 
-
         //heading for password input field
         let heading_password = document.getElementById('heading_password');
         heading_password.innerHTML = browser.i18n.getMessage('new password');
-
 
         //change Password Button for Dialog window
         $('#changePasswordBtn').button({
             label: browser.i18n.getMessage('change_Password')
         }).on('click', function () {
-
             let userPassword = $('#manual-password-change-dialog-form').find('#new-password');
             //gets output of validateUserPassword
             let reqs = player.validateUserPassword(userPassword);
             let satisfied = reqs.sat;
             //checks, whether all requirements are fulfilled and value of sat is true
             if (satisfied === true) {
-
                 //save password
-
             } else {
                 //if false, open window that gives user alter message
                 $(this).each(function () {
                     alert(browser.i18n.getMessage('requirements-not-sat'));
                 });
             }
-
         });
-
 
         //generatePassword Button for dialog window
         $('#generatePasswordBtn').button({
@@ -296,7 +284,6 @@ function openPasswordChangeDialog(url, name) {
             $('#manual-password-change-dialog-form').find('#new-password').val(password);
         });
 
-
         //Cancelbutton for dialog window
         $('#CancelBtn').button({
             label: browser.i18n.getMessage('cancel_dialog')
@@ -305,7 +292,6 @@ function openPasswordChangeDialog(url, name) {
             $('#manual-password-change-dialog-form').dialog('close');
 
         });
-
 
         //Elements for progressbar
         //heading for password-strength
@@ -326,13 +312,11 @@ function openPasswordChangeDialog(url, name) {
         let heading_requirements = document.getElementById('requirementsHeading');
         heading_requirements.innerHTML = browser.i18n.getMessage('requirements');
 
-
         $('#manual-password-change-dialog-form').dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
         $('#manual-password-change-dialog-form').removeAttribute('style');
         $('#manual-password-change-dialog-form').dialog('open');
-
     } catch (e) {
-        // console.log(e);
+        console.log(e);
     }
 }
 
