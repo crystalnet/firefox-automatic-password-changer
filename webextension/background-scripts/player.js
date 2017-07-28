@@ -17,7 +17,7 @@ class Player {
     }
 
     /**
-     * Generates a new password by using the PasswortGenerator and validating it against the blueprint
+     * Generates a new password by using the PasswordGenerator and validating it against the blueprint
      *
      * @returns (String) new, valid password
      */
