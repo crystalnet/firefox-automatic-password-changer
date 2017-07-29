@@ -122,14 +122,29 @@ class Player {
             }
         });
 
-        let password = '';
+        let password ="";
+        let passLength = 10;
+        let policy = [
+            { char: "upper", min: 3 },       // predefined charset aliases
+            { char: "lower", min: 2 },
+            { char: "punct", min: 1 },
+            { char: "0123456789", min: 2 },  // concatenated characters
+            { char: "\u002f", min: 1 }       // unicode character
+        ];
         // invokes method generatePassword of class PasswordGen and resolves the returned promise
-        let result = Promise.resolve(passwordGenerator.generatePassword(maxLength, arrayOfChars));
-        // password is then assigned to the value of the promise
-        result.then(function (result) {
-            password = result;
+        /*let result = passwordGenerator.generatePassword(passLength, policy);
+
+        result.then(function(value){
+            password = value;
+        });
+        console.log(password);
+        return password;
+        */
+        passwordGenerator.generatePassword(passLength, policy).then(function(result){
+            console.log(result);
         });
         return password;
+
     }
 
     /**

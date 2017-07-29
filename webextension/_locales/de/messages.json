@@ -159,7 +159,10 @@
   "manual-password-change":{
     "message": "Manuelle Passworteingabe"
   },
-  "requirements-not-sat":{
-    "message": "Das eingegebene Passwort erfüllt nicht alle Anforderungen. Bitte überprüfen Sie Ihre Eingabe. "
+  "hide-password":{
+    "message": "Verbergen"
+  },
+  "show-password":{
+    "message": "Zeigen"
   }
 }
