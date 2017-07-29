@@ -179,7 +179,6 @@ function openPasswordChangeDialog(url, name) {
     try {
         url = $('#manual-password-change-dialog-form').find('#url').val(url);
 
-
         $('#manual-password-change-dialog-form').dialog({
             height: 670,
             width: 630,
@@ -187,8 +186,6 @@ function openPasswordChangeDialog(url, name) {
             close: function () {
                 form[0].reset();
                 //allFields.removeClass('ui-state-error');
-
-
             }
         });
 
@@ -196,18 +193,14 @@ function openPasswordChangeDialog(url, name) {
             event.preventDefault();
         });
 
-
         const blueprint2 =  [{'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]}];
         const data = JSON.stringify(blueprint2);
         const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
         let player = backgroundPage.createPlayer(data, schema);
 
-
         //open checkRequirements with empty password - adds list of requirements to dialog window
         let password = '';
         this.checkRequirements(password, player);
-
-
 
         let heading_url = document.getElementById('url-heading');
         heading_url.innerHTML = browser.i18n.getMessage('website');
@@ -218,21 +211,17 @@ function openPasswordChangeDialog(url, name) {
         let heading_requirements = document.getElementById('requirementsHeading');
         heading_requirements.innerHTML = browser.i18n.getMessage('requirements');
 
-
         $('#changePasswordBtn').button({
-            label: browser.i18n.getMessage('change_Password')
+            label: browser.i18n.getMessage('change_Password'),
+            disabled: true
         }).on('click', function (){
-
                 //save password
-
         });
-
-
 
         $('#generatePasswordBtn').button({
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
-             let password = player.generatePassword();
+            let password = player.generatePassword();
             $('#manual-password-change-dialog-form').find('#new-password').val(password);
         });
 
@@ -243,31 +232,27 @@ function openPasswordChangeDialog(url, name) {
             $('#manual-password-change-dialog-form').dialog('close');
         });
 
+        function check(){
+            let password = $('#new-password').val();
+            checkRequirements(password, player);
+        }
+
         //Hide/Show functionality for password
-        let inputBar = document.getElementById('new-password');
-        inputBar.onfocus = function(){
-         inputBar.addEventListener("keyup", function(){
-                    let password = inputBar.value;
-                    checkRequirements(password, player);
-                },false);
+        let inputBar = $('#new-password');
+        inputBar.focus(function(){
+            inputBar.on('keyup', check);
+        });
 
-        };
-
-        inputBar.onblur = function(){
-            inputBar.removeEventListener("keyup",function(){
-                let password = inputBar.value;
-                checkRequirements(password, player);
-                },false);
-        };
-
+        inputBar.blur(function(){
+            inputBar.off('keyup', check);
+        });
 
         let togglePasswordField = document.getElementById('togglePasswordField');
         togglePasswordField.innerHTML = browser.i18n.getMessage('show-password');
         togglePasswordField.addEventListener('click', togglePasswordFieldClicked, false);
 
-
         $('#manual-password-change-dialog-form').dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
-        $('#manual-password-change-dialog-form').removeAttribute('style');
+        $('#manual-password-change-dialog-form').removeAttr('style');
         $('#manual-password-change-dialog-form').dialog('open');
     } catch (e) {
         console.log(e);
@@ -275,7 +260,6 @@ function openPasswordChangeDialog(url, name) {
 }
 
 function togglePasswordFieldClicked() {
-
     let toggle = document.getElementById('togglePasswordField');
     let passwordField = document.getElementById('new-password');
 
@@ -283,22 +267,24 @@ function togglePasswordFieldClicked() {
     if(toggle.innerHTML === message){
         passwordField.type = 'text';
         toggle.innerHTML = browser.i18n.getMessage('hide-password');
-    }else{
+    } else{
         passwordField.type = 'password';
         toggle.innerHTML = browser.i18n.getMessage('show-password');
     }
-
 }
 
 function checkRequirements(password, player) {
-
     //deletes any values that are still in either requirementsNotSat or requirementsSat
     $('#requirementsNotSat').html('');
     $('#requirementsSat').html('');
 
     const checkedRequirements = player.validateUserPassword(password);
     let satisfied = checkedRequirements.sat;
-    document.getElementById('changePasswordBtn').disabled = !satisfied;
+    if (satisfied) {
+        $('#changePasswordBtn').button('enable');
+    } else if ($('#changePasswordBtn').hasClass('ui-button')) {
+        $('#changePasswordBtn').button('disable');
+    }
 
     let arrayOfFailedReqs = checkedRequirements.failReq;
     let failedList = '';
