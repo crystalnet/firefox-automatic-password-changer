@@ -5,13 +5,13 @@ class Imitator {
      * @param username Username of the account the password should be changed for
      * @param credential Login credentials stored in the password manager for given username and url
      */
-    constructor(blueprint, username, credential) {
+    constructor(blueprint, username, credential, newPassword = '') {
         this.actualStepNum = 0;
         this.maxStepNum = blueprint.length;
         this.loginCredential = credential;
         this.blueprint = blueprint;
         this.username = username;
-        this.newPassword = "";
+        this.newPassword = newPassword;
         this.imitationTabId = -1;
         this.imitationWindowId = -1;
     }
@@ -22,7 +22,7 @@ class Imitator {
     startImitating() {
         // we start imitation on site where user started recording
         let firstItem = this.blueprint.getItem(0);
-        let startURL = firstItem[0] === "Click" ? firstItem[6] : firstItem[4];
+        let startURL = firstItem[0] === 'Click' ? firstItem[6] : firstItem[4];
         // new browser window for imitation process
         let creating = browser.windows.create({
             url: startURL
@@ -44,11 +44,11 @@ class Imitator {
      * Injects the imitatorContentScript on site load
      */
     injectContentScript(tabId, changeInfo, tabInfo) {
-        if (tabId === imitator.imitationTabId && changeInfo.status === "loading" && typeof changeInfo.url !== "undefined") {
+        if (tabId === imitator.imitationTabId && changeInfo.status === 'loading' && typeof changeInfo.url !== 'undefined') {
             // inject imitatorContentScript
             let executing = browser.tabs.executeScript(imitator.imitationTabId, {
-                file: "../content-scripts/imitatorContentScript.js",
-                runAt: "document_idle"
+                file: '../content-scripts/imitatorContentScript.js',
+                runAt: 'document_idle'
             });
             executing.then(null, function(error) {
                 console.log(`Injecting imitatorContentScript in active tab failed. ${error}`);
@@ -63,51 +63,51 @@ class Imitator {
         if (this.actualStepNum < this.maxStepNum) {
             let item = this.blueprint.getItem(this.actualStepNum);
             let nextEvent = item[0];
-            let sending = browser.tabs.sendMessage(this.imitationTabId, {type: "getWebPage"});
+            let sending = browser.tabs.sendMessage(this.imitationTabId, {type: 'getWebPage'});
             sending.then(function(message) {
                 let currentWebsite = message.webPage;
-                let websiteTrunk = (currentWebsite.split("?"))[0];
+                let websiteTrunk = (currentWebsite.split('?'))[0];
                 switch (nextEvent) {
-                    case "Input":
-                        let tag = item[1];
-                        let numberOfInputElements = item[2];
-                        let positionOfInputElement = item[3];
-                        let websiteURL = item[4].split("?")[0]; // splitting is only relevant for first item of blueprint, other item URL are not effected by this at all
-                        if (Utils.removeTrailingSlash(websiteTrunk) !== Utils.removeTrailingSlash(websiteURL)) {
+                case 'Input':
+                    let tag = item[1];
+                    let numberOfInputElements = item[2];
+                    let positionOfInputElement = item[3];
+                    let websiteURL = item[4].split('?')[0]; // splitting is only relevant for first item of blueprint, other item URL are not effected by this at all
+                    if (Utils.removeTrailingSlash(websiteTrunk) !== Utils.removeTrailingSlash(websiteURL)) {
                             // we are on the wrong website -> abort
-                            imitator.stopImitating("input should be filled, but we are on the wrong website\n  should be " + Utils.removeTrailingSlash(websiteURL) + "\n  actually is " + Utils.removeTrailingSlash(websiteTrunk));
-                        } else {
-                            imitator.performInput(tag, numberOfInputElements, positionOfInputElement);
-                            imitator.actualStepNum++;
-                        }
-                        break;
-                    case "Click" :
-                        let mustXCoordinate = item[1];
-                        let mustYCoordinate = item[2];
-                        let mustWindowHeight = item[3];
-                        let mustWindowWidth = item[4];
-                        let mustScrollTop = item[5];
-                        let mustWebsiteURL = item[6].split("?")[0]; // splitting is only relevant for first item of blueprint, other item URL are not effected by this at all
-                        let triggersSiteLoad = item[7];
-                        if (Utils.removeTrailingSlash(websiteTrunk) !== Utils.removeTrailingSlash(mustWebsiteURL)) {
+                        imitator.stopImitating('input should be filled, but we are on the wrong website\n  should be ' + Utils.removeTrailingSlash(websiteURL) + '\n  actually is ' + Utils.removeTrailingSlash(websiteTrunk));
+                    } else {
+                        imitator.performInput(tag, numberOfInputElements, positionOfInputElement);
+                        imitator.actualStepNum++;
+                    }
+                    break;
+                case 'Click' :
+                    let mustXCoordinate = item[1];
+                    let mustYCoordinate = item[2];
+                    let mustWindowHeight = item[3];
+                    let mustWindowWidth = item[4];
+                    let mustScrollTop = item[5];
+                    let mustWebsiteURL = item[6].split('?')[0]; // splitting is only relevant for first item of blueprint, other item URL are not effected by this at all
+                    let triggersSiteLoad = item[7];
+                    if (Utils.removeTrailingSlash(websiteTrunk) !== Utils.removeTrailingSlash(mustWebsiteURL)) {
                             // we are on the wrong website -> abort
-                            imitator.stopImitating("click should be performed, but we are on the wrong website\n  should be " + Utils.removeTrailingSlash(mustWebsiteURL) + "\n  actually is " + Utils.removeTrailingSlash(websiteTrunk));
-                        } else {
-                            let sending = browser.tabs.sendMessage(imitator.imitationTabId, {type: "getInnerDimensions"});
-                            sending.then(function(message) {
-                                if (message.innerHeight !== mustWindowHeight || message.innerWidth !== mustWindowWidth) {
+                        imitator.stopImitating('click should be performed, but we are on the wrong website\n  should be ' + Utils.removeTrailingSlash(mustWebsiteURL) + '\n  actually is ' + Utils.removeTrailingSlash(websiteTrunk));
+                    } else {
+                        let sending = browser.tabs.sendMessage(imitator.imitationTabId, {type: 'getInnerDimensions'});
+                        sending.then(function(message) {
+                            if (message.innerHeight !== mustWindowHeight || message.innerWidth !== mustWindowWidth) {
                                     // change size of window if necessary to match click coordinates
-                                    imitator.changeWindowSize(mustWindowHeight, mustWindowWidth, message.innerHeight, message.innerWidth);
-                                }
-                                imitator.performClick(mustXCoordinate, mustYCoordinate, mustScrollTop, triggersSiteLoad);
-                                imitator.actualStepNum++;
-                            }, imitator.stopImitating);
-                        }
-                        break;
+                                imitator.changeWindowSize(mustWindowHeight, mustWindowWidth, message.innerHeight, message.innerWidth);
+                            }
+                            imitator.performClick(mustXCoordinate, mustYCoordinate, mustScrollTop, triggersSiteLoad);
+                            imitator.actualStepNum++;
+                        }, imitator.stopImitating);
+                    }
+                    break;
                 }
             }, this.stopImitating);
         } else {
-            this.stopImitating("done");
+            this.stopImitating('done');
         }
     }
 
@@ -140,23 +140,23 @@ class Imitator {
      * @param positionOfInputElement Identifies with input element should be filled
      */
     performInput(tag, numberOfInputElements, positionOfInputElement) {
-        let valueToSend = "";
+        let valueToSend = '';
         switch (tag) {
-            case "U":
-                valueToSend = this.username;
-                break;
-            case "C":
-                valueToSend = this.loginCredential.password;
-                break;
-            case "N":
-                if (this.newPassword === "") {
-                    this.newPassword = passwordGenerator.generatePassword();
-                }
-                valueToSend = this.newPassword;
-                break;
+        case 'U':
+            valueToSend = this.username;
+            break;
+        case 'C':
+            valueToSend = this.loginCredential.password;
+            break;
+        case 'N':
+            if (this.newPassword === '') {
+                this.newPassword = passwordGenerator.generatePassword();
+            }
+            valueToSend = this.newPassword;
+            break;
         }
         let sending = browser.tabs.sendMessage(this.imitationTabId, {
-            type: "fillInput",
+            type: 'fillInput',
             data: {value: valueToSend, numberOfInputElements: numberOfInputElements, positionOfInputElement: positionOfInputElement}
         });
         sending.then(null, imitator.stopImitating);
@@ -171,7 +171,7 @@ class Imitator {
      */
     performClick(xCoordinate, yCoordinate, mustScrollTop, triggersSiteLoad) {
         let sending = browser.tabs.sendMessage(this.imitationTabId, {
-            type: "clickCoordinates",
+            type: 'clickCoordinates',
             data: {xCoordinate: xCoordinate, yCoordinate: yCoordinate, mustScrollTop: mustScrollTop, triggersSiteLoad: triggersSiteLoad}
         });
         sending.then(null, imitator.stopImitating);
@@ -181,7 +181,7 @@ class Imitator {
      * Stops the imitation process
      * @param reason
      */
-    stopImitating(reason = "unknown") {
+    stopImitating(reason = 'unknown') {
         console.log(`imitating stopped, reason: ${reason}`);
         // remove listener for tab changes
         browser.tabs.onUpdated.removeListener(this.injectContentScript);
@@ -190,20 +190,20 @@ class Imitator {
         // inform user if something went wrong
         if (this.actualStepNum !== this.maxStepNum) {
             this.clearSensibleData();
-            let message = browser.i18n.getMessage("imitator change failed");
-            if (this.newPassword !== "")
-                message += browser.i18n.getMessage("imitator change failed new password is", this.newPassword);
+            let message = browser.i18n.getMessage('imitator change failed');
+            if (this.newPassword !== '')
+                message += browser.i18n.getMessage('imitator change failed new password is', this.newPassword);
             Utils.showNotification(message);
         }
         // if there is a new password, store it in the password manager
-        if (this.newPassword !== "") {
+        if (this.newPassword !== '') {
             let loginData = JSON.parse(JSON.stringify(this.loginCredential));
             loginData.password = this.newPassword;
             portToLegacyAddOn.postMessage({
-                type: "setPassword",
+                type: 'setPassword',
                 loginData: loginData,
                 oldLoginData: this.loginCredential,
-                sender: "Imitator"
+                sender: 'Imitator'
             });
         }
     }
@@ -223,57 +223,57 @@ let imitationStepDelay = 1000;
 // listen for messages from imitatorContentScript
 browser.runtime.onMessage.addListener(function(message) {
     switch (message.type) {
-        case "documentLoaded":
+    case 'documentLoaded':
+        imitator.executeImitationStep();
+        break;
+    case 'errorNumberOfInputElements':
+        imitator.stopImitating('input should be filled, but site has changed since recording the blueprint');
+        break;
+    case 'fillInputDone':
+        setTimeout(function() {
             imitator.executeImitationStep();
-            break;
-        case "errorNumberOfInputElements":
-            imitator.stopImitating("input should be filled, but site has changed since recording the blueprint");
-            break;
-        case "fillInputDone":
+        }, imitationStepDelay);
+        break;
+    case 'clickCoordinatesDone':
+        if (message.triggersSiteLoad === 'false')
             setTimeout(function() {
                 imitator.executeImitationStep();
             }, imitationStepDelay);
-            break;
-        case "clickCoordinatesDone":
-            if (message.triggersSiteLoad === "false")
-                setTimeout(function() {
-                    imitator.executeImitationStep();
-                }, imitationStepDelay);
-            break;
+        break;
     }
 });
 
 // listen for answers from the legacy add-on
 portToLegacyAddOn.onMessage.addListener(function(message) {
     switch (message.type) {
-        case "SingleLoginCredential":
+    case 'SingleLoginCredential':
             // we got the necessary information from the legacy add-on, so now we can start the imitation process
-            imitator = new Imitator(blueprintStorageAccess.getBlueprint(message.url), message.username, message.credential);
-            imitator.startImitating();
-            break;
-        case "storePassword":
+        imitator = new Imitator(blueprintStorageAccess.getBlueprint(message.url), message.username, message.credential, message.newPassword);
+        imitator.startImitating();
+        break;
+    case 'storePassword':
             // recorder also listens for "storePassword" messages, so we need to check the intended receiver
-            if (message.receiver === "Imitator") {
-                if (message.status === "Success") {
-                    Utils.showNotification(browser.i18n.getMessage("password_has_been_successfully_changed"));
-                } else {
+        if (message.receiver === 'Imitator') {
+            if (message.status === 'Success') {
+                Utils.showNotification(browser.i18n.getMessage('password_has_been_successfully_changed'));
+            } else {
                     // message.status is "Error", no need to check this
-                    switch (message.errorCode) {
-                        case "removingOldCredentialFailed":
-                            Utils.showNotification(browser.i18n.getMessage("imitator failed to save new password already changed"));
-                            break;
-                        case "storingFailedOldRemoved":
-                            Utils.showNotification(browser.i18n.getMessage("imitator failed to save new password old deleted"));
-                            break;
-                        case "missingInformation":
-                            Utils.showNotification(browser.i18n.getMessage("store_password_failed_missing_information"));
-                            break;
-                    }
+                switch (message.errorCode) {
+                case 'removingOldCredentialFailed':
+                    Utils.showNotification(browser.i18n.getMessage('imitator failed to save new password already changed'));
+                    break;
+                case 'storingFailedOldRemoved':
+                    Utils.showNotification(browser.i18n.getMessage('imitator failed to save new password old deleted'));
+                    break;
+                case 'missingInformation':
+                    Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
+                    break;
                 }
-                // imitator object no longer needed, set it to null to clear all sensitive with it
-                imitator = null;
-                break;
             }
+                // imitator object no longer needed, set it to null to clear all sensitive with it
+            imitator = null;
+            break;
+        }
     }
 });
 
@@ -282,10 +282,11 @@ portToLegacyAddOn.onMessage.addListener(function(message) {
  * @param username
  * @param url
  */
-function startImitation(username, url) {
+function startImitation(username, url, newPassword = '') {
     portToLegacyAddOn.postMessage({
-        type: "getSingleLoginCredential",
+        type: 'getSingleLoginCredential',
         username: username,
-        url: url
+        url: url,
+        newPassword: newPassword
     });
 }

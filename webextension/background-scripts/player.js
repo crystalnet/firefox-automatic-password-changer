@@ -144,7 +144,6 @@ class Player {
             console.log(result);
         });
         return password;
-
     }
 
     /**
