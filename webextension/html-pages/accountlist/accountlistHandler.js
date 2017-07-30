@@ -220,13 +220,13 @@ function openPasswordChangeDialog(url, username) {
         });
 
         $('#generatePasswordBtn').button({
+
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
 
-            let promise = Promise.resolve(player._invokePasswordGenerator());
-            let cast = Promise.resolve(promise);
-            cast.then(function(value){
+            player._invokePasswordGenerator().then(function(value){
                 $('#manual-password-change-dialog-form').find('#new-password').val(value);
+                checkRequirements(value,player);
             });
         });
 
