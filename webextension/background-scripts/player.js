@@ -122,7 +122,7 @@ class Player {
             }
         });
 
-        let password = '';
+
         let passLength = 10;
         let policy = [
             {char: 'upper', min: 3},       // predefined charset aliases
@@ -132,18 +132,12 @@ class Player {
             {char: '\u002f', min: 1}       // unicode character
         ];
         // invokes method generatePassword of class PasswordGen and resolves the returned promise
-        /*let result = passwordGenerator.generatePassword(passLength, policy);
 
-         result.then(function(value){
-         password = value;
-         });
-         console.log(password);
-         return password;
-         */
-        passwordGenerator.generatePassword(passLength, policy).then(function (result) {
-            console.log(result);
+
+       return passwordGenerator.generatePassword(passLength, policy).then(function (result) {
+            return result;
         });
-        return password;
+
     }
 
     /**
