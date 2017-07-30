@@ -39,10 +39,12 @@ describe('Player', function () {
     });
 
     describe('#_invokePasswordGenerator()', function () {
-        it('should return a password', function () {
-            player._invokePasswordGenerator().should.be.String();
+        it('should return a password', () => {
+            return player._invokePasswordGenerator().should.be.fulfilled();
         });
+
     });
+
 
     describe('#_new_Player()', function () {
         it('should not accept a faulty JSON as Input', function () {

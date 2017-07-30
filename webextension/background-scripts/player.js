@@ -127,8 +127,8 @@ class Player {
             }
         });
 
-        //console.log(maxLength);
-       return passwordGenerator.generatePassword(maxLength, arrayOfChars).then(function (result) {
+        //console.log(JSON.parse(arrayOfChars));
+       return passwordGenerator.generatePassword(maxLength ,arrayOfChars).then(function(result){
             return result;
         });
 
