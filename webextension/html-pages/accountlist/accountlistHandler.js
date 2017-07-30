@@ -224,7 +224,7 @@ function openPasswordChangeDialog(url, username) {
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
 
-            player._invokePasswordGenerator().then(function(value){
+            player.generatePassword().then(function(value){
                 $('#manual-password-change-dialog-form').find('#new-password').val(value);
                 checkRequirements(value,player);
             });

@@ -22,6 +22,9 @@ class Player {
      * @returns (String) new, valid password
      */
     generatePassword() {
+
+        return this._invokePasswordGenerator();
+        /**
         let validation = false;
         let password;
 
@@ -30,7 +33,9 @@ class Player {
             validation = this._validatePassword(password, this.blueprint);
         }
         return password;
+         **/
     }
+
 
     /**
      * Validates the password policy blueprint against the Password Composition Policy schema.
@@ -62,7 +67,7 @@ class Player {
     _invokePasswordGenerator() {
 
         const passwordGenerator = new PasswordGen();
-        let maxLength = this.blueprint[0].pwdPolicy[0].compositionRequirements.maxLength;
+        let maxLength = this.blueprint[0].pwdPolicy[0].maxLength;
         let arrayOfChars = [];
         let lowerCaseCounter = 0;
         let upperCaseCounter = 0;
@@ -70,7 +75,7 @@ class Player {
         let specialCounter = 0;
         let RequirementSet = this.blueprint[0].pwdPolicy[0].compositionRequirements;
         let array = ['[az]', '[AZ]', '[num]', '[special]'];
-// go through the array of requirements
+        // go through the array of requirements
         for (let count = 0; count < RequirementSet.length; count++) {
             let r = RequirementSet[count];
             if (r.kind === 'must') {
@@ -100,7 +105,7 @@ class Player {
         }
 
         let characterSets = this.blueprint[0].pwdPolicy[0].allowedCharacterSets;
-//go through every property of the object characterSets of the blueprint
+        //go through every property of the object characterSets of the blueprint
         Object.keys(characterSets).forEach((prop) => {
             if (characterSets.hasOwnProperty(prop)) {
                 //check, which set of characters is part of the property and add the fitting one to the arrayOfChars
@@ -122,19 +127,8 @@ class Player {
             }
         });
 
-
-        let passLength = 10;
-        let policy = [
-            {char: 'upper', min: 3},       // predefined charset aliases
-            {char: 'lower', min: 2},
-            {char: 'punct', min: 1},
-            {char: '0123456789', min: 2},  // concatenated characters
-            {char: '\u002f', min: 1}       // unicode character
-        ];
-        // invokes method generatePassword of class PasswordGen and resolves the returned promise
-
-
-       return passwordGenerator.generatePassword(passLength, policy).then(function (result) {
+        //console.log(maxLength);
+       return passwordGenerator.generatePassword(maxLength, arrayOfChars).then(function (result) {
             return result;
         });
 
