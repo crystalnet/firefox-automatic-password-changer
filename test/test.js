@@ -53,11 +53,11 @@ describe('Player', function () {
         });
 
         it('should resolve with a string', () => {
-            // return player._invokePasswordGenerator().should.finally.be.a.String();
+            return player._invokePasswordGenerator().should.finally.be.a.String();
         });
 
         it('should resolve with a password', () => {
-            // return player._invokePasswordGenerator().should.finally.not.be.empty();
+            return player._invokePasswordGenerator().should.finally.not.be.empty();
         });
     });
 
@@ -129,11 +129,11 @@ describe('Player', function () {
         });
 
         it('should resolve with a string', () => {
-            // return player.generatePassword().should.finally.be.a.String();
+            return player.generatePassword().should.finally.be.a.String();
         });
 
         it('should resolve with a password', () => {
-            // return player.generatePassword().should.finally.not.be.empty();
+            return player.generatePassword().should.finally.not.be.empty();
         });
     });
 });

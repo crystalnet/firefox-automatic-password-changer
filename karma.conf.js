@@ -15,16 +15,14 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            // Test dependencies
-            'node_modules/ajv/dist/ajv.min.js',
-
             // Source
-            'webextension/background-scripts/passwordGenerator.js',
-            'webextension/background-scripts/player.js',
+            'webextension/external-scripts/ajv.min.js',
             'webextension/external-scripts/argon2.js',
             'webextension/external-scripts/salsa20.js',
             'webextension/external-scripts/argon2-asm.min.js',
             'webextension/external-scripts/lodash_throttle.min.js',
+            'webextension/background-scripts/passwordGenerator.js',
+            'webextension/background-scripts/player.js',
 
             // Tests
             'test/*.js'

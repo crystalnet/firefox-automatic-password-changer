@@ -42,7 +42,8 @@ class Argon2 {
    argon2Hash(params) {
       if (!this.scriptLoadedPromise) {
           // var distPath = params.distPath || '/bower_components/argon2-browser/docs/dist';
-          this.scriptLoadedPromise = this.loadScript('../external-scripts/argon2-asm.min.js');
+          // this.scriptLoadedPromise = this.loadScript('../external-scripts/argon2-asm.min.js');
+          this.scriptLoadedPromise = new Promise(resolve => resolve());
       }
       return this.scriptLoadedPromise.then(function() {
           var tCost = params.time || 1;
