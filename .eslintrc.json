@@ -1,33 +1,40 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "webextensions": true,
-        "mocha": true,
-        "jquery": true
-    },
-    "parserOptions": {
-        "ecmaVersion": 8,
-        "sourceType": "module"
-
-    },
-    "extends": "eslint:recommended",
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
-    }
+  "env": {
+    "browser": true,
+    "es6": true,
+    "webextensions": true,
+    "mocha": true,
+    "jquery": true
+  },
+  "globals": {
+    "Player": true,
+    "Ajv": true,
+    "PasswordGen": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module"
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "indent": [
+      "error",
+      4
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-unused-vars": [
+      "warn"
+    ]
+  }
 }

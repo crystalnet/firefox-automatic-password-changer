@@ -172,13 +172,30 @@ function addAccountSection(name, url, blueprintExists) {
     accountList.appendChild(itemContent);
 }
 
-
-
+/**
+ * Opens and handles dialog for manual password change
+ * @param url (String) url of the website
+ * @param username (String) username for that website
+ */
 function openPasswordChangeDialog(url, username) {
     try {
-        $('#manual-password-change-dialog-form').find('#url').val(url);
+        // const blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
+        const blueprint2 =  [{'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]}];
+        const data = JSON.stringify(blueprint2);
+        const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
+        let player = backgroundPage.createPlayer(data, schema);
 
-        $('#manual-password-change-dialog-form').dialog({
+        // initially call checkRequirements to populate dialog window
+        this.checkRequirements(player);
+
+        const form = $('#manual-password-change-dialog-form');
+
+        form.find('#url').val(url);
+        form.find('form').on('submit', function (event) {
+            event.preventDefault();
+        });
+
+        form.dialog({
             height: 670,
             width: 630,
             modal: true,
@@ -188,30 +205,15 @@ function openPasswordChangeDialog(url, username) {
             }
         });
 
-        const form = $('#manual-password-change-dialog-form').find('form').on('submit', function (event) {
-            event.preventDefault();
-        });
+        form.dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
+        form.removeAttr('style');
+        form.dialog('open');
 
-        // const blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-        const blueprint2 =  [{'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]}];
-        const data = JSON.stringify(blueprint2);
-        const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
-        let player = backgroundPage.createPlayer(data, schema);
+        document.getElementById('url-heading').innerHTML = browser.i18n.getMessage('website');
+        document.getElementById('heading_password').innerHTML = browser.i18n.getMessage('new password');
+        document.getElementById('requirementsHeading').innerHTML = browser.i18n.getMessage('requirements');
 
-        //open checkRequirements with empty password - adds list of requirements to dialog window
-        let password = '';
-        this.checkRequirements(password, player);
-
-        let heading_url = document.getElementById('url-heading');
-        heading_url.innerHTML = browser.i18n.getMessage('website');
-
-        let heading_password = document.getElementById('heading_password');
-        heading_password.innerHTML = browser.i18n.getMessage('new password');
-
-        let heading_requirements = document.getElementById('requirementsHeading');
-        heading_requirements.innerHTML = browser.i18n.getMessage('requirements');
-
-        $('#changePasswordBtn').button({
+        form.find('#changePasswordBtn').button({
             label: browser.i18n.getMessage('change_Password'),
             disabled: true
         }).on('click', function (){
@@ -219,51 +221,42 @@ function openPasswordChangeDialog(url, username) {
             changeThisPasswordAut(url, username, newPassword);
         });
 
-        $('#generatePasswordBtn').button({
-
+        form.find('#generatePasswordBtn').button({
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
-
             player.generatePassword().then(function(value){
                 $('#manual-password-change-dialog-form').find('#new-password').val(value);
-                checkRequirements(value,player);
+                checkRequirements(player);
             });
         });
 
-
-        $('#CancelBtn').button({
+        form.find('#CancelBtn').button({
             label: browser.i18n.getMessage('cancel_dialog')
         }).on('click', function () {
             $('#manual-password-change-dialog-form').dialog('close');
         });
 
-        function check(){
-            let password = $('#new-password').val();
-            checkRequirements(password, player);
-        }
-
-        //Hide/Show functionality for password
-        let inputBar = $('#new-password');
+        // Hide/Show functionality for password
+        let inputBar = form.find('#new-password');
         inputBar.focus(function(){
-            inputBar.on('keyup', check);
+            inputBar.on('keyup', () => checkRequirements(player));
         });
 
         inputBar.blur(function(){
-            inputBar.off('keyup', check);
+            inputBar.off('keyup', () => checkRequirements(player));
         });
 
-        let togglePasswordField = document.getElementById('togglePasswordField');
-        togglePasswordField.innerHTML = browser.i18n.getMessage('show-password');
-        togglePasswordField.addEventListener('click', togglePasswordFieldClicked, false);
-
-        $('#manual-password-change-dialog-form').dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
-        $('#manual-password-change-dialog-form').removeAttr('style');
-        $('#manual-password-change-dialog-form').dialog('open');
+        let togglePasswordField = form.find('#togglePasswordField');
+        togglePasswordField.html(browser.i18n.getMessage('show-password'));
+        togglePasswordField.click(togglePasswordFieldClicked);
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
 
+/**
+ * Event listener that toggles visibility of password text field
+ */
 function togglePasswordFieldClicked() {
     let toggle = document.getElementById('togglePasswordField');
     let passwordField = document.getElementById('new-password');
@@ -278,41 +271,50 @@ function togglePasswordFieldClicked() {
     }
 }
 
-function checkRequirements(password, player) {
+/**
+ * Checks the requirements for the entered password against the blueprint
+ * and updates the DOM
+ * @param password (String) entered password
+ * @param player (Player) Player class that handles the check of requirements
+ */
+function checkRequirements(player) {
+    let password = $('#new-password').val();
+    let notSatisfied = $('#requirementsNotSat');
+    let satisfied = $('#requirementsSat');
+    let changeButton = $('#changePasswordBtn');
+
     //deletes any values that are still in either requirementsNotSat or requirementsSat
-    $('#requirementsNotSat').html('');
-    $('#requirementsSat').html('');
+    notSatisfied.html('');
+    satisfied.html('');
 
     const checkedRequirements = player.validateUserPassword(password);
-    let satisfied = checkedRequirements.sat;
-    if (satisfied) {
-        $('#changePasswordBtn').button('enable');
-    } else if ($('#changePasswordBtn').hasClass('ui-button')) {
-        $('#changePasswordBtn').button('disable');
+    if (checkedRequirements.sat) {
+        changeButton.button('enable');
+    } else if (changeButton.hasClass('ui-button')) {
+        changeButton.button('disable');
     }
 
-    let arrayOfFailedReqs = checkedRequirements.failReq;
-    let failedList = '';
-    for (let count = 0; count < arrayOfFailedReqs.length; count++) {
-        let d = arrayOfFailedReqs[count];
-        failedList += '<li>' + d + '</li>';
+    let arrayOfReqs = checkedRequirements.failReq;
+    let list = '';
+    for (let count = 0; count < arrayOfReqs.length; count++) {
+        let d = arrayOfReqs[count];
+        list += '<li>' + d + '</li>';
     }
-    $('#requirementsNotSat').text(function () {
-        $(this).append(failedList);
+
+    notSatisfied.text(function () {
+        $(this).append(list);
     });
 
-    let arrayOfSatReqs = checkedRequirements.passReq;
-    let satList = '';
-    for (let count = 0; count < arrayOfSatReqs.length; count++) {
-        let d = arrayOfSatReqs[count];
-        satList += '<li>' + d + '</li>';
+    arrayOfReqs = checkedRequirements.passReq;
+    list = '';
+    for (let count = 0; count < arrayOfReqs.length; count++) {
+        let d = arrayOfReqs[count];
+        list += '<li>' + d + '</li>';
     }
 
-    $('#requirementsSat').text(function () {
-        $(this).append(satList);
+    satisfied.text(function () {
+        $(this).append(list);
     });
-
-
 }
 
 
@@ -346,30 +348,6 @@ function startRecording(url) {
                 backgroundPage.toggleRecorder();
             }, null);
         }, null);
-    }
-}
-
-/**
- * Navigating user to the page where the changing form is located.
- * @param url URL for a login entry
- */
-function navigateToChangePW(url) {
-    let box = window.confirm(browser.i18n.getMessage('acclmessage4'));
-    if (box === true) {
-        let blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
-        if (typeof blueprint !== 'undefined') {
-            let pwChangeUrl = '';
-            for (let i = 0; i < blueprint.length; i++) {
-                let item = blueprint.getItem(i);
-                if (item[1] === 'N') {
-                    pwChangeUrl = item[4];
-                    break;
-                }
-            }
-            browser.tabs.create({
-                url: pwChangeUrl
-            });
-        }
     }
 }
 
