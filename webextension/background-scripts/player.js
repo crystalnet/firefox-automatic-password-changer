@@ -265,7 +265,24 @@ class Player {
      * @returns (Promise) new, valid password
      */
     generatePassword() {
-        return this._invokePasswordGenerator();
+        //this is necessary because otherwise we wouldn't be able to access class methods(and variables like the blueprint) from within the then block.
+        let store = this;
+        //accesses the promise of the password generator and returns it if it contains a valid password
+        return this._invokePasswordGenerator().then(function (val) {
+                let result = store._validatePassword(val);
+                if(result){
+                    return val;
+                }else{
+                    //returns a new valid password recursively if the first one wasn't valid
+                    return (store.generatePassword());
+                }
+
+
+
+
+        });
+
+
         /**
          let validation = false;
          let password;
