@@ -203,7 +203,8 @@ function handleLabelAsContextMenuClick(label, tabId) {
         // and send this information to the RecorderContentScript
         browser.tabs.sendMessage(tabId, {
             type: "label",
-            inputNumber: message.inputNumber
+            inputNumber: message.inputNumber,
+            label: label
         });
     }, function(error) {
         console.log(`Labeling input element failed. Error: ${error}`);

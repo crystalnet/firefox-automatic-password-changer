@@ -45,7 +45,10 @@
       "/background-scripts/imitator.js",
       "/external-scripts/argon2.js",
       "/external-scripts/argon2-asm.min.js",
-      "/external-scripts/salsa20.js"
+      "/external-scripts/salsa20.js",
+      "/external-scripts/jquery.min.js",
+      "/external-scripts/jquery-ui.min.js",
+      "/external-scripts/jquery-ui.min.css"
     ]
   },
   "content_scripts": [
@@ -53,11 +56,16 @@
       "matches": [
         "<all_urls>"
       ],
+      "css": [
+        "/external-scripts/jquery-ui.min.css"
+      ],
       "js": [
-        "/content-scripts/contextMenuContentScript.js"
+        "/content-scripts/contextMenuContentScript.js",
+        "/external-scripts/jquery.min.js",
+        "/external-scripts/jquery-ui.min.js"
       ],
       "run_at": "document_end"
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://*.jquery.com; object-src 'self';"
+  "content_security_policy": "script-src 'self' 'unsafe-eval';"
 }

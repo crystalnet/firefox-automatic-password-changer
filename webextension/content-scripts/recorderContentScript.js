@@ -11,22 +11,28 @@ let throttle = _.throttle(onScrollEventHandler, 200, {leading: false, trailing: 
 /**
  * Listens for messages from the background code
  */
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // handle the message sent from background code after user clicked a context menu item
     // as the message from the background code is sent shortly after clicking the context menu item,
     // the "node" variable stores a reference to the element the user invoked the context menu on
     switch (request.type) {
-        case "label":
-            let inputs = document.getElementsByTagName("input");
-            inputs[request.inputNumber].addEventListener("blur", onBlurEventHandler, false);
-            break;
-        case "getWebPage":
-            sendResponse({webPage: window.content.location.href});
-            break;
-        case "stopRecording":
-            stopRecording();
-            break;
+    case 'label': {
+        let inputs = document.getElementsByTagName('input');
+        inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
+
+        if (request.label === 'N') {
+            openSpecificationInterface(inputs[request.inputNumber]);
+        }
+        break;
     }
+    case 'getWebPage': {
+        sendResponse({webPage: window.content.location.href});
+        break;
+    }
+    case 'stopRecording': {
+        stopRecording();
+        break;
+    }}
 });
 
 /**
@@ -36,6 +42,30 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     registerEventHandlers();
 })();
 
+function openSpecificationInterface(inputField) {
+    console.log(inputField);
+
+    const dialog =
+        '<div id="mydialog" title="Password Specification">' +
+        '<p>Please enter your password specification here.</p>' +
+        '</div>';
+
+    $(dialog).appendTo('body');
+    $('#mydialog').dialog({
+        dialogClass: 'ui-dialog-no-close',
+        position: { my: 'left top', at: 'right top', of: inputField },
+        buttons: [
+            {
+                text: 'OK',
+                click: function() {
+                    $( this ).dialog( 'close' );
+                }
+            }
+        ]
+    });
+    $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
+}
+
 /**
  * Handles click events
  */
@@ -43,7 +73,7 @@ function onClickEventHandler(event) {
     // ignore right button click and events triggered by javascript
     if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0)) {
         browser.runtime.sendMessage({
-            type: "clickHappened",
+            type: 'clickHappened',
             webPage: window.content.location.href,
             scrollTop: document.documentElement.scrollTop,
             clientX: event.clientX,
@@ -59,7 +89,7 @@ function onClickEventHandler(event) {
  */
 function onScrollEventHandler() {
     browser.runtime.sendMessage({
-        type: "scrollHappened",
+        type: 'scrollHappened',
         scrollTop: document.documentElement.scrollTop
     });
 }
@@ -72,7 +102,7 @@ function onBlurEventHandler(event) {
     // nodeNumber is the position of the node inside the collection of all
     // input elements; we use this number to identify the node on the page
     let nodeNumber;
-    let inputs = document.getElementsByTagName("input");
+    let inputs = document.getElementsByTagName('input');
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].isSameNode(node)) {
             nodeNumber = i;
@@ -80,7 +110,7 @@ function onBlurEventHandler(event) {
         }
     }
     browser.runtime.sendMessage({
-        type: "blurHappened",
+        type: 'blurHappened',
         webPage: window.content.location.href,
         scrollTop: document.documentElement.scrollTop,
         nodeNumber: nodeNumber,
@@ -97,7 +127,7 @@ function onBlurEventHandler(event) {
 function stopRecording() {
     document.removeEventListener('click', onClickEventHandler, true);
     document.removeEventListener('scroll', throttle, false);
-    Array.prototype.forEach.call (document.getElementsByTagName("input"), function(node) {
+    Array.prototype.forEach.call(document.getElementsByTagName('input'), function (node) {
         node.removeEventListener('blur', onBlurEventHandler, false);
     });
 }
