@@ -146,9 +146,7 @@
   "cancel_dialog":{
     "message": "Abbrechen"
   },
-  "password_strength":{
-    "message": "Passwortstärke"
-  },
+
   "requirements":{
     "message": "Passwortanforderungen:"
   },

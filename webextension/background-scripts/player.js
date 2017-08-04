@@ -20,7 +20,7 @@ class Player {
      * Validates the password policy blueprint against the Password Composition Policy schema.
      *
      * @param blueprintJson JSON String of the password composition policy blueprint.
-     * @returns (Object) the parsed blueprint as object.
+     * @returns {Object} the parsed blueprint as object.
      * @private
      */
     _parseBlueprint(blueprintJson) {
@@ -85,7 +85,7 @@ class Player {
         let characterSets = this.blueprint[0].pwdPolicy[0].allowedCharacterSets;
         //go through every property of the object characterSets of the blueprint
         Object.keys(characterSets).forEach(prop => {
-            //check, which set of characters is part of the property and add the fitting one to the arrayOfChars
+            // check, which set of characters is part of the property and add the fitting one to the arrayOfChars
             // as well as the counter for that set
             switch (prop) {
             case 'az':
@@ -110,9 +110,9 @@ class Player {
     }
 
     /**
-     * Tests the password on the Regular Expressions contained in the blueprint, that specify the password compostion policies.
+     * Tests the password on the Regular Expressions contained in the blueprint, that specify the password composition policies.
      * Stops after the first failed Regular Expression.
-     * Note that some policies can't be tested, like (May not be the same as the last 5 passwords used." As the old passwords are not stored in the password manager.
+     * Note that some policies can't be tested, like "May not be the same as the last 5 passwords used." As the old passwords are not stored in the password manager.
      *
      * @param password Password to be tested
      * @returns {boolean} true if the password satisfies the policies
@@ -150,7 +150,7 @@ class Player {
     }
 
     /**
-     * tests the password on the passed regular expression requirement, with respect to the allowed  Character Sets.
+     * Tests the password on the passed regular expression requirement, with respect to the allowed  Character Sets.
      *
      * @param password the password to be tested
      * @param requirement a regular expression
@@ -173,6 +173,7 @@ class Player {
         regExp = regExp.replace('num', num);
         regExp = regExp.replace('special', special);
         regExp = regExp.replace('[username]', username);
+        // TODO: Test the username correctly
 
         if (regExp.includes('[password]')) {
             let newValue = '(';
@@ -194,10 +195,10 @@ class Player {
     }
 
     /**
-     * Tests the password on all the Regular Expressions contained in the blueprint, that specify the password compostion policies.
+     * Tests the password on all the Regular Expressions contained in the blueprint, that specify the password composition policies.
      * Collects the descriptions of the failed requirements in an array and returns them.
      * Also returns a boolean that is true, if no requirement was failed, and is false otherwise.
-     * @param password
+     * @param password the password to be tested
      * @returns {{sat: boolean, failReq: Array, passReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint.
      *                                                           failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
      *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.
@@ -262,36 +263,24 @@ class Player {
     /**
      * Generates a new password by using the PasswordGenerator and validating it against the blueprint
      *
-     * @returns (Promise) new, valid password
+     * @returns {Promise} new, valid password
      */
     generatePassword() {
         //this is necessary because otherwise we wouldn't be able to access class methods(and variables like the blueprint) from within the then block.
         let store = this;
         //accesses the promise of the password generator and returns it if it contains a valid password
         return this._invokePasswordGenerator().then(function (val) {
-                let result = store._validatePassword(val);
-                if(result){
-                    return val;
-                }else{
+            let result = store._validatePassword(val);
+            if(result){
+                return val;
+            }else{
                     //returns a new valid password recursively if the first one wasn't valid
-                    return (store.generatePassword());
-                }
+                return (store.generatePassword());
+            }
 
 
 
 
         });
-
-
-        /**
-         let validation = false;
-         let password;
-
-         while (!validation) {
-            password = this._invokePasswordGenerator(this.blueprint);
-            validation = this._validatePassword(password, this.blueprint);
-        }
-         return password;
-         **/
     }
 }

@@ -149,9 +149,7 @@
   "cancel_dialog":{
     "message": "Cancel"
   },
-  "password_strength":{
-    "message": "Strength"
-  },
+
   "requirements":{
     "message": "Requirements"
   },
