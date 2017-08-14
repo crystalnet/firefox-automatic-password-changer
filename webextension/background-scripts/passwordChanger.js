@@ -145,7 +145,10 @@ function buildContextMenu() {
                 passwordGenerator.generatePassword(20,
                     [
                       { char: "upper", min: 5 },
-                      { char: "≠¿", min: 5 }
+                      { char: "lower", min: 5 },
+                      { char: "digit", min: 4 },
+                      { char: "punct", min: 3 },
+                      { char: "emoji_common", min: 3 }
                     ])
                     .then(password => browser.tabs.sendMessage(tab.id, {
                         case: "password",
