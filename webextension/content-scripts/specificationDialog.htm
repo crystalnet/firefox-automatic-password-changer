@@ -1,0 +1,213 @@
+<div id="specificationDialog" title="Password Specification">
+    <form>
+        <fieldset>
+            <h4>
+                General:
+            </h4>
+            <div id="charSets" class="myform">
+                <div class="column">
+                    <label>Minimum length:
+                        <input id="minLength" name="minLength" type="number" style="width: 40px" value="4" min="0"/>
+                    </label>
+                </div>
+                <div class="column">
+                    <label>Maximum length:
+                        <input id="maxLength" name="maxLength" type="number" style="width: 40px" value="40" min="0"/>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Allowed character sets:</legend>
+            <h4>
+                Capital letters:
+            </h4>
+            <div id="charSets" class="myform">
+                <div class="column">
+                    <label>allowed:
+                        <input type="checkbox" id="capital">
+                    </label>
+                </div>
+                <div class="column">
+                    <label>min:
+                        <input id="upCaseMin" name="upCaseMin" type="number" style="width: 40px" value="0" min="0"/>
+                    </label>
+                </div>
+                <div class="column">
+                    <label>max:
+                        <input id="upCaseMax" name="upCaseMax" type="number" style="width: 40px" value="40" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                    <textarea id="capCharSet" name="capCharSet" cols="30"
+                              rows="1" style="height: 30px">ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ</textarea>
+
+                    </label>
+                </div>
+            </div>
+            <div class="myform">
+                <h4>
+                    Lowercase letters:
+                </h4>
+
+                <div class="column">
+                    <label>allowed:
+                        <input type="checkbox" id="capital">
+                    </label>
+                </div>
+                <div class="column">
+                    <label>min:
+                        <input id="capCharMin" name="capCharMin" type="number" style="width: 40px" value="0" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>max:
+                        <input id="capCharMax" name="capCharMax" type="number" style="width: 40px" value="40" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+          <textarea id="capCharSet" name="capCharSet" cols="30" rows="1" style="height: 30px">abcdefghijklmnopqrstuvwxyzäöü
+          </textarea>
+
+                    </label>
+                </div>
+            </div>
+            <div id="stylized" class="myform">
+                <h4>
+                    Punctuation and special characters:
+                </h4>
+
+                <div class="column">
+                    <label>allowed:
+                        <input type="checkbox" id="capital">
+                    </label>
+                </div>
+                <div class="column">
+                    <label>min:
+                        <input id="specialMin" name="specialMin" type="number" style="width: 40px" value="0" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>max:
+                        <input id="specialMax" name="specialMax" type="number" style="width: 40px" value="40" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                        Whitespaces allowed:
+                        <input type="checkbox" name="whitespace" value="whitespace">
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                    <textarea id="capCharSet" name="capCharSet" cols="30" rows="1"
+                              style="align-content:left; overflow:auto;" style="height: 30px">!&quot'§$%\/()=?-_,.;:#+*@[]|{}&lt&gt&amp</textarea>
+                    </label>
+                </div>
+            </div>
+            <div id="stylized" class="myform">
+                <h4>
+                    Numbers:
+                </h4>
+
+                <div class="column">
+                    <label>allowed:
+                        <input type="checkbox" id="capital">
+                    </label>
+                </div>
+                <div class="column">
+                    <label>min:
+                        <input id="numMin" name="numMin" type="number" style="width: 40px" value="0" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>max:
+                        <input id="numMax" name="numMax" type="number" style="width: 40px" value="40" min="0"/>
+
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                        <input id="numberSet" name="numberSet" type="text" style="width: 100px" value="0123456789"/>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <button class="button buttonGrey" id="showAddRes" onclick="toggle('addRes','showAddRes')">More</button>
+    <fieldset>
+        <h4>
+            Additional restrictions:
+        </h4>
+        <div id="addRes" class="myform">
+            <p>
+                Position specific restrictions:
+            </p>
+            <button class="button buttonGrey" id="addPosResField" onlick="duplicate()">Add restriction</button>
+            <form>
+                <div id="posRes">
+                    <div>
+                        <div class="column">
+                            position:
+                            <input id="pos" name="numMin" type="number" style="width: 40px" value="1" min="1"/>
+
+                        </div>
+                        <div class="column">
+                            Must
+                            <select id="mustContain">
+                                <option value="mustNot">not be/contain</option>
+                                <option value="must">be/contain</option>
+
+                            </select>:
+                        </div>
+                        <div class="column">
+                            <select id="type">
+                                <option value="capital">Capital Letter</option>
+                                <option value="lowercase">Lowercase Letter</option>
+                                <option value="number">Number</option>
+                                <option value="special">Punctuation or special character</option>
+                                <option value="specific">specific</option>
+                            </select>:
+                            <input id="numberSet" name="numberSet" type="text"
+                                   placeholder="specific character?"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    function toggle(showHideDiv, switchTextDiv) {
+        var ele = document.getElementById(showHideDiv);
+        var text = document.getElementById(switchTextDiv);
+        if (ele.style.display == "block") {
+            ele.style.display = "none";
+            text.innerHTML = "show";
+        } else {
+            ele.style.display = "block";
+            text.innerHTML = "hide";
+        }
+    }
+    document.getElementById('addPosResField').onclick = duplicate;
+    var i = 0;
+    var original = document.getElementById('posRes');
+
+    function duplicate() {
+        document.getElementById('addPosResField').onclick = duplicate;
+        var i = 0;
+        var original = document.getElementById('posRes');
+        var clone = original.cloneNode(true); // "deep" clone
+        clone.id = "posRes" + ++i; // there can only be one element with an ID
+        original.parentNode.appendChild(clone);
+    }
+</script>

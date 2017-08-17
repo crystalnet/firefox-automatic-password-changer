@@ -67,5 +67,8 @@
       "run_at": "document_end"
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
+  "web_accessible_resources": [
+    "/content-scripts/specificationDialog.htm"
+  ]
 }

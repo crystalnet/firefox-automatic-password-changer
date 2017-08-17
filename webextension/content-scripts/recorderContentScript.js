@@ -43,27 +43,30 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 })();
 
 function openSpecificationInterface(inputField) {
-    console.log(inputField);
+    const asdf = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
-    const dialog =
-        '<div id="mydialog" title="Password Specification">' +
-        '<p>Please enter your password specification here.</p>' +
-        '</div>';
-
-    $(dialog).appendTo('body');
-    $('#mydialog').dialog({
-        dialogClass: 'ui-dialog-no-close',
-        position: { my: 'left top', at: 'right top', of: inputField },
-        buttons: [
-            {
-                text: 'OK',
-                click: function() {
-                    $( this ).dialog( 'close' );
-                }
-            }
-        ]
+    $.ajax({
+        url: asdf,
+        success: function (data) {
+            $('body').append(data);
+            $('#specificationDialog').dialog({
+                dialogClass: 'ui-dialog-no-close',
+                width: 400,
+                position: {my: 'left top', at: 'right top', of: inputField},
+                buttons: [
+                    {
+                        text: 'OK',
+                        click: function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                ]
+            });
+            $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
+        },
+        error: function (error) {console.log(error);},
+        dataType: 'html'
     });
-    $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
 }
 
 /**
