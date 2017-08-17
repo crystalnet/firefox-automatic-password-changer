@@ -24,7 +24,6 @@ class Player {
      * @private
      */
     _parseBlueprint(blueprintJson) {
-        //const Ajv = require('ajv');
         const ajv = new Ajv();
         const validate = ajv.compile(this.schema);
         const blueprint = JSON.parse(blueprintJson);
@@ -32,7 +31,6 @@ class Player {
         if (validate(blueprint)) {
             return blueprint;
         } else {
-            // console.log(validate.errors);
             throw new Error('Blueprint doesn\'t follow JSON schema');
         }
     }

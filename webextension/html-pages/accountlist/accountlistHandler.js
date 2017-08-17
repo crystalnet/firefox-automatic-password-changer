@@ -201,17 +201,16 @@ function openPasswordChangeDialog(url, username) {
             modal: true,
             close: function () {
                 form[0].reset();
-                //allFields.removeClass('ui-state-error');
             }
         });
 
         form.dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
         form.removeAttr('style');
         form.dialog('open');
-        document.getElementById('instruction').innerHTML =  "Hier können Sie ein neues Passwort für die nachfolgende Website wählen." +
-                                                            " </br> Alternativ können sie sich ein zufälliges Passwort generieren lassen. " +
-                                                            " </br> Weiter unten werden Ihnen die Anforderungen der Webseite an ihr Passwort dargestellt." +
-                                                            " </br> Sofern alle Anforderungen erfüllt sind können sie den automatischen Änderungsvorgang starten."
+        document.getElementById('instruction').innerHTML =  "Hier können Sie ein neues Passwort für die nachfolgende Website festlegen." +
+                                                            " </br> Als Hilfe sind die Passwortanforderungen der Website unten aufgelistet." +
+                                                            " </br> Alternativ können Sie sich ein zufälliges Passwort generieren lassen. " +
+                                                            " </br> Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
         document.getElementById('url-heading').innerHTML = browser.i18n.getMessage('website');
         document.getElementById('heading_password').innerHTML = browser.i18n.getMessage('new password');
         document.getElementById('requirementsHeading').innerHTML = browser.i18n.getMessage('requirements');
@@ -277,7 +276,6 @@ function togglePasswordFieldClicked() {
 /**
  * Checks the requirements for the entered password against the blueprint
  * and updates the DOM
- * @param password (String) entered password
  * @param player (Player) Player class that handles the check of requirements
  */
 function checkRequirements(player) {
