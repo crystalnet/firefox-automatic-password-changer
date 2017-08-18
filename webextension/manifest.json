@@ -36,6 +36,9 @@
 
   "background": {
     "scripts": [
+      "/external-scripts/argon2.js",
+      "/external-scripts/argon2-asm.min.js",
+      "/external-scripts/salsa20.js",
       "/background-scripts/utils.js",
       "/background-scripts/hashTable.js",
       "/background-scripts/blueprintStorageAccess.js",

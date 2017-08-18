@@ -7,7 +7,7 @@
 // add-on code can also access this scope via runtime.getBackgroundPage()
 const blueprintStorageAccess = new BlueprintStorageAccess();
 const badge = new Badge();
-const passwordGenerator = new PasswordGen(12, 8, 4, 0);
+const passwordGenerator = new PasswordGen();
 const recorder = new Recorder();
 let messagesToDisplay = new HashTable();
 let messagesDismissedByUser = [];
@@ -141,10 +141,19 @@ function buildContextMenu() {
                     contexts: ["editable", "password"]
                 });
                 // send generated password to contextMenuContentScript
-                browser.tabs.sendMessage(tab.id, {
-                    case: "password",
-                    content: passwordGenerator.generatePassword()
-                });
+                // TODO: remove debug code and replace with real password policy.
+                passwordGenerator.generatePassword(20,
+                    [
+                      { char: "upper", min: 5 },
+                      { char: "lower", min: 5 },
+                      { char: "digit", min: 4 },
+                      { char: "punct", min: 3 },
+                      { char: "emoji_common", min: 3 }
+                    ])
+                    .then(password => browser.tabs.sendMessage(tab.id, {
+                        case: "password",
+                        content: password
+                    }));
                 break;
             case "reuseGeneratedPassword":
                 // make reuseGeneratedPassword item invisible
