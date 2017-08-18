@@ -1,148 +1,84 @@
 <div id="specificationDialog" title="Password Specification">
     <form>
         <fieldset>
-            <h4>
-                General:
-            </h4>
-            <div id="charSets" class="myform">
-                <div class="column">
-                    <label>Minimum length:
-                        <input id="minLength" name="minLength" type="number" style="width: 40px" value="4" min="0"/>
-                    </label>
-                </div>
-                <div class="column">
-                    <label>Maximum length:
-                        <input id="maxLength" name="maxLength" type="number" style="width: 40px" value="40" min="0"/>
-                    </label>
-                </div>
+            <h4>Länge</h4>
+                <label for="minLength" class="ui-controlgroup-label">min</label>
+                <input id="minLength" class="ui-spinner-input" style="width: 40px">
+
+                <label for="maxLength" class="ui-controlgroup-label">max</label>
+                <input id="maxLength" class="ui-spinner-input" style="width: 40px">
+        </fieldset>
+        <fieldset>
+            <h4>Capital Letters</h4>
+            <div class="controlgroup-vertical">
+                <input type="text" name="capitalSet" id="capitalSet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                       class="text ui-widget-content ui-corner-all">
+                <label for="capitalAllowed">Allowed</label>
+                <input type="checkbox" name="capitalAllowed" id="capitalAllowed" class="ui-checkboxradio-input">
+                <br/>
+
+                <label for="minCapital" class="ui-controlgroup-label">min</label>
+                <input id="minCapital" class="ui-spinner-input" style="width: 40px">
+
+                <label for="maxCapital" class="ui-controlgroup-label">max</label>
+                <input id="maxCapital" class="ui-spinner-input" style="width: 40px">
             </div>
         </fieldset>
         <fieldset>
-            <legend>Allowed character sets:</legend>
-            <h4>
-                Capital letters:
-            </h4>
-            <div id="charSets" class="myform">
-                <div class="column">
-                    <label>allowed:
-                        <input type="checkbox" id="capital">
-                    </label>
-                </div>
-                <div class="column">
-                    <label>min:
-                        <input id="upCaseMin" name="upCaseMin" type="number" style="width: 40px" value="0" min="0"/>
-                    </label>
-                </div>
-                <div class="column">
-                    <label>max:
-                        <input id="upCaseMax" name="upCaseMax" type="number" style="width: 40px" value="40" min="0"/>
+            <h4>Numbers</h4>
+            <div class="controlgroup-vertical">
+                <input type="text" name="numberSet" id="numberSet" value="0123456789"
+                       class="text ui-widget-content ui-corner-all">
+                <label for="numberAllowed">Allowed</label>
+                <input type="checkbox" name="numberAllowed" id="numberAllowed" class="ui-checkboxradio-input">
+                <br/>
 
-                    </label>
-                </div>
-                <div class="column">
-                    <label>
-                    <textarea id="capCharSet" name="capCharSet" cols="30"
-                              rows="1" style="height: 30px">ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ</textarea>
+                <label for="minNumber" class="ui-controlgroup-label">min</label>
+                <input id="minNumber" class="ui-spinner-input" style="width: 40px">
 
-                    </label>
-                </div>
+                <label for="maxNumber" class="ui-controlgroup-label">max</label>
+                <input id="maxNumber" class="ui-spinner-input" style="width: 40px">
             </div>
-            <div class="myform">
-                <h4>
-                    Lowercase letters:
-                </h4>
+        </fieldset>
+        <fieldset>
+            <h4>Special Letters</h4>
+            <div class="controlgroup-vertical">
+                <input type="text" name="specialSet" id="specialSet" value="!&quot'§$%\/()=?-_,.;:#+*@[]|{}&lt&gt&amp"
+                       class="text ui-widget-content ui-corner-all">
+                <label for="specialAllowed">Allowed</label>
+                <input type="checkbox" name="specialAllowed" id="specialAllowed" class="ui-checkboxradio-input">
+                <br/>
 
-                <div class="column">
-                    <label>allowed:
-                        <input type="checkbox" id="capital">
-                    </label>
-                </div>
-                <div class="column">
-                    <label>min:
-                        <input id="capCharMin" name="capCharMin" type="number" style="width: 40px" value="0" min="0"/>
+                <label for="minSpecial" class="ui-controlgroup-label">min</label>
+                <input id="minSpecial" class="ui-spinner-input" style="width: 40px">
 
-                    </label>
-                </div>
-                <div class="column">
-                    <label>max:
-                        <input id="capCharMax" name="capCharMax" type="number" style="width: 40px" value="40" min="0"/>
+                <label for="maxSpecial" class="ui-controlgroup-label">max</label>
+                <input id="maxSpecial" class="ui-spinner-input" style="width: 40px">
 
-                    </label>
-                </div>
-                <div class="column">
-                    <label>
-          <textarea id="capCharSet" name="capCharSet" cols="30" rows="1" style="height: 30px">abcdefghijklmnopqrstuvwxyzäöü
-          </textarea>
-
-                    </label>
-                </div>
+                <label for="whitespaceAllowed">Whitespace allowed</label>
+                <input type="checkbox" name="whitespaceAllowed" id="whitespaceAllowed" class="ui-checkboxradio-input">
+                <br/>
             </div>
-            <div id="stylized" class="myform">
-                <h4>
-                    Punctuation and special characters:
-                </h4>
+        </fieldset>
+        <fieldset>
+            <h4>Lower Letters</h4>
+            <div class="controlgroup-vertical">
+                <label for="capitalSet">Set</label>
+                <input type="text" name="capitalSet" id="lowerSet" value="abcdefghijklmnopqrstuvwxyz"
+                       class="text ui-widget-content ui-corner-all">
+                <label for="lowerAllowed">Allowed</label>
+                <input type="checkbox" name="lowerAllowed" id="lowerAllowed" class="ui-checkboxradio-input">
+                <br/>
 
-                <div class="column">
-                    <label>allowed:
-                        <input type="checkbox" id="capital">
-                    </label>
-                </div>
-                <div class="column">
-                    <label>min:
-                        <input id="specialMin" name="specialMin" type="number" style="width: 40px" value="0" min="0"/>
+                <label for="minLower" class="ui-controlgroup-label">min</label>
+                <input id="minLower" class="ui-spinner-input" style="width: 40px">
 
-                    </label>
-                </div>
-                <div class="column">
-                    <label>max:
-                        <input id="specialMax" name="specialMax" type="number" style="width: 40px" value="40" min="0"/>
-
-                    </label>
-                </div>
-                <div class="column">
-                    <label>
-                        Whitespaces allowed:
-                        <input type="checkbox" name="whitespace" value="whitespace">
-                    </label>
-                </div>
-                <div class="column">
-                    <label>
-                    <textarea id="capCharSet" name="capCharSet" cols="30" rows="1"
-                              style="align-content:left; overflow:auto;" style="height: 30px">!&quot'§$%\/()=?-_,.;:#+*@[]|{}&lt&gt&amp</textarea>
-                    </label>
-                </div>
-            </div>
-            <div id="stylized" class="myform">
-                <h4>
-                    Numbers:
-                </h4>
-
-                <div class="column">
-                    <label>allowed:
-                        <input type="checkbox" id="capital">
-                    </label>
-                </div>
-                <div class="column">
-                    <label>min:
-                        <input id="numMin" name="numMin" type="number" style="width: 40px" value="0" min="0"/>
-
-                    </label>
-                </div>
-                <div class="column">
-                    <label>max:
-                        <input id="numMax" name="numMax" type="number" style="width: 40px" value="40" min="0"/>
-
-                    </label>
-                </div>
-                <div class="column">
-                    <label>
-                        <input id="numberSet" name="numberSet" type="text" style="width: 100px" value="0123456789"/>
-                    </label>
-                </div>
+                <label for="maxLower" class="ui-controlgroup-label">max</label>
+                <input id="maxLower" class="ui-spinner-input" style="width: 40px">
             </div>
         </fieldset>
     </form>
-    <button class="button buttonGrey" id="showAddRes" onclick="toggle('addRes','showAddRes')">More</button>
+    <button class="button buttonGrey" id="showAddRes">More</button>
     <fieldset>
         <h4>
             Additional restrictions:
@@ -151,7 +87,7 @@
             <p>
                 Position specific restrictions:
             </p>
-            <button class="button buttonGrey" id="addPosResField" onlick="duplicate()">Add restriction</button>
+            <button class="button buttonGrey" id="addPosResField">Add restriction</button>
             <form>
                 <div id="posRes">
                     <div>
@@ -186,28 +122,3 @@
     </fieldset>
 </div>
 
-<script>
-    function toggle(showHideDiv, switchTextDiv) {
-        var ele = document.getElementById(showHideDiv);
-        var text = document.getElementById(switchTextDiv);
-        if (ele.style.display == "block") {
-            ele.style.display = "none";
-            text.innerHTML = "show";
-        } else {
-            ele.style.display = "block";
-            text.innerHTML = "hide";
-        }
-    }
-    document.getElementById('addPosResField').onclick = duplicate;
-    var i = 0;
-    var original = document.getElementById('posRes');
-
-    function duplicate() {
-        document.getElementById('addPosResField').onclick = duplicate;
-        var i = 0;
-        var original = document.getElementById('posRes');
-        var clone = original.cloneNode(true); // "deep" clone
-        clone.id = "posRes" + ++i; // there can only be one element with an ID
-        original.parentNode.appendChild(clone);
-    }
-</script>

@@ -56,16 +56,29 @@ function openSpecificationInterface(inputField) {
                 buttons: [
                     {
                         text: 'OK',
-                        click: function () {
+                        click: function() {
                             $(this).dialog('close');
                         }
                     }
                 ]
             });
             $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
+            $( '.ui-spinner-input' ).spinner();
+            $( '.ui-checkboxradio-input' ).checkboxradio();
         },
         error: function (error) {console.log(error);},
         dataType: 'html'
+    });
+}
+
+function policyEntered(dialog) {
+
+
+    $(dialog).dialog('close');
+
+    browser.runtime.sendMessage({
+        type: 'policyEntered',
+        policyData: ''
     });
 }
 

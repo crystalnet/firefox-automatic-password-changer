@@ -92,8 +92,7 @@ class BlueprintStorageAccess {
     exportBlueprint(url) {
         let blueprint = this.getBlueprint(url);
         if (typeof blueprint !== "undefined") {
-            let exportObject = {blueprintURL: url, blueprintItems: blueprint.items};
-            let blob = new Blob([JSON.stringify(exportObject)], {
+            let blob = new Blob([JSON.stringify(blueprint)], {
                 "type": "text/plain;charset=utf8;"
             });
             let date = new Date();

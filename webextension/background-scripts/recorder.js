@@ -3,7 +3,7 @@ class Recorder {
         this.isActive = false;
         this.recordingTabId = -1;
         this.orderNumber = 0;
-        this.currentWebsite = "";
+        this.currentWebsite = '';
         this.eventDOMContentLoadedFired = false;
         this.loginDone = false;
         this.scrollPosition = 0;
@@ -24,20 +24,21 @@ class Recorder {
     startRecording() {
         this.isActive = true;
         this.userWebPath = new HashTable();
+        this.pwdPolicy = {};
         this.tagTracker = new HashTable();
-        this.webPage = "";
+        this.webPage = '';
         this.loginData = {
-            password: "",
-            username: "",
-            passwordField: "",
-            usernameField: "",
-            formSubmitURL: "",
-            url: ""
+            password: '',
+            username: '',
+            passwordField: '',
+            usernameField: '',
+            formSubmitURL: '',
+            url: ''
         };
         // let the legacy add-on retrieve the currently stored login credentials from the password manager
         // we need this later when setting the password from the recording
         portToLegacyAddOn.postMessage({
-            type: "refreshPasswordList"
+            type: 'refreshPasswordList'
         });
         // listener for tab changes, which is used to inject the recorderContentScript after a site load
         browser.tabs.onUpdated.addListener(this.injectContentScripts);
@@ -63,20 +64,20 @@ class Recorder {
         // when starting the recording this function is called without arguments, so we will just inject the scripts
         // on each subsequent call of this function during recording, tabId will not be null and we do the check to
         // inject the scripts only once on each site load
-        if (tabId !== null && (tabId !== recorder.recordingTabId || changeInfo.status !== "loading" || typeof changeInfo.url === "undefined"))
+        if (tabId !== null && (tabId !== recorder.recordingTabId || changeInfo.status !== 'loading' || typeof changeInfo.url === 'undefined'))
             return;
         // inject lodash_throttle
         let executing1 = browser.tabs.executeScript({
-            file: "../external-scripts/lodash_throttle.min.js",
-            runAt: "document_start"
+            file: '../external-scripts/lodash_throttle.min.js',
+            runAt: 'document_start'
         });
         executing1.then(null, function(error) {
             console.log(`Injecting lodash_throttle in active tab failed. ${error}`);
         });
         // inject recorderContentScript
         let executing2 = browser.tabs.executeScript({
-            file: "../content-scripts/recorderContentScript.js",
-            runAt: "document_end"
+            file: '../content-scripts/recorderContentScript.js',
+            runAt: 'document_end'
         });
         executing2.then(recorder.DOMContentLoaded, function(error) {
             console.log(`Injecting recorderContentScript in active tab failed. ${error}`);
@@ -89,22 +90,22 @@ class Recorder {
     DOMContentLoaded() {
         recorder.eventDOMContentLoadedFired = true;
         recorder.scrollPosition = 0;
-        let sending = browser.tabs.sendMessage(recorder.recordingTabId, {type: "getWebPage"});
+        let sending = browser.tabs.sendMessage(recorder.recordingTabId, {type: 'getWebPage'});
         sending.then(function(message) {
             recorder.currentWebsite = message.webPage;
         }, null);
-        if (recorder.loginData.username !== "") {
+        if (recorder.loginData.username !== '') {
             recorder.loginDone = true;
             // show labelAsNewPassword context menu item
-            browser.contextMenus.update("labelAsNewPassword", {
-                contexts: ["editable", "password"]
+            browser.contextMenus.update('labelAsNewPassword', {
+                contexts: ['editable', 'password']
             });
         }
         // we need a fresh tagTracker, as there are other input elements on the new page
         recorder.tagTracker.clear();
         if (recorder.clickTempStore !== null) {
             // if temporary click storage is not null, last click did trigger site load
-            recorder.clickTempStore[1][recorder.clickTempStore[1].length - 1] = "true";
+            recorder.clickTempStore[1][recorder.clickTempStore[1].length - 1] = 'true';
             recorder.userWebPath.setItem(recorder.clickTempStore[0], recorder.clickTempStore[1]);
             recorder.clickTempStore = null;
         }
@@ -121,7 +122,7 @@ class Recorder {
             if (Utils.getMainPageFromLink(this.currentWebsite) !== Utils.getMainPageFromLink(message.webPage)) {
                 this.scrollPosition = message.scrollTop;
                 if (this.clickTempStore !== null) {
-                    this.clickTempStore[1][this.clickTempStore[1].length - 1] = "true";
+                    this.clickTempStore[1][this.clickTempStore[1].length - 1] = 'true';
                     this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
                     this.clickTempStore = null;
                 }
@@ -134,7 +135,7 @@ class Recorder {
         // clear temporary click storage first, if last click did not trigger site load
         if (this.clickTempStore !== null)
             this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
-        this.clickTempStore = [this.orderNumber, ["Click", message.clientX, message.clientY, message.innerHeight, message.innerWidth, scrollTop, websiteTrunk, "false"]];
+        this.clickTempStore = [this.orderNumber, ['Click', message.clientX, message.clientY, message.innerHeight, message.innerWidth, scrollTop, websiteTrunk, 'false']];
         this.orderNumber++;
     }
 
@@ -156,7 +157,7 @@ class Recorder {
             // special case when "DOMContentLoaded" event does not bubble up to window object on site load
             this.scrollPosition = message.scrollTop;
             if (this.clickTempStore !== null) {
-                this.clickTempStore[1][this.clickTempStore[1].length - 1] = "true";
+                this.clickTempStore[1][this.clickTempStore[1].length - 1] = 'true';
                 this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
                 this.clickTempStore = null;
             }
@@ -171,10 +172,10 @@ class Recorder {
         // focuses an input element more than once (to correct a wrongly typed password for
         // example); these duplicates are removed after recording, so that we only have one
         // "Input" entry in the blueprint for each input element
-        this.userWebPath.setItem(this.orderNumber, ["Input", tag, message.inputsLength, message.nodeNumber, websiteTrunk]);
+        this.userWebPath.setItem(this.orderNumber, ['Input', tag, message.inputsLength, message.nodeNumber, websiteTrunk]);
         this.orderNumber++;
         // store values we need for changing the password after recording stopped
-        if (tag === "U" && !this.loginDone) {
+        if (tag === 'U' && !this.loginDone) {
             this.loginData.formSubmitURL = message.nodeFormAction;
             this.loginData.url = Utils.getMainPageFromLink(websiteTrunk);
             this.loginData.username = message.nodeValue;
@@ -182,12 +183,19 @@ class Recorder {
             // this will be the key in hash table in simple-storage
             this.webPage = Utils.getMainPageFromLink(websiteTrunk);
         }
-        if (tag === "C" && !this.loginDone) {
+        if (tag === 'C' && !this.loginDone) {
             this.loginData.passwordField = message.nodeName;
         }
-        if (tag === "N") {
+        if (tag === 'N') {
             this.loginData.password = message.nodeValue;
         }
+    }
+
+    /**
+     * Saves policy to blueprint
+     */
+    policyEntered(message) {
+        this.pwdPolicy = JSON.parse(message);
     }
 
     /**
@@ -199,7 +207,7 @@ class Recorder {
         browser.tabs.onUpdated.removeListener(this.injectContentScripts);
         // send stopRecording command to recorderContentScript
         let sending = browser.tabs.sendMessage(this.recordingTabId, {
-            type: "stopRecording"
+            type: 'stopRecording'
         });
         sending.then(null, function(error) {
             console.log(`Getting recording results in stopRecording() failed. ${error}`);
@@ -209,7 +217,7 @@ class Recorder {
             this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
         // clear variables
         this.orderNumber = 0;
-        this.currentWebsite = "";
+        this.currentWebsite = '';
         this.eventDOMContentLoadedFired = false;
         this.loginDone = false;
         this.scrollPosition = 0;
@@ -219,12 +227,19 @@ class Recorder {
             this.userWebPath = this.cleanUpHashTable(this.userWebPath);
             if (this.sanityCheck(this.userWebPath)) {
                 // save recording results as new blueprint in storage
-                blueprintStorageAccess.saveBlueprint(this.webPage, this.userWebPath);
+                const blueprint = {
+                    version: 0,
+                    scope: this.webPage,
+                    changeProcedure: this.userWebPath,
+                    pwdPolicy: this.pwdPolicy
+                };
+                // TODO validate blueprint against schema
+                blueprintStorageAccess.saveBlueprint(this.webPage, blueprint);
                 // use legacy add-on code to store password
                 portToLegacyAddOn.postMessage({
-                    type: "setPassword",
+                    type: 'setPassword',
                     loginData: this.loginData,
-                    sender: "Recorder"
+                    sender: 'Recorder'
                 });
                 // clear loginData
                 this.loginDone = null;
@@ -239,23 +254,23 @@ class Recorder {
      * @returns {*}
      */
     constructItemWebsite(url) {
-        let split = url.split("?");
+        let split = url.split('?');
         let constructedURL = split[0];
         if (this.orderNumber === 0 && split.length > 1) {
             let args = split[1];
             if (split.length > 2) {
                 // arguments can have questions marks, undo splitting in this case
-                args = split.slice(1).join("?");
+                args = split.slice(1).join('?');
             }
             // include all arguments that need to be part of the imitation start URL in argumentsToAppend
             // for Google these are 'continue', 'hl' and 'followup', but you can extend the array for other websites if necessary
-            let argumentsToAppend = ["continue", "hl", "followup", "next", "forward", "scope"];
+            let argumentsToAppend = ['continue', 'hl', 'followup', 'next', 'forward', 'scope'];
             let argumentsAppended = 0;
             argumentsToAppend.forEach(function(value) {
-                let argumentIndex = args.indexOf(value + "=");
+                let argumentIndex = args.indexOf(value + '=');
                 if (argumentIndex !== -1) {
-                    constructedURL += argumentsAppended === 0 ? "?" : "&";
-                    constructedURL += args.substring(argumentIndex).split("#")[0].split("&")[0];
+                    constructedURL += argumentsAppended === 0 ? '?' : '&';
+                    constructedURL += args.substring(argumentIndex).split('#')[0].split('&')[0];
                     argumentsAppended++;
                 }
             });
@@ -289,11 +304,11 @@ class Recorder {
         i = 0;
         let lastSiteLoadClickKey = -1;
         temp.each(function (k, v) {
-            if (v[0] === "Input") {
+            if (v[0] === 'Input') {
                 let olderEntryFound = false;
                 let key;
                 result.each(function (k3, v3) {
-                    if (v3[0] === "Input") {
+                    if (v3[0] === 'Input') {
                         // for all input items that came after the last site load, but before the current item
                         // we are looking at right now (implicit, because the are stored in result already),
                         // check if position of input element on the site is the same -> same element, but older entry
@@ -313,7 +328,7 @@ class Recorder {
                 }
             } else {
                 // else case is for click items
-                if (v[7] === "true")
+                if (v[7] === 'true')
                     lastSiteLoadClickKey = i;
                 result.setItem(i, v);
                 i++;
@@ -338,40 +353,43 @@ class Recorder {
         let conditionMet = false;
         let hasNewPasswordInputEntry = false;
         userWebPath.each(function (k, v) {
-            if (v[0] === "Click" && v[7] === "true" && hasNewPasswordInputEntry)
+            if (v[0] === 'Click' && v[7] === 'true' && hasNewPasswordInputEntry)
                 conditionMet = true;
-            if (v[0] === "Input" && v[1] === "N")
+            if (v[0] === 'Input' && v[1] === 'N')
                 hasNewPasswordInputEntry = true;
         });
-        return conditionMet && this.loginData.password !== "";
+        return conditionMet && this.loginData.password !== '';
     }
 }
 
 browser.runtime.onMessage.addListener(function(message) {
     switch (message.type) {
-        case "clickHappened":
-            recorder.clickHappened(message);
-            break;
-        case "scrollHappened":
-            recorder.scrollHappened(message);
-            break;
-        case "blurHappened":
-            recorder.blurHappened(message);
-            break;
+    case 'clickHappened':
+        recorder.clickHappened(message);
+        break;
+    case 'scrollHappened':
+        recorder.scrollHappened(message);
+        break;
+    case 'blurHappened':
+        recorder.blurHappened(message);
+        break;
+    case 'policyEntered':
+        recorder.policyEntered(message);
+        break;
     }
 });
 
 // listen for answers from the legacy add-on
 portToLegacyAddOn.onMessage.addListener(function(message) {
     // imitator also listens for "storePassword" messages, so we need to check the intended receiver
-    if (message.type === "storePassword" && message.status === "Error" && message.receiver === "Recorder") {
+    if (message.type === 'storePassword' && message.status === 'Error' && message.receiver === 'Recorder') {
         switch (message.errorCode) {
-            case "missingInformation":
-                Utils.showNotification(browser.i18n.getMessage("store_password_failed_missing_information"));
-                break;
-            default:
-                Utils.showNotification(browser.i18n.getMessage("recorder_failed_saving_new_password"));
-                break;
+        case 'missingInformation':
+            Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
+            break;
+        default:
+            Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
+            break;
         }
     }
 });
