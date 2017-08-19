@@ -50,7 +50,9 @@ function openSpecificationInterface(inputField) {
         success: function (data) {
             $('body').append(data);
             $('#specificationDialog').dialog({
-                dialogClass: 'ui-dialog-no-close',
+                classes: {
+                    'ui-dialog': 'ui-dialog-no-close'
+                },
                 width: 400,
                 height: 600,
                 position: {my: 'left top', at: 'right top', of: inputField},
@@ -63,6 +65,7 @@ function openSpecificationInterface(inputField) {
                     }
                 ]
             });
+            $('.ui-dialog').appendTo('.pwdChanger');
             $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
             $( '.ui-spinner-input' ).spinner();
             $( '.ui-selectmenu' ).selectmenu();
