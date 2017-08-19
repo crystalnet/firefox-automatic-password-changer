@@ -1,124 +1,107 @@
 <div id="specificationDialog" title="Password Specification">
     <form>
         <fieldset>
-            <h4>Länge</h4>
-                <label for="minLength" class="ui-controlgroup-label">min</label>
-                <input id="minLength" class="ui-spinner-input" style="width: 40px">
+            <h4>Length</h4>
+            <label for="minLength" class="ui-controlgroup-label">min</label>
+            <input id="minLength" class="ui-spinner-input" style="width: 40px" value="6" min="0">
 
-                <label for="maxLength" class="ui-controlgroup-label">max</label>
-                <input id="maxLength" class="ui-spinner-input" style="width: 40px">
+            <label for="maxLength" class="ui-controlgroup-label">max</label>
+            <input id="maxLength" class="ui-spinner-input" style="width: 40px" min="0">
         </fieldset>
         <fieldset>
-            <h4>Capital Letters</h4>
-            <div class="controlgroup-vertical">
-                <input type="text" name="capitalSet" id="capitalSet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                       class="text ui-widget-content ui-corner-all">
-                <label for="capitalAllowed">Allowed</label>
-                <input type="checkbox" name="capitalAllowed" id="capitalAllowed" class="ui-checkboxradio-input">
-                <br/>
+            <label for="capitalAllowed">Capital Letters Allowed</label>
+            <input type="checkbox" name="capitalAllowed" id="capitalAllowed" class="ui-checkboxradio-input"
+                   checked="checked">
+            <br/>
 
-                <label for="minCapital" class="ui-controlgroup-label">min</label>
-                <input id="minCapital" class="ui-spinner-input" style="width: 40px">
+            <input type="text" name="capitalSet" id="capitalSet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                   class="text ui-widget-content ui-corner-all" style="width: 200px">
+            <br/>
 
-                <label for="maxCapital" class="ui-controlgroup-label">max</label>
-                <input id="maxCapital" class="ui-spinner-input" style="width: 40px">
-            </div>
+            <label for="minCapital" class="ui-controlgroup-label">min</label>
+            <input id="minCapital" class="ui-spinner-input" style="width: 40px" value="0" min="0">
+
+            <label for="maxCapital" class="ui-controlgroup-label">max</label>
+            <input id="maxCapital" class="ui-spinner-input" style="width: 40px" min="0">
         </fieldset>
         <fieldset>
-            <h4>Numbers</h4>
-            <div class="controlgroup-vertical">
-                <input type="text" name="numberSet" id="numberSet" value="0123456789"
-                       class="text ui-widget-content ui-corner-all">
-                <label for="numberAllowed">Allowed</label>
-                <input type="checkbox" name="numberAllowed" id="numberAllowed" class="ui-checkboxradio-input">
-                <br/>
+            <label for="numberAllowed">Numbers Allowed</label>
+            <input type="checkbox" name="numberAllowed" id="numberAllowed" class="ui-checkboxradio-input"
+                   checked="checked">
+            <br/>
 
-                <label for="minNumber" class="ui-controlgroup-label">min</label>
-                <input id="minNumber" class="ui-spinner-input" style="width: 40px">
+            <input type="text" name="numberSet" id="numberSet" value="0123456789"
+                   class="text ui-widget-content ui-corner-all" style="width: 200px">
+            <br/>
 
-                <label for="maxNumber" class="ui-controlgroup-label">max</label>
-                <input id="maxNumber" class="ui-spinner-input" style="width: 40px">
-            </div>
+            <label for="minNumber" class="ui-controlgroup-label">min</label>
+            <input id="minNumber" class="ui-spinner-input" style="width: 40px" value="0" min="0">
+
+            <label for="maxNumber" class="ui-controlgroup-label">max</label>
+            <input id="maxNumber" class="ui-spinner-input" style="width: 40px" min="0">
         </fieldset>
         <fieldset>
-            <h4>Special Letters</h4>
-            <div class="controlgroup-vertical">
-                <input type="text" name="specialSet" id="specialSet" value="!&quot'§$%\/()=?-_,.;:#+*@[]|{}&lt&gt&amp"
-                       class="text ui-widget-content ui-corner-all">
-                <label for="specialAllowed">Allowed</label>
-                <input type="checkbox" name="specialAllowed" id="specialAllowed" class="ui-checkboxradio-input">
-                <br/>
+            <label for="specialAllowed">Special Characters Allowed</label>
+            <input type="checkbox" name="specialAllowed" id="specialAllowed" class="ui-checkboxradio-input"
+                   checked="checked">
+            <br/>
 
-                <label for="minSpecial" class="ui-controlgroup-label">min</label>
-                <input id="minSpecial" class="ui-spinner-input" style="width: 40px">
+            <input type="text" name="specialSet" id="specialSet" value="!&quot'§$%\/()=?-_,.;:#+*@[]|{}&lt&gt&amp"
+                   class="text ui-widget-content ui-corner-all" style="width: 200px">
+            <br/>
 
-                <label for="maxSpecial" class="ui-controlgroup-label">max</label>
-                <input id="maxSpecial" class="ui-spinner-input" style="width: 40px">
+            <label for="minSpecial" class="ui-controlgroup-label">min</label>
+            <input id="minSpecial" class="ui-spinner-input" style="width: 40px" value="0" min="0">
 
-                <label for="whitespaceAllowed">Whitespace allowed</label>
-                <input type="checkbox" name="whitespaceAllowed" id="whitespaceAllowed" class="ui-checkboxradio-input">
-                <br/>
-            </div>
+            <label for="maxSpecial" class="ui-controlgroup-label">max</label>
+            <input id="maxSpecial" class="ui-spinner-input" style="width: 40px" min="0">
+
+            <label for="whitespaceAllowed">Whitespace allowed</label>
+            <input type="checkbox" name="whitespaceAllowed" id="whitespaceAllowed" class="ui-checkboxradio-input">
+            <br/>
         </fieldset>
         <fieldset>
-            <h4>Lower Letters</h4>
-            <div class="controlgroup-vertical">
-                <label for="capitalSet">Set</label>
-                <input type="text" name="capitalSet" id="lowerSet" value="abcdefghijklmnopqrstuvwxyz"
-                       class="text ui-widget-content ui-corner-all">
-                <label for="lowerAllowed">Allowed</label>
-                <input type="checkbox" name="lowerAllowed" id="lowerAllowed" class="ui-checkboxradio-input">
-                <br/>
+            <label for="lowerAllowed">Lowercase Letters Allowed</label>
+            <input type="checkbox" name="lowerAllowed" id="lowerAllowed" class="ui-checkboxradio-input"
+                   checked="checked">
+            <br/>
 
-                <label for="minLower" class="ui-controlgroup-label">min</label>
-                <input id="minLower" class="ui-spinner-input" style="width: 40px">
+            <input type="text" name="capitalSet" id="lowerSet" value="abcdefghijklmnopqrstuvwxyz"
+                   class="text ui-widget-content ui-corner-all" style="width: 200px">
+            <br/>
 
-                <label for="maxLower" class="ui-controlgroup-label">max</label>
-                <input id="maxLower" class="ui-spinner-input" style="width: 40px">
-            </div>
+            <label for="minLower" class="ui-controlgroup-label">min</label>
+            <input id="minLower" class="ui-spinner-input" style="width: 40px" value="0" min="0">
+
+            <label for="maxLower" class="ui-controlgroup-label">max</label>
+            <input id="maxLower" class="ui-spinner-input" style="width: 40px" min="0">
         </fieldset>
     </form>
-    <button class="button buttonGrey" id="showAddRes">More</button>
-    <fieldset>
-        <h4>
-            Additional restrictions:
-        </h4>
-        <div id="addRes" class="myform">
-            <p>
-                Position specific restrictions:
-            </p>
-            <button class="button buttonGrey" id="addPosResField">Add restriction</button>
-            <form>
-                <div id="posRes">
-                    <div>
-                        <div class="column">
-                            position:
-                            <input id="pos" name="numMin" type="number" style="width: 40px" value="1" min="1"/>
+    <button class="ui-button ui-widget ui-corner-all" id="showPositionRestrictions">More</button>
+    <div id="positionRestrictions">
+        <h4>Position specific restrictions:</h4>
+        <form id="restrictionForm">
+            <fieldset id="restrictionContainer">
+                <label for="restrictionPosition" class="ui-controlgroup-label">position</label>
+                <input id="restrictionPosition" class="ui-spinner-input" style="width: 40px" min="1">
 
-                        </div>
-                        <div class="column">
-                            Must
-                            <select id="mustContain">
-                                <option value="mustNot">not be/contain</option>
-                                <option value="must">be/contain</option>
+                <select id="restrictionType" class="ui-selectmenu">
+                    <option value="mustNot">must not be/contain</option>
+                    <option value="must">must be/contain</option>
+                </select>
 
-                            </select>:
-                        </div>
-                        <div class="column">
-                            <select id="type">
-                                <option value="capital">Capital Letter</option>
-                                <option value="lowercase">Lowercase Letter</option>
-                                <option value="number">Number</option>
-                                <option value="special">Punctuation or special character</option>
-                                <option value="specific">specific</option>
-                            </select>:
-                            <input id="numberSet" name="numberSet" type="text"
-                                   placeholder="specific character?"/>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </fieldset>
+                <select id="restrictionContent" class="ui-selectmenu">
+                    <option value="capital">Capital Letter</option>
+                    <option value="lowercase">Lowercase Letter</option>
+                    <option value="number">Number</option>
+                    <option value="special">Special character</option>
+                    <option value="specific">specific</option>
+                </select>
+                <input id="specificRestriction" type="text" class="text ui-widget-content ui-corner-all"
+                       placeholder="specific character" style="width: 120px">
+            </fieldset>
+        </form>
+        <button class="ui-button ui-widget ui-corner-all" id="addPositionRestriction">Add restriction</button>
+    </div>
 </div>
 

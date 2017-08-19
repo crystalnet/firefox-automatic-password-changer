@@ -52,6 +52,7 @@ function openSpecificationInterface(inputField) {
             $('#specificationDialog').dialog({
                 dialogClass: 'ui-dialog-no-close',
                 width: 400,
+                height: 600,
                 position: {my: 'left top', at: 'right top', of: inputField},
                 buttons: [
                     {
@@ -64,7 +65,23 @@ function openSpecificationInterface(inputField) {
             });
             $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
             $( '.ui-spinner-input' ).spinner();
+            $( '.ui-selectmenu' ).selectmenu();
             $( '.ui-checkboxradio-input' ).checkboxradio();
+
+            $('#positionRestrictions').hide();
+            $('#showPositionRestrictions').click(function () {
+                if ($('#positionRestrictions').is(":visible")) {
+                    $('#positionRestrictions').hide();
+                    $(this).html('More');
+                } else {
+                    $('#positionRestrictions').show();
+                    $(this).html('Less');
+                }
+            });
+
+            $('#addPositionRestriction').click(function () {
+                $('#restrictionContainer').clone().appendTo('#restrictionForm');
+            });
         },
         error: function (error) {console.log(error);},
         dataType: 'html'
