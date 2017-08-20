@@ -21,7 +21,7 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
 
         if (request.label === 'N') {
-            openSpecificationInterface(inputs[request.inputNumber]);
+            loadSpecificationInterface(inputs[request.inputNumber]);
         }
         break;
     }
@@ -42,64 +42,162 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     registerEventHandlers();
 })();
 
-function openSpecificationInterface(inputField) {
+function loadSpecificationInterface(inputField) {
     const asdf = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
     $.ajax({
         url: asdf,
-        success: function (data) {
-            $('body').append(data);
-            $('#specificationDialog').dialog({
-                classes: {
-                    'ui-dialog': 'ui-dialog-no-close'
-                },
-                width: 400,
-                height: 600,
-                position: {my: 'left top', at: 'right top', of: inputField},
-                buttons: [
-                    {
-                        text: 'OK',
-                        click: function() {
-                            $(this).dialog('close');
-                        }
-                    }
-                ]
-            });
-            $('.ui-dialog').appendTo('.pwdChanger');
-            $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
-            $( '.ui-spinner-input' ).spinner();
-            $( '.ui-selectmenu' ).selectmenu();
-            $( '.ui-checkboxradio-input' ).checkboxradio();
-
-            $('#positionRestrictions').hide();
-            $('#showPositionRestrictions').click(function () {
-                if ($('#positionRestrictions').is(":visible")) {
-                    $('#positionRestrictions').hide();
-                    $(this).html('More');
-                } else {
-                    $('#positionRestrictions').show();
-                    $(this).html('Less');
-                }
-            });
-
-            $('#addPositionRestriction').click(function () {
-                $('#restrictionContainer').clone().appendTo('#restrictionForm');
-            });
-        },
+        success: function(data) {initializeSpecifiactionDialog(data, inputField);},
         error: function (error) {console.log(error);},
         dataType: 'html'
     });
 }
 
-function policyEntered(dialog) {
+function initializeSpecifiactionDialog(data, inputField) {
+    // Append html containing dialog to body
+    $('body').append(data);
 
+    // Initialize and open dialog
+    $('#specificationDialog').dialog({
+        classes: {
+            'ui-dialog': 'ui-dialog-no-close'
+        },
+        width: 400,
+        height: 600,
+        position: {my: 'left top', at: 'right top', of: inputField},
+        buttons: [
+            {
+                text: 'OK',
+                click: function() {
+                    policyEntered(this);
+                }
+            }
+        ]
+    });
+
+    // Initialize form elements
+    $('.ui-dialog').appendTo('.pwdChanger');
+    $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
+    $( '.ui-spinner-input' ).spinner();
+    $( '.ui-selectmenu' ).selectmenu();
+    $( '.ui-checkboxradio-input' ).checkboxradio();
+
+    // Add button functionality
+    const positionRestrictions = $('#positionRestrictions');
+    positionRestrictions.hide();
+    $('#showPositionRestrictions').click(function () {
+        if (positionRestrictions.is(':visible')) {
+            positionRestrictions.hide();
+            $(this).html('More');
+        } else {
+            positionRestrictions.show();
+            $(this).html('Less');
+        }
+    });
+
+    $('#addPositionRestriction').click(function () {
+        $('#positionRestrictionContainer').clone().appendTo('#positionRestrictionsForm');
+    });
+}
+
+function policyEntered(dialog) {
+    let characterSetRestrictions = {};
+    let positionRestrictions = {};
+    $.each($('#characterSetRestrictionsForm').serializeArray(), function() {
+        characterSetRestrictions[this.name] = this.value;
+    });
+    $.each($('#positionRestrictionsForm').serializeArray(), function() {
+        positionRestrictions[this.name] = this.value;
+    });
+
+    const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions);
+
+    console.log(characterSetRestrictions);
+    console.log(characterSetRestrictions[0]);
+    console.log(characterSetRestrictions['minLength']);
+    console.log(positionRestrictions);
 
     $(dialog).dialog('close');
 
     browser.runtime.sendMessage({
         type: 'policyEntered',
-        policyData: ''
+        policy: policy
     });
+}
+
+function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
+    let policy = {
+        allowedCharacterSets: {},
+        minLength: characterSetRestrictions.minLength,
+        maxLength: characterSetRestrictions.maxLength,
+        compositionRequirements: []
+    };
+
+    if (characterSetRestrictions.lowerAllowed) {
+        policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
+    }
+
+    if (characterSetRestrictions.capitalAllowed) {
+        policy.allowedCharacterSets.AZ = characterSetRestrictions.capitalSet;
+    }
+
+    if (characterSetRestrictions.numberAllowed) {
+        policy.allowedCharacterSets.num = characterSetRestrictions.numberSet;
+    }
+
+    if (characterSetRestrictions.specialAllowed) {
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet;
+    }
+
+    if (characterSetRestrictions.minLower) {
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minLower,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
+                regexp: '.*[az].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+    }
+
+    if (characterSetRestrictions.minCapital) {
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minCapital,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' upper case letters.',
+                regexp: '.*[AZ].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+    }
+
+    if (characterSetRestrictions.minNumber) {
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minNumber,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
+                regexp: '.*[num].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+    }
+
+    if (characterSetRestrictions.minSpecial) {
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minSpecial,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
+                regexp: '.*[special].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+    }
+
+    return policy;
 }
 
 /**

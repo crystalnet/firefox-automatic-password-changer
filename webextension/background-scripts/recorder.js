@@ -195,7 +195,7 @@ class Recorder {
      * Saves policy to blueprint
      */
     policyEntered(message) {
-        this.pwdPolicy = JSON.parse(message);
+        this.pwdPolicy = message.policy;
     }
 
     /**
