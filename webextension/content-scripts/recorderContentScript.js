@@ -43,10 +43,10 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 })();
 
 function loadSpecificationInterface(inputField) {
-    const asdf = browser.extension.getURL('/content-scripts/specificationDialog.htm');
+    const url = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
     $.ajax({
-        url: asdf,
+        url: url,
         success: function(data) {initializeSpecifiactionDialog(data, inputField);},
         error: function (error) {console.log(error);},
         dataType: 'html'
@@ -96,7 +96,9 @@ function initializeSpecifiactionDialog(data, inputField) {
     });
 
     $('#addPositionRestriction').click(function () {
-        $('#positionRestrictionContainer').clone().appendTo('#positionRestrictionsForm');
+        $(data).find('.positionRestrictionContainer').clone().appendTo('#positionRestrictionsForm');
+        $( '.ui-spinner-input' ).spinner();
+        $( '.ui-selectmenu' ).selectmenu();
     });
 }
 
@@ -113,8 +115,6 @@ function policyEntered(dialog) {
     const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions);
 
     console.log(characterSetRestrictions);
-    console.log(characterSetRestrictions[0]);
-    console.log(characterSetRestrictions['minLength']);
     console.log(positionRestrictions);
 
     $(dialog).dialog('close');
