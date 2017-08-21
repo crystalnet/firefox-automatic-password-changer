@@ -101,7 +101,6 @@ class Player {
             }
         });
 
-        //console.log(JSON.parse(arrayOfChars));
         return passwordGenerator.generatePassword(maxLength, arrayOfChars).then(function (result) {
             return result;
         });
@@ -112,7 +111,7 @@ class Player {
      * Stops after the first failed Regular Expression.
      * Note that some policies can't be tested, like "May not be the same as the last 5 passwords used." As the old passwords are not stored in the password manager.
      *
-     * @param password Password to be tested
+     * @param {String} password Password to be tested
      * @returns {boolean} true if the password satisfies the policies
      * @private
      */
@@ -126,11 +125,17 @@ class Player {
         if (minLength !== 'undefined') {
             if (password.length < minLength) {
                 return false;
+                // if minLength is undefined
+            } else if(password.length < 7){
+                return false;
             }
         }
 
         if (maxLength !== 'undefined') {
             if (password.length > maxLength) {
+                return false;
+                // if maxLength is undefined
+            } else if(password.length > 25){
                 return false;
             }
         }
@@ -150,9 +155,9 @@ class Player {
     /**
      * Tests the password on the passed regular expression requirement, with respect to the allowed  Character Sets.
      *
-     * @param password the password to be tested
-     * @param requirement a regular expression
-     * @param allowedCharacterSets the allowed character sets
+     * @param {String} password the password to be tested
+     * @param {Array} requirement a regular expression
+     * @param {Array} allowedCharacterSets the allowed character sets
      * @returns {boolean} only true if the password meets the specified requirements
      * @private
      */
@@ -196,7 +201,8 @@ class Player {
      * Tests the password on all the Regular Expressions contained in the blueprint, that specify the password composition policies.
      * Collects the descriptions of the failed requirements in an array and returns them.
      * Also returns a boolean that is true, if no requirement was failed, and is false otherwise.
-     * @param password the password to be tested
+     *
+     * @param {String} password the password to be tested
      * @returns {{sat: boolean, failReq: Array, passReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint.
      *                                                           failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
      *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.

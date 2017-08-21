@@ -42,6 +42,10 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     registerEventHandlers();
 })();
 
+/**
+ * Loads specification interface
+ * @param inputField
+ */
 function loadSpecificationInterface(inputField) {
     const url = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
@@ -53,6 +57,11 @@ function loadSpecificationInterface(inputField) {
     });
 }
 
+/**
+ * Initialize specification dialog
+ * @param data
+ * @param inputField
+ */
 function initializeSpecifiactionDialog(data, inputField) {
     // Append html containing dialog to body
     $('body').append(data);
@@ -102,6 +111,10 @@ function initializeSpecifiactionDialog(data, inputField) {
     });
 }
 
+/**
+ * TODO documentation
+ * @param dialog
+ */
 function policyEntered(dialog) {
     let characterSetRestrictions = {};
     let positionRestrictions = {};
@@ -125,6 +138,12 @@ function policyEntered(dialog) {
     });
 }
 
+/**
+ * Converts the entered restrictions to valid policies
+ * @param characterSetRestrictions
+ * @param positionRestrictions
+ * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
+ */
 function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     let policy = {
         allowedCharacterSets: {},
