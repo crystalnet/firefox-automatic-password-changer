@@ -164,5 +164,17 @@
   },
   "show-password":{
     "message": "Show"
+  },
+  "instructions_manualPWChange1":{
+    "message": "In here you can set a new password for the following website."
+  },
+  "instructions_manualPWChange2":{
+    "message": "To help you with creating a password, the password policies are listed below."
+  },
+  "instructions_manualPWChange3":{
+    "message": "Alternatively, you can let a new password be generated for you."
+  },
+  "instructions_manualPWChange4":{
+    "message":"Once all password policies are fulfilled, you can start the automatic change process."
   }
 }

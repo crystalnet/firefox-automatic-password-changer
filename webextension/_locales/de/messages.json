@@ -162,5 +162,17 @@
   },
   "show-password":{
     "message": "Zeigen"
+  },
+  "instructions_manualPWChange1":{
+    "message": "Hier können Sie ein neues Passwort für die nachfolgende Website festlegen."
+  },
+  "instructions_manualPWChange2":{
+    "message": "Als Hilfe sind die Passwortanforderungen der Website unten aufgelistet."
+  },
+  "instructions_manualPWChange3":{
+    "message": "Alternativ können Sie sich ein zufälliges Passwort generieren lassen."
+  },
+  "instructions_manualPWChange4":{
+    "message":"Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
   }
 }

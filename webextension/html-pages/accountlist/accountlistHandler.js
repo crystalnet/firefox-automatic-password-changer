@@ -189,9 +189,8 @@ function openPasswordChangeDialog(url, username) {
         this.checkRequirements(player);
 
         const form = $('#manual-password-change-dialog-form');
-
         form.find('#url').val(url);
-        form.find('form').on('submit', function (event) {
+        const sbmtForm = form.find('form').on('submit', function (event) {
             event.preventDefault();
         });
 
@@ -200,17 +199,20 @@ function openPasswordChangeDialog(url, username) {
             width: 630,
             modal: true,
             close: function () {
-                form[0].reset();
+                sbmtForm[0].reset();
+                form.dialog("destroy");
+
+
             }
         });
 
         form.dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
         form.removeAttr('style');
         form.dialog('open');
-        document.getElementById('instruction').innerHTML =  "Hier können Sie ein neues Passwort für die nachfolgende Website festlegen." +
-                                                            " </br> Als Hilfe sind die Passwortanforderungen der Website unten aufgelistet." +
-                                                            " </br> Alternativ können Sie sich ein zufälliges Passwort generieren lassen. " +
-                                                            " </br> Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
+        document.getElementById('instruction').innerHTML =  browser.i18n.getMessage('instructions_manualPWChange1') +
+                                                             '</br>' +  browser.i18n.getMessage('instructions_manualPWChange2') +
+                                                              '</br>' + browser.i18n.getMessage('instructions_manualPWChange3') +
+                                                                '</br>' + browser.i18n.getMessage('instructions_manualPWChange4');
         document.getElementById('url-heading').innerHTML = browser.i18n.getMessage('website');
         document.getElementById('heading_password').innerHTML = browser.i18n.getMessage('new password');
         document.getElementById('requirementsHeading').innerHTML = browser.i18n.getMessage('requirements');
