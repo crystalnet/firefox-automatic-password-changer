@@ -102,6 +102,9 @@ describe('Player', function () {
         it('should reject a too short password', function () {
             player._validatePassword('Jd1!', undefPlayer.blueprint).should.be.false();
         });
+        it('should reject a too long password', function () {
+            player._validatePassword('J.u29dnJNsjerubfiwfejEF.82Kf', undefPlayer.blueprint).should.be.false();
+        });
     });
 
     // TODO: tests for the failExp descriptions
