@@ -77,29 +77,31 @@
         <button class="ui-button ui-widget ui-corner-all" id="showPositionRestrictions">More</button>
         <div id="positionRestrictions">
             <h4>Position specific restrictions:</h4>
-            <form id="positionRestrictionsForm">
-                <fieldset class="positionRestrictionContainer">
-                    <label for="restrictionPosition" class="ui-controlgroup-label">position</label>
-                    <input id="restrictionPosition" name="restrictionPosition" class="ui-spinner-input"
-                           style="width: 40px" min="1">
+            <div id="positionRestrictionsContainer">
+                <form class="positionRestrictionForm">
+                    <fieldset>
+                        <label for="restrictionPosition" class="ui-controlgroup-label">position</label>
+                        <input id="restrictionPosition" name="restrictionPosition" class="ui-spinner-input"
+                               style="width: 40px" min="1">
 
-                    <select id="restrictionType" name="restrictionType" class="ui-selectmenu">
-                        <option value="mustNot">must not be/contain</option>
-                        <option value="must">must be/contain</option>
-                    </select>
+                        <select id="restrictionType" name="restrictionType" class="ui-selectmenu">
+                            <option value="mustNot">must not be/contain</option>
+                            <option value="must">must be/contain</option>
+                        </select>
 
-                    <select id="restrictionContent" name="restrictionContent" class="ui-selectmenu">
-                        <option value="capital">Capital Letter</option>
-                        <option value="lowercase">Lowercase Letter</option>
-                        <option value="number">Number</option>
-                        <option value="special">Special character</option>
-                        <option value="specific">specific</option>
-                    </select>
-                    <input id="specificRestriction" name="specificRestriction" type="text"
-                           class="text ui-widget-content ui-corner-all"
-                           placeholder="specific character" style="width: 120px">
-                </fieldset>
-            </form>
+                        <select id="restrictionContent" name="restrictionContent" class="ui-selectmenu">
+                            <option value="capital">Capital Letter</option>
+                            <option value="lowercase">Lowercase Letter</option>
+                            <option value="number">Number</option>
+                            <option value="special">Special character</option>
+                            <option value="specific">specific</option>
+                        </select>
+                        <input id="specificRestriction" name="specificRestriction" type="text"
+                               class="text ui-widget-content ui-corner-all"
+                               placeholder="specific character" style="width: 120px">
+                    </fieldset>
+                </form>
+            </div>
             <button class="ui-button ui-widget ui-corner-all" id="addPositionRestriction">Add restriction</button>
         </div>
     </div>

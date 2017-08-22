@@ -16,23 +16,24 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // as the message from the background code is sent shortly after clicking the context menu item,
     // the "node" variable stores a reference to the element the user invoked the context menu on
     switch (request.type) {
-    case 'label': {
-        let inputs = document.getElementsByTagName('input');
-        inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
+        case 'label': {
+            let inputs = document.getElementsByTagName('input');
+            inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
 
-        if (request.label === 'N') {
-            loadSpecificationInterface(inputs[request.inputNumber]);
+            if (request.label === 'N') {
+                loadSpecificationInterface(inputs[request.inputNumber]);
+            }
+            break;
         }
-        break;
+        case 'getWebPage': {
+            sendResponse({webPage: window.content.location.href});
+            break;
+        }
+        case 'stopRecording': {
+            stopRecording();
+            break;
+        }
     }
-    case 'getWebPage': {
-        sendResponse({webPage: window.content.location.href});
-        break;
-    }
-    case 'stopRecording': {
-        stopRecording();
-        break;
-    }}
 });
 
 /**
@@ -51,8 +52,12 @@ function loadSpecificationInterface(inputField) {
 
     $.ajax({
         url: url,
-        success: function(data) {initializeSpecifiactionDialog(data, inputField);},
-        error: function (error) {console.log(error);},
+        success: function (data) {
+            initializeSpecifiactionDialog(data, inputField);
+        },
+        error: function (error) {
+            console.log(error);
+        },
         dataType: 'html'
     });
 }
@@ -77,7 +82,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         buttons: [
             {
                 text: 'OK',
-                click: function() {
+                click: function () {
                     policyEntered(this);
                 }
             }
@@ -87,9 +92,9 @@ function initializeSpecifiactionDialog(data, inputField) {
     // Initialize form elements
     $('.ui-dialog').appendTo('.pwdChanger');
     $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
-    $( '.ui-spinner-input' ).spinner();
-    $( '.ui-selectmenu' ).selectmenu();
-    $( '.ui-checkboxradio-input' ).checkboxradio();
+    $('.ui-spinner-input').spinner();
+    $('.ui-selectmenu').selectmenu();
+    $('.ui-checkboxradio-input').checkboxradio();
 
     // Add button functionality
     const positionRestrictions = $('#positionRestrictions');
@@ -105,9 +110,9 @@ function initializeSpecifiactionDialog(data, inputField) {
     });
 
     $('#addPositionRestriction').click(function () {
-        $(data).find('.positionRestrictionContainer').clone().appendTo('#positionRestrictionsForm');
-        $( '.ui-spinner-input' ).spinner();
-        $( '.ui-selectmenu' ).selectmenu();
+        $(data).find('.positionRestrictionForm').clone().appendTo('#positionRestrictionsContainer');
+        $('.ui-spinner-input').spinner();
+        $('.ui-selectmenu').selectmenu();
     });
 }
 
@@ -117,12 +122,20 @@ function initializeSpecifiactionDialog(data, inputField) {
  */
 function policyEntered(dialog) {
     let characterSetRestrictions = {};
-    let positionRestrictions = {};
-    $.each($('#characterSetRestrictionsForm').serializeArray(), function() {
+    let positionRestrictions = [];
+    $.each($('#characterSetRestrictionsForm').serializeArray(), function () {
         characterSetRestrictions[this.name] = this.value;
     });
-    $.each($('#positionRestrictionsForm').serializeArray(), function() {
-        positionRestrictions[this.name] = this.value;
+    $.each($('.positionRestrictionForm'), function () {
+        let restriction = {};
+        $.each($(this).serializeArray(), function () {
+            restriction[this.name] = this.value;
+        });
+        if (restriction.restrictionContent === 'specific') {
+            restriction.restrictionContent = restriction.specificRestriction;
+            delete restriction.specificRestriction;
+        }
+        positionRestrictions.push(restriction);
     });
 
     const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions);
@@ -216,6 +229,26 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         policy.compositionRequirements.push(requirement);
     }
 
+    // Translate position restrictions
+    for (let restriction of positionRestrictions) {
+        let requirement = {
+            kind: restriction.restrictionType,
+            num: 1
+        };
+
+        if (restriction.restrictionType === 'must') {
+            requirement.rule = {
+                description: 'Position ' + restriction.restrictionPosition + ' must be ' + restriction.restrictionContent,
+                regexp: '.*[' + restriction.restrictionContent + '].*'
+            };
+        } else {
+            requirement.rule = {
+                description: 'Position ' + restriction.restrictionPosition + ' must not be ' + restriction.restrictionContent,
+                regexp: '.*^[' + restriction.restrictionContent + '].*'
+            };
+        }
+        policy.compositionRequirements.push(requirement);
+    }
     return policy;
 }
 
