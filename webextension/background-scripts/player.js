@@ -122,22 +122,13 @@ class Player {
         let minLength = pwdPolicy.minLength;
         let maxLength = pwdPolicy.maxLength;
 
-        if (minLength !== 'undefined') {
-            if (password.length < minLength) {
-                return false;
-                // if minLength is undefined
-            } else if(password.length < 7){
-                return false;
-            }
+        // min/maxLength can´t be undefined, so we don´t have to check this case
+        if (password.length < minLength) {
+            return false;
         }
 
-        if (maxLength !== 'undefined') {
-            if (password.length > maxLength) {
-                return false;
-                // if maxLength is undefined
-            } else if(password.length > 25){
-                return false;
-            }
+        if (password.length > maxLength) {
+            return false;
         }
 
         if (charExp.test(password)) {
@@ -215,22 +206,18 @@ class Player {
         let minLength = pwdPolicy.minLength;
         let maxLength = pwdPolicy.maxLength;
 
-        if (minLength !== 'undefined') {
-            if (password.length < minLength) {
-                satisfied = false;
-                unSatReq.push('Must contain at least ' + minLength + ' letters.');
-            } else {
-                satReq.push('Must contain at least ' + minLength + ' letters.');
-            }
+        if (password.length < minLength) {
+            satisfied = false;
+            unSatReq.push('Must contain at least ' + minLength + ' letters.');
+        } else {
+            satReq.push('Must contain at least ' + minLength + ' letters.');
         }
 
-        if (maxLength !== 'undefined') {
-            if (password.length > maxLength) {
-                satisfied = false;
-                unSatReq.push('May not contain more than ' + maxLength + ' letters.');
-            } else {
-                satReq.push('May not contain more than ' + maxLength + ' letters.');
-            }
+        if (password.length > maxLength) {
+            satisfied = false;
+            unSatReq.push('May not contain more than ' + maxLength + ' letters.');
+        } else {
+            satReq.push('May not contain more than ' + maxLength + ' letters.');
         }
 
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special + ']');
@@ -275,9 +262,9 @@ class Player {
         //accesses the promise of the password generator and returns it if it contains a valid password
         return this._invokePasswordGenerator().then(function (val) {
             let result = store._validatePassword(val);
-            if(result){
+            if (result) {
                 return val;
-            }else{
+            } else {
                     //returns a new valid password recursively if the first one wasn't valid
                 return (store.generatePassword());
             }
