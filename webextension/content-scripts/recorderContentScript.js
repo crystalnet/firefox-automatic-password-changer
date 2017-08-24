@@ -16,24 +16,23 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // as the message from the background code is sent shortly after clicking the context menu item,
     // the "node" variable stores a reference to the element the user invoked the context menu on
     switch (request.type) {
-        case 'label': {
-            let inputs = document.getElementsByTagName('input');
-            inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
+    case 'label': {
+        let inputs = document.getElementsByTagName('input');
+        inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
 
-            if (request.label === 'N') {
-                loadSpecificationInterface(inputs[request.inputNumber]);
-            }
-            break;
+        if (request.label === 'N' && request.policyEntered === false) {
+            loadSpecificationInterface(inputs[request.inputNumber]);
         }
-        case 'getWebPage': {
-            sendResponse({webPage: window.content.location.href});
-            break;
-        }
-        case 'stopRecording': {
-            stopRecording();
-            break;
-        }
+        break;
     }
+    case 'getWebPage': {
+        sendResponse({webPage: window.content.location.href});
+        break;
+    }
+    case 'stopRecording': {
+        stopRecording();
+        break;
+    }}
 });
 
 /**
@@ -48,18 +47,23 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
  * @param inputField
  */
 function loadSpecificationInterface(inputField) {
-    const url = browser.extension.getURL('/content-scripts/specificationDialog.htm');
+    let specificationDialog = $('#specificationDialog');
+    if (specificationDialog.length) {
+        $('#specifiactionDailog').dialog('open');
+    } else {
+        const url = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
-    $.ajax({
-        url: url,
-        success: function (data) {
-            initializeSpecifiactionDialog(data, inputField);
-        },
-        error: function (error) {
-            console.log(error);
-        },
-        dataType: 'html'
-    });
+        $.ajax({
+            url: url,
+            success: function (data) {
+                initializeSpecifiactionDialog(data, inputField);
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            dataType: 'html'
+        });
+    }
 }
 
 /**
@@ -121,6 +125,34 @@ function initializeSpecifiactionDialog(data, inputField) {
  * @param dialog
  */
 function policyEntered(dialog) {
+    let error = false;
+    $('.pwdChanger .ui-state-error').removeClass('ui-state-error');
+
+    // form validation
+    let minLength = $('#minLength');
+    if (!minLength.val()) {
+        minLength.parent().addClass('ui-state-error');
+        error = true;
+    }
+
+    let maxLength = $('#maxLength');
+    if (!maxLength.val()) {
+        maxLength.parent().addClass('ui-state-error');
+        error = true;
+    }
+
+    let capitalAllowed = $('#capitalAllowed');
+    let lowerAllowed = $('#lowerAllowed');
+    let specialAllowed = $('#specialAllowed');
+    let numberAllowed = $('#numberAllowed');
+
+    if (error) {
+        return false;
+    }
+
+    $(dialog).dialog('close');
+
+    // Parse form restrictions
     let characterSetRestrictions = {};
     let positionRestrictions = [];
     $.each($('#characterSetRestrictionsForm').serializeArray(), function () {
@@ -139,11 +171,6 @@ function policyEntered(dialog) {
     });
 
     const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions);
-
-    console.log(characterSetRestrictions);
-    console.log(positionRestrictions);
-
-    $(dialog).dialog('close');
 
     browser.runtime.sendMessage({
         type: 'policyEntered',

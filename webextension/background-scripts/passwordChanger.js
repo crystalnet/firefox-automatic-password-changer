@@ -199,11 +199,13 @@ function handleLabelAsContextMenuClick(label, tabId) {
     });
     sending.then(function(message) {
         recorder.tagTracker.setItem(message.inputNumber, label);
+        const policyEntered = Boolean(Object.keys(recorder.pwdPolicy).length);
         // we get the number of the input element the context menu was invoked on as response
         // and send this information to the RecorderContentScript
         browser.tabs.sendMessage(tabId, {
             type: "label",
             inputNumber: message.inputNumber,
+            policyEntered: policyEntered,
             label: label
         });
     }, function(error) {
