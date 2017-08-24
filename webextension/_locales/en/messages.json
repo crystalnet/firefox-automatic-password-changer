@@ -244,10 +244,10 @@
   "general":{
     "message": "General:"
   },
-  "'allowed-character-sets'":{
+  "allowed-character-sets":{
     "message": "Allowed character sets:"
   },
-  "'additional-Restrictions'":{
+  "additional-Restrictions":{
     "message": "Additional restrictions:"
   }
 }

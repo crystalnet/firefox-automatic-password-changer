@@ -206,7 +206,7 @@
     "message": "Positionsspezifische Vorgaben:"
   },
   "add-Restriction":{
-    "message": "Weitere Einschränkungen"
+    "message": "Weitere Einschränkungen hinzufügen"
   },
   "more":{
     "message": "Mehr"
@@ -241,10 +241,10 @@
   "general":{
     "message": "Allgemein:"
   },
-  "'allowed-character-sets'":{
+  "allowed-character-sets":{
     "message": "Erlaubte Zeichensätze:"
   },
-  "'additional-Restrictions'":{
+  "additional-Restrictions":{
     "message": "Zusätzliche Einschränkungen:"
   }
 

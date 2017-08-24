@@ -97,7 +97,7 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#addPositionRestriction').html(browser.i18n.getMessage('add-Restriction'));
     $('#general-legend').html(browser.i18n.getMessage('general'));
     $('#characterset-legend-legend').html(browser.i18n.getMessage('allowed-character-sets'));
-    $('#addRes-legend-legend').html(browser.i18n.getMessage('additional-Restrictions'));
+    $('#addRes-legend').html(browser.i18n.getMessage('additional-Restrictions'));
     //select options
     $('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
     $('#mustBeOption').html(browser.i18n.getMessage('must-be'));
