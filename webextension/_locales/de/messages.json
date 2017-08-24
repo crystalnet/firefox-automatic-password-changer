@@ -174,5 +174,78 @@
   },
   "instructions_manualPWChange4":{
     "message":"Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
+  },
+  "lowercase-letters":{
+    "message": "Kleinbuchstaben"
+  },
+  "lowercase-allowed":{
+    "message": "Kleinbuchstaben erlaubt?"
+  },
+  "capital-letters":{
+    "message": "Großbuchstaben"
+  },
+  "capital-allowed":{
+    "message": "Großbuchstaben erlaubt?"
+  },
+  "numbers":{
+    "message": "Zahlen"
+  },
+  "numbers-allowed":{
+    "message": "Zahlen erlaubt?"
+  },
+  "special-characters":{
+    "message": "Sonderzeichen"
+  },
+  "special-allowed":{
+    "message": "Sonderzeichen erlaubt?"
+  },
+  "whitespace-allowed":{
+    "message": "Leerzeichen erlaubt?"
+  },
+  "position-specific":{
+    "message": "Positionsspezifische Vorgaben:"
+  },
+  "add-Restriction":{
+    "message": "Weitere Einschränkungen"
+  },
+  "more":{
+    "message": "Mehr"
+  },
+  "less":{
+    "message": "Weniger"
+  },
+  "position":{
+    "message": "Position"
+  },
+  "must-be":{
+    "message": "Soll sein:"
+  },
+  "must-not-be":{
+    "message": "Soll nicht sein:"
+  },
+  "capital-letter":{
+    "message": "Großbuchstabe"
+  },
+  "lowercase-letter":{
+    "message": "Kleinbuchstabe"
+  },
+  "number":{
+    "message": "Zahl"
+  },
+  "specific":{
+    "message": "spezifische Zeichen"
+  },
+  "specific-character":{
+    "message": "spezifische Zeichen"
+  },
+  "general":{
+    "message": "Allgemein:"
+  },
+  "'allowed-character-sets'":{
+    "message": "Erlaubte Zeichensätze:"
+  },
+  "'additional-Restrictions'":{
+    "message": "Zusätzliche Einschränkungen:"
   }
+
 }

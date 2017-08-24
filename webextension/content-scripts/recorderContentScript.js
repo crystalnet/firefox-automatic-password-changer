@@ -75,6 +75,40 @@ function initializeSpecifiactionDialog(data, inputField) {
     // Append html containing dialog to body
     $('body').append(data);
 
+    // Language specific content
+    $('#lengthHeader').html(browser.i18n.getMessage('length'));
+
+    $('#capitalHeader').html(browser.i18n.getMessage('capital-letters'));
+    $('#capitalAllowedLabel').html(browser.i18n.getMessage('capital-allowed'));
+
+    $('#lowercaseLetters').html(browser.i18n.getMessage('lowercase-letters'));
+    $('#lowercaseAllowedLabel').html(browser.i18n.getMessage('lowercase-allowed'));
+
+    $('#numbersHeader').html(browser.i18n.getMessage('numbers'));
+    $('#numbersAllowedLabel').html(browser.i18n.getMessage('numbers-allowed'));
+
+    $('#specialsHeader').html(browser.i18n.getMessage('special-characters'));
+    $('#specialsAllowedLabel').html(browser.i18n.getMessage('special-allowed'));
+    $('#whitespaceLabel').html(browser.i18n.getMessage('whitespace-allowed'));
+
+    $('#posResHeader').html(browser.i18n.getMessage('position-specific'));
+    $('#showPositionRestrictions').html(browser.i18n.getMessage('more'));
+    $('#positionLabel').html(browser.i18n.getMessage('position'));
+    $('#addPositionRestriction').html(browser.i18n.getMessage('add-Restriction'));
+    $('#general-legend').html(browser.i18n.getMessage('general'));
+    $('#characterset-legend-legend').html(browser.i18n.getMessage('allowed-character-sets'));
+    $('#addRes-legend-legend').html(browser.i18n.getMessage('additional-Restrictions'));
+    //select options
+    $('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
+    $('#mustBeOption').html(browser.i18n.getMessage('must-be'));
+    $('#capitalOption').html(browser.i18n.getMessage('capital-letter'));
+    $('#lowercaseOption').html(browser.i18n.getMessage('lowercase-letter'));
+    $('#numberOption').html(browser.i18n.getMessage('number'));
+    $('#specialOption').html(browser.i18n.getMessage('special-characters'));
+    $('#specificOption').html(browser.i18n.getMessage('specific'));
+
+    $('#specificRestriction').attr("placeholder", browser.i18n.getMessage("specific-character"));
+    $('#general-legend')
     // Initialize and open dialog
     $('#specificationDialog').dialog({
         classes: {
@@ -100,21 +134,38 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('.ui-selectmenu').selectmenu();
     $('.ui-checkboxradio-input').checkboxradio();
 
+
+
+    
     // Add button functionality
     const positionRestrictions = $('#positionRestrictions');
     positionRestrictions.hide();
     $('#showPositionRestrictions').click(function () {
         if (positionRestrictions.is(':visible')) {
             positionRestrictions.hide();
-            $(this).html('More');
+            $(this).html(browser.i18n.getMessage('more'));
         } else {
             positionRestrictions.show();
-            $(this).html('Less');
+            $(this).html(browser.i18n.getMessage('less'));
         }
     });
 
     $('#addPositionRestriction').click(function () {
-        $(data).find('.positionRestrictionForm').clone().appendTo('#positionRestrictionsContainer');
+        let clone = $(data).find('.positionRestrictionForm').clone();
+
+
+        // the clone() function clones the original div, without the custom language so we need to change them again
+        //clone.find('#positionLabel').html(browser.i18n.getMessage('position'));
+        clone.find('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
+        clone.find('#mustBeOption').html(browser.i18n.getMessage('must-be'));
+        clone.find('#capitalOption').html(browser.i18n.getMessage('capital-letter'));
+        clone.find('#lowercaseOption').html(browser.i18n.getMessage('lowercase-letter'));
+        clone.find('#numberOption').html(browser.i18n.getMessage('number'));
+        clone.find('#specialOption').html(browser.i18n.getMessage('special-characters'));
+        clone.find('#specificOption').html(browser.i18n.getMessage('specific'));
+        clone.find('#specificRestriction').attr("placeholder", browser.i18n.getMessage("specific-character"));
+
+        clone.appendTo('#positionRestrictionsContainer');
         $('.ui-spinner-input').spinner();
         $('.ui-selectmenu').selectmenu();
     });

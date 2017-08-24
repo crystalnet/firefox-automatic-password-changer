@@ -176,5 +176,78 @@
   },
   "instructions_manualPWChange4":{
     "message":"Once all password policies are fulfilled, the automatic change process can be started."
+  },
+  "lowercase-letters":{
+    "message": "lowercase letters"
+  },
+  "lowercase-allowed":{
+    "message": "Lowercase Letters Allowed"
+  },
+  "capital-letters":{
+    "message": "Capital letters"
+  },
+  "capital-allowed":{
+    "message": "Capital Letters Allowed"
+  },
+  "numbers":{
+    "message": "Numbers"
+  },
+  "numbers-allowed":{
+    "message": "Numbers Allowed"
+  },
+  "special-characters":{
+    "message": "Special Characters and Punctuation"
+  },
+  "special-allowed":{
+    "message": "Special Characters Allowed"
+  },
+  "whitespace-allowed":{
+    "message": "Whitespaces allowed?"
+  },
+  "position-specific":{
+    "message": "Position specific restrictions:"
+  },
+  "add-Restriction":{
+    "message": "Add Restriction"
+  },
+  "more":{
+    "message": "More"
+  },
+  "less":{
+    "message": "Less"
+  },
+  "position":{
+    "message": "position"
+  },
+  "must-be":{
+    "message": "Must be/contain"
+  },
+  "must-not-be":{
+    "message": "Must not be/contain"
+  },
+
+  "capital-letter":{
+    "message": "Capital letter"
+  },
+  "lowercase-letter":{
+    "message": "lowercase letter"
+  },
+  "number":{
+    "message": "Number"
+  },
+  "specific":{
+    "message": "specific"
+  },
+  "specific-character":{
+    "message": "specific character"
+  },
+  "general":{
+    "message": "General:"
+  },
+  "'allowed-character-sets'":{
+    "message": "Allowed character sets:"
+  },
+  "'additional-Restrictions'":{
+    "message": "Additional restrictions:"
   }
 }
