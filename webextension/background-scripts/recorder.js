@@ -229,7 +229,7 @@ class Recorder {
                 // save recording results as new blueprint in storage
                 const blueprint = {
                     version: 0,
-                    scope: this.webPage,
+                    scope: [this.webPage],
                     changeProcedure: this.userWebPath,
                     pwdPolicy: this.pwdPolicy
                 };

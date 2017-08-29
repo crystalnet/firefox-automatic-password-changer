@@ -21,7 +21,7 @@ class Imitator {
      */
     startImitating() {
         // we start imitation on site where user started recording
-        let firstItem = this.blueprint.getItem(0);
+        let firstItem = this.blueprint.changeProcedure.getItem(0);
         let startURL = firstItem[0] === 'Click' ? firstItem[6] : firstItem[4];
         // new browser window for imitation process
         let creating = browser.windows.create({
@@ -61,7 +61,7 @@ class Imitator {
      */
     executeImitationStep() {
         if (this.actualStepNum < this.maxStepNum) {
-            let item = this.blueprint.getItem(this.actualStepNum);
+            let item = this.blueprint.changeProcedure.getItem(this.actualStepNum);
             let nextEvent = item[0];
             let sending = browser.tabs.sendMessage(this.imitationTabId, {type: 'getWebPage'});
             sending.then(function(message) {
@@ -150,9 +150,8 @@ class Imitator {
             break;
         case 'N':
             if (this.newPassword === '') {
-                //TODO dynamically get blueprint
-                const blueprint =  [{'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[\\d\\A-Z].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]}];
-                const data = JSON.stringify(blueprint);
+                const data = JSON.stringify(this.blueprint);
+                //TODO right schema
                 const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"array","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
                 const self = this;
                 const player = new Player(data, schema);

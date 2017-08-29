@@ -10,7 +10,8 @@ class BlueprintStorageAccess {
                 for (let domain in pwcPaths) {
                     if (pwcPaths.hasOwnProperty(domain)) {
                         // rebuild individual blueprints
-                        blueprints[domain] = new HashTable(pwcPaths[domain].items);
+                        pwcPaths[domain].changeProcedure = new HashTable(pwcPaths[domain].changeProcedure.items);
+                        blueprints[domain] = pwcPaths[domain];
                     }
                 }
                 // rebuild blueprint collection
@@ -121,8 +122,10 @@ class BlueprintStorageAccess {
                     console.log("file does not contain a valid JSON string");
                     return;
                 }
-                if (typeof blueprintImport.blueprintURL === "string" && typeof blueprintImport.blueprintItems === "object") {
-                    blueprintStorageAccess.saveBlueprint(blueprintImport.blueprintURL, new HashTable(blueprintImport.blueprintItems));
+                if (typeof blueprintImport.scope === "object" && typeof blueprintImport.changeProcedure === "object") {
+                    // TODO iterate over scope
+                    blueprintImport.changeProcedure = new HashTable(blueprintImport.changeProcedure.items);
+                    blueprintStorageAccess.saveBlueprint(blueprintImport.scope[0], blueprintImport);
                 }
 
             });
