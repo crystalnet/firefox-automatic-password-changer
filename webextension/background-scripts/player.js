@@ -178,7 +178,7 @@ class Player {
             regExp = regExp.replace('[password]', newValue);
         }
 
-        regExp = new RegExp(regExp, 'gi');
+        regExp = new RegExp(regExp, 'g');
         let result = regExp.test(password);
 
         if (requirement.kind === 'must') {
@@ -220,7 +220,15 @@ class Player {
             satReq.push( browser.i18n.getMessage('contain-max') +" "+ maxLength +" "+ browser.i18n.getMessage('characters')+ ".");
         }
 
-        let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special + ']');
+        let specialRegEx = pwdPolicy.allowedCharacterSets.special.replace(/"/g,"\\\"").
+        replace(/\[/g, "\\[").
+        replace(/]/g, "\\]").
+        replace(/\^/g, "\\^").
+        replace(/\$/g, "\\$").
+        replace(/-/g, "\\-").
+        replace(/'/g, "\\'").
+        replace(/\\/g, "\\");
+        let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + specialRegEx  + ']');
         charExp = new RegExp(charExp, 'g');
 
         let check = password.match(charExp);
@@ -231,7 +239,7 @@ class Player {
             unSatReq.push( browser.i18n.getMessage('do-not-use') + check + browser.i18n.getMessage('in-your-password'));
         }
 
-        let ascii = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+        let ascii = "!\"#$%&()*+,-./:;<=>?@{|}~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz";
         ascii = ascii.match(charExp);
 
         if (ascii !== null) {
@@ -239,14 +247,19 @@ class Player {
             satReq.push( browser.i18n.getMessage('do-not-use') + ascii + browser.i18n.getMessage('in-your-password'));
         }
 
-
+        let skip = 0;
         for (let requirement of pwdPolicy.compositionRequirements) {
-            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
+            if(skip>3) {
+                if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
                 satisfied = false;
                 unSatReq.push(requirement.rule.description);
-            } else {
+                } else {
                 satReq.push(requirement.rule.description);
+                }
+
             }
+            skip +=1;
+
         }
         return {sat: satisfied, failReq: unSatReq, passReq: satReq};
     }
@@ -259,18 +272,23 @@ class Player {
     generatePassword() {
         //this is necessary because otherwise we wouldn't be able to access class methods(and variables like the blueprint) from within the then block.
         let store = this;
+
+        //store starting time
+        let start = new Date().getSeconds();
         //accesses the promise of the password generator and returns it if it contains a valid password
+
         return this._invokePasswordGenerator().then(function (val) {
+
             let result = store._validatePassword(val);
             if (result) {
                 return val;
-            } else {
+            }  else if(Math.abs(start- new Date().getSeconds())> 2){
+                return "";
+
+            }else {
                     //returns a new valid password recursively if the first one wasn't valid
                 return (store.generatePassword());
             }
-
-
-
 
         });
     }

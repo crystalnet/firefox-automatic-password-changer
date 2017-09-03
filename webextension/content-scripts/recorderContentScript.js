@@ -354,9 +354,9 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
             if (characterSetRestrictions.minLower && characterSetRestrictions.maxLower){
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minLower,
+                    num: parseInt(characterSetRestrictions.minLower),
                     rule: {
-                        description: 'Must contain between' + characterSetRestrictions.minLower + 'and'+ characterSetRestrictions.maxLower +' lower case letters.',
+                        description: 'Must contain between ' + characterSetRestrictions.minLower + ' and '+ characterSetRestrictions.maxLower +' lower case letters.',
                         regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',' + characterSetRestrictions.maxLower+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
@@ -367,7 +367,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minLower,
+                    num: parseInt(characterSetRestrictions.minLower),
                     rule: {
                         description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
                         regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',}$'
@@ -382,7 +382,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     kind: 'must',
                     num: 0,
                     rule: {
-                        description: 'Must not contain more than' + characterSetRestrictions.minLower + ' lower case letters.',
+                        description: 'Must not contain more than ' + characterSetRestrictions.minLower + ' lower case letters.',
                         regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']?([^'+characterSetRestrictions.lowerSet +']*)){'+characterSetRestrictions.maxLower +'}$'
                         //basically looks like this: ^(([^0-9]*)[0-9]?(^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
                     }
@@ -403,9 +403,9 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
             if (characterSetRestrictions.minCapital && characterSetRestrictions.maxCapital){
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minCapital,
+                    num: parseInt(characterSetRestrictions.minCapital),
                     rule: {
-                        description: 'Must contain between' + characterSetRestrictions.minCapital + 'and'+ characterSetRestrictions.maxCapital +' Capital case letters.',
+                        description: 'Must contain between ' + characterSetRestrictions.minCapital + ' and '+ characterSetRestrictions.maxCapital +' Capital case letters.',
                         regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet+']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',' + characterSetRestrictions.maxCapital+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
@@ -416,7 +416,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minCapital,
+                    num: parseInt(characterSetRestrictions.minCapital),
                     rule: {
                         description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' Capital case letters.',
                         regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet +']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',}$'
@@ -448,9 +448,9 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
             if (characterSetRestrictions.minNumber && characterSetRestrictions.maxNumber){
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minNumber,
+                    num: parseInt(characterSetRestrictions.minNumber),
                     rule: {
-                        description: 'Must contain between' + characterSetRestrictions.minNumber + 'and'+ characterSetRestrictions.maxNumber +' Numbers.',
+                        description: 'Must contain between ' + characterSetRestrictions.minNumber + ' and '+ characterSetRestrictions.maxNumber +' Numbers.',
                         regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet+']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',' + characterSetRestrictions.maxNumber+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
@@ -461,7 +461,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minNumber,
+                    num: parseInt(characterSetRestrictions.minNumber),
                     rule: {
                         description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
                         regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet +']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',}$'
@@ -489,14 +489,16 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
     if (characterSetRestrictions.specialAllowed) {
 
-        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").replace(/'/g,"\\\'");
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").replace(/'/g,"\\'");
         //escape all potentially problematic characters
         let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
         replace(/\[/g, "\\[").
-        replace(/]/g, "\\[").
+        replace(/]/g, "\\]").
         replace(/\^/g, "\\^").
         replace(/\$/g, "\\$").
-        replace(/\\/g, "\\\\");
+        replace(/'/g, "\\'").
+        replace(/-/g, "\\-").
+        replace(/\\/g, "\\");
 
         // add whitespaces if necessary
         if(characterSetRestrictions.whitespaceAllowed){
@@ -509,9 +511,9 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
             if (characterSetRestrictions.minSpecial && characterSetRestrictions.maxSpecial){
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minSpecial,
+                    num: parseInt(characterSetRestrictions.minSpecial),
                     rule: {
-                        description: 'Must contain between' + characterSetRestrictions.minSpecial + 'and'+ characterSetRestrictions.maxSpecial +' special Characters.',
+                        description: 'Must contain between ' + characterSetRestrictions.minSpecial + ' and '+ characterSetRestrictions.maxSpecial +' special Characters.',
                         regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet+']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',' + characterSetRestrictions.maxSpecial+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
@@ -522,7 +524,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
                 let requirement = {
                     kind: 'must',
-                    num: characterSetRestrictions.minSpecial,
+                    num: parseInt(characterSetRestrictions.minSpecial),
                     rule: {
                         description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
                         regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',}$'
@@ -550,7 +552,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     for (let restriction of positionRestrictions) {
         let requirement = {
             kind: restriction.restrictionType,
-            num: restriction.restrictionPosition
+            num: parseInt(restriction.restrictionPosition)
         };
         let regExContent = "";
         if(restriction.restrictionContent == 'capital'){
@@ -562,29 +564,33 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         } else if(restriction.restrictionContent == 'special'){
             regExContent = characterSetRestrictions.characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
             replace(/\[/g, "\\[").
-            replace(/]/g, "\\[").
+            replace(/]/g, "\\]").
             replace(/\^/g, "\\^").
             replace(/\$/g, "\\$").
-            replace(/\\/g, "\\\\");
+            replace(/-/g, "\\-").
+            replace(/'/g, "\\'").
+            replace(/\\/g, "\\");
         } else {
             regExContent = restriction.restrictionContent.replace(/"/g,"\\\"").
             replace(/\[/g, "\\[").
-            replace(/]/g, "\\[").
+            replace(/]/g, "\\]").
             replace(/\^/g, "\\^").
             replace(/\$/g, "\\$").
-            replace(/\\/g, "\\\\");
+            replace(/-/g, "\\-").
+            replace(/'/g, "\\'").
+            replace(/\\/g, "\\");
         }
 
-
+        let pos = parseInt(restriction.restrictionPosition) - 1;
         if (restriction.restrictionType === 'must') {
             requirement.rule = {
-                description: 'Position ' + restriction.restrictionPosition + ' must be ' + restriction.restrictionContent,
-                regexp: '^((.){'+ restriction.restrictionPosition -1+'}['+ regExContent+'])'
+                description: 'Position ' + restriction.restrictionPosition + ' must be: ' + restriction.restrictionContent,
+                regexp: '^((.){'+ pos +'}['+ regExContent+'])'
             };
         } else {
             requirement.rule = {
                 description: 'Position ' + restriction.restrictionPosition + ' must not be ' + restriction.restrictionContent,
-                regexp: '^((.){'+ restriction.restrictionPosition -1+'}['+ regExContent+'])'
+                regexp: '^((.){'+ pos +'}['+ regExContent+'])'
             };
         }
         policy.compositionRequirements.push(requirement);
