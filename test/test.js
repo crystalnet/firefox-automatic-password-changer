@@ -21,7 +21,9 @@ describe('Player', function () {
     const dataWithout = JSON.stringify(blueprintWithout);
     const playerWithout = new Player(dataWithout,schema);
 
-
+    const blueprint3 =  [{'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'must','num':1,'rule':{'description':'Must contain at least one lower case letter.','regexp':'.*[az].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one upper case letter.', 'regexp' : '.*[AZ].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one number.','regexp':'.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[special].*'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}}, {'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]}];
+    const data3 = JSON.stringify(blueprint3);
+    const invokePGPlayer = new Player(data3, schema);
 
     describe('#constructor()', function () {
         it('should not accept a faulty JSON as Input', function () {
@@ -54,25 +56,6 @@ describe('Player', function () {
             (function () {
                 player._parseBlueprint(faulty2, player.schema);
             }).should.throw('Blueprint doesn\'t follow JSON schema');
-        });
-    });
-
-    describe('#_invokePasswordGenerator()', function () {
-        it('should resolve the promise', () => {
-            return player._invokePasswordGenerator().should.be.fulfilled();
-        });
-
-        it('should resolve with a string', () => {
-            return player._invokePasswordGenerator().should.finally.be.a.String();
-        });
-
-        it('should resolve with a password', () => {
-            return player._invokePasswordGenerator().should.finally.not.be.empty();
-        });
-
-        // test with undefined regexp
-        it('should resolve the promise', () => {
-            return playerReg._invokePasswordGenerator().should.be.fulfilled();
         });
     });
 
@@ -158,18 +141,36 @@ describe('Player', function () {
         });
     });
      */
-
-    describe('#generatePassword()', function () {
+    describe('#_invokePasswordGenerator()', function () {
         it('should resolve the promise', () => {
-            return player.generatePassword().should.be.fulfilled();
+            return invokePGPlayer._invokePasswordGenerator().should.be.fulfilled();
         });
 
         it('should resolve with a string', () => {
-            return player.generatePassword().should.finally.be.a.String();
+            return invokePGPlayer._invokePasswordGenerator().should.finally.be.a.String();
         });
 
         it('should resolve with a password', () => {
-            return player.generatePassword().should.finally.not.be.empty();
+            return invokePGPlayer._invokePasswordGenerator().should.finally.not.be.empty();
+        });
+
+        // test with undefined regexp
+        it('should resolve the promise', () => {
+            return playerReg._invokePasswordGenerator().should.be.fulfilled();
+        });
+    });
+
+    describe('#generatePassword()', function () {
+        it('should resolve the promise', () => {
+            return invokePGPlayer.generatePassword().should.be.fulfilled();
+        });
+
+        it('should resolve with a string', () => {
+            return invokePGPlayer.generatePassword().should.finally.be.a.String();
+        });
+
+        it('should resolve with a password', () => {
+            return invokePGPlayer.generatePassword().should.finally.not.be.empty();
         });
     });
 });

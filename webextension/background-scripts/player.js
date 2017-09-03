@@ -42,64 +42,34 @@ class Player {
      * @private
      */
     _invokePasswordGenerator() {
+
         const passwordGenerator = new PasswordGen();
         let maxLength = this.blueprint.pwdPolicy[0].maxLength;
         let arrayOfChars = [];
-        let lowerCaseCounter = 0;
-        let upperCaseCounter = 0;
-        let digitCounter = 0;
-        let specialCounter = 0;
         let RequirementSet = this.blueprint.pwdPolicy[0].compositionRequirements;
-        let array = ['[az]', '[AZ]', '[num]', '[special]'];
-        // go through the array of requirements
-        for (let count = 0; count < RequirementSet.length; count++) {
+        let characterSets = this.blueprint.pwdPolicy[0].allowedCharacterSets;
+
+        for (let count = 0; count < 4; count++) {
             let r = RequirementSet[count];
             if (r.kind === 'must') {
-                let regexp = r.rule.regexp;
-                //go through every element of array
-                for (let arrCount = 0; arrCount < array.length; arrCount++) {
-                    //check whether the element array[arrCount] is included in regexp
-                    //if so, check which element array[arrCount] is and add num of the rule to the counter
-                    if (regexp.includes(array[arrCount])) {
-                        switch (array[arrCount]) {
-                        case '[az]':
-                            lowerCaseCounter += r.num;
-                            break;
-                        case '[AZ]':
-                            upperCaseCounter += r.num;
-                            break;
-                        case '[num]':
-                            digitCounter += r.num;
-                            break;
-                        case '[special]':
-                            specialCounter += r.num;
-                            break;
-                        }
-                    }
+
+                switch (count) {
+                    case 0:
+                        arrayOfChars.push({char: characterSets.az, min: r.num});
+                        break;
+                    case 1:
+                        arrayOfChars.push({char: characterSets.AZ, min: r.num});
+                        break;
+                    case 2:
+                        arrayOfChars.push({char: characterSets.num, min: r.num});
+                        break;
+                    case 3:
+                        arrayOfChars.push({char: characterSets.special, min: r.num});
+                        break;
                 }
             }
         }
 
-        let characterSets = this.blueprint.pwdPolicy[0].allowedCharacterSets;
-        //go through every property of the object characterSets of the blueprint
-        Object.keys(characterSets).forEach(prop => {
-            // check, which set of characters is part of the property and add the fitting one to the arrayOfChars
-            // as well as the counter for that set
-            switch (prop) {
-            case 'az':
-                arrayOfChars.push({char: characterSets[prop], min: lowerCaseCounter});
-                break;
-            case 'AZ':
-                arrayOfChars.push({char: characterSets[prop], min: upperCaseCounter});
-                break;
-            case 'num':
-                arrayOfChars.push({char: characterSets[prop], min: digitCounter});
-                break;
-            case 'special':
-                arrayOfChars.push({char: characterSets[prop], min: specialCounter});
-                break;
-            }
-        });
 
         return passwordGenerator.generatePassword(maxLength, arrayOfChars).then(function (result) {
             return result;
