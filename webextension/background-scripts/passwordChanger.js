@@ -198,7 +198,7 @@ function handleLabelAsContextMenuClick(label, tabId) {
         case: "highlight"
     });
     sending.then(function(message) {
-        recorder.tagTracker.setItem(message.inputNumber, label);
+        recorder.tagTracker[message.inputNumber] = label;
         const policyEntered = Boolean(Object.keys(recorder.pwdPolicy).length);
         // we get the number of the input element the context menu was invoked on as response
         // and send this information to the RecorderContentScript

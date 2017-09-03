@@ -181,8 +181,7 @@ function openPasswordChangeDialog(url, username) {
     try {
         const blueprint = backgroundPage.getBlueprintStorageAccess().getBlueprint(url);
         const data = JSON.stringify(blueprint);
-        // TODO right schema
-        const schema = '{"$schema":"http://json-schema.org/schema#","title":"Password Composition Policy","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT 2017-02-10","id":"URI TBD","type":"object","items":{"type":"object","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. There are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}';
+        const schema = '{"$schema":"http://json-schema.org/schema#","title":"Blueprint","description":"Blueprint Format Schema, DRAFT v3","type":"object","required":["version","scope","changeProcedure"],"properties":{"version":{"type":"number"},"scope":{"type":"array","description":"Scope, to which domains this blueprint applies (in particular wildcard * as for *.wikipedia.org)","items":{"type":"string"},"minItems":1,"uniqueItems":true},"changeProcedure":{"type":"array","description":"Step, by step description of the procedure to change the password","items":{"type":"object","properties":{"action":{"type":"string"},"parameters":{"type":"array","items":{"type":["string","number"]}}}},"minItems":1,"uniqueItems":true},"pwdPolicy":{"type":"array","items":{"type":"object","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT v3","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. Threre are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}}}';
         let player = backgroundPage.createPlayer(data, schema);
 
         // initially call checkRequirements to populate dialog window
@@ -209,10 +208,10 @@ function openPasswordChangeDialog(url, username) {
         form.dialog('option', 'title', browser.i18n.getMessage('manual-password-change'));
         form.removeAttr('style');
         form.dialog('open');
-        document.getElementById('instruction').innerHTML =  browser.i18n.getMessage('instructions_manualPWChange1') +
-                                                             '</br>' +  browser.i18n.getMessage('instructions_manualPWChange2') +
-                                                              '</br>' + browser.i18n.getMessage('instructions_manualPWChange3') +
-                                                                '</br>' + browser.i18n.getMessage('instructions_manualPWChange4');
+        document.getElementById('instruction').innerHTML = browser.i18n.getMessage('instructions_manualPWChange1') +
+            '</br>' + browser.i18n.getMessage('instructions_manualPWChange2') +
+            '</br>' + browser.i18n.getMessage('instructions_manualPWChange3') +
+            '</br>' + browser.i18n.getMessage('instructions_manualPWChange4');
         document.getElementById('url-heading').innerHTML = browser.i18n.getMessage('website');
         document.getElementById('heading_password').innerHTML = browser.i18n.getMessage('new password');
         document.getElementById('requirementsHeading').innerHTML = browser.i18n.getMessage('requirements');
@@ -220,7 +219,7 @@ function openPasswordChangeDialog(url, username) {
         form.find('#changePasswordBtn').button({
             label: browser.i18n.getMessage('change_Password'),
             disabled: true
-        }).on('click', function (){
+        }).on('click', function () {
             const newPassword = $('#new-password').val();
             changeThisPasswordAut(url, username, newPassword);
         });
@@ -228,10 +227,14 @@ function openPasswordChangeDialog(url, username) {
         form.find('#generatePasswordBtn').button({
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
-            player.generatePassword().then(function(value){
-                $('#manual-password-change-dialog-form').find('#new-password').val(value);
-                checkRequirements(player);
-            });
+            player.generatePassword()
+                .then(function (value) {
+                    $('#manual-password-change-dialog-form').find('#new-password').val(value);
+                    checkRequirements(player);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         });
 
         form.find('#CancelBtn').button({
@@ -242,11 +245,11 @@ function openPasswordChangeDialog(url, username) {
 
         // Hide/Show functionality for password
         let inputBar = form.find('#new-password');
-        inputBar.focus(function(){
+        inputBar.focus(function () {
             inputBar.on('keyup', () => checkRequirements(player));
         });
 
-        inputBar.blur(function(){
+        inputBar.blur(function () {
             inputBar.off('keyup', () => checkRequirements(player));
         });
 
@@ -266,10 +269,10 @@ function togglePasswordFieldClicked() {
     let passwordField = document.getElementById('new-password');
 
     let message = browser.i18n.getMessage('show-password');
-    if(toggle.innerHTML === message){
+    if (toggle.innerHTML === message) {
         passwordField.type = 'text';
         toggle.innerHTML = browser.i18n.getMessage('hide-password');
-    } else{
+    } else {
         passwordField.type = 'password';
         toggle.innerHTML = browser.i18n.getMessage('show-password');
     }

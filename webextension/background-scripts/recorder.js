@@ -2,7 +2,6 @@ class Recorder {
     constructor() {
         this.isActive = false;
         this.recordingTabId = -1;
-        this.orderNumber = 0;
         this.currentWebsite = '';
         this.eventDOMContentLoadedFired = false;
         this.loginDone = false;
@@ -23,9 +22,9 @@ class Recorder {
      */
     startRecording() {
         this.isActive = true;
-        this.userWebPath = new HashTable();
-        this.pwdPolicy = {};
-        this.tagTracker = new HashTable();
+        this.userWebPath = [];
+        this.pwdPolicy = [];
+        this.tagTracker = {};
         this.webPage = '';
         this.loginData = {
             password: '',
@@ -102,11 +101,11 @@ class Recorder {
             });
         }
         // we need a fresh tagTracker, as there are other input elements on the new page
-        recorder.tagTracker.clear();
+        recorder.tagTracker = {};
         if (recorder.clickTempStore !== null) {
             // if temporary click storage is not null, last click did trigger site load
-            recorder.clickTempStore[1][recorder.clickTempStore[1].length - 1] = 'true';
-            recorder.userWebPath.setItem(recorder.clickTempStore[0], recorder.clickTempStore[1]);
+            recorder.clickTempStore.parameters[recorder.clickTempStore.parameters.length - 1] = 'true';
+            recorder.userWebPath.push(recorder.clickTempStore);
             recorder.clickTempStore = null;
         }
     }
@@ -122,8 +121,8 @@ class Recorder {
             if (Utils.getMainPageFromLink(this.currentWebsite) !== Utils.getMainPageFromLink(message.webPage)) {
                 this.scrollPosition = message.scrollTop;
                 if (this.clickTempStore !== null) {
-                    this.clickTempStore[1][this.clickTempStore[1].length - 1] = 'true';
-                    this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
+                    this.clickTempStore.parameters[this.clickTempStore.parameters.length - 1] = 'true';
+                    this.userWebPath.push(this.clickTempStore);
                     this.clickTempStore = null;
                 }
             }
@@ -134,9 +133,19 @@ class Recorder {
         let websiteTrunk = this.constructItemWebsite(this.currentWebsite);
         // clear temporary click storage first, if last click did not trigger site load
         if (this.clickTempStore !== null)
-            this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
-        this.clickTempStore = [this.orderNumber, ['Click', message.clientX, message.clientY, message.innerHeight, message.innerWidth, scrollTop, websiteTrunk, 'false']];
-        this.orderNumber++;
+            this.userWebPath.push(this.clickTempStore);
+        this.clickTempStore = {
+            action: 'Click',
+            parameters: [
+                message.clientX,
+                message.clientY,
+                message.innerHeight,
+                message.innerWidth,
+                scrollTop,
+                websiteTrunk,
+                'false'
+                ]
+        };
     }
 
     /**
@@ -152,28 +161,35 @@ class Recorder {
      * @param message
      */
     blurHappened(message) {
-        let tag = this.tagTracker.getItem(message.nodeNumber);
+        let tag = this.tagTracker[message.nodeNumber];
         if (!this.eventDOMContentLoadedFired && Utils.getMainPageFromLink(this.currentWebsite) !== Utils.getMainPageFromLink(message.webPage)) {
             // special case when "DOMContentLoaded" event does not bubble up to window object on site load
             this.scrollPosition = message.scrollTop;
             if (this.clickTempStore !== null) {
-                this.clickTempStore[1][this.clickTempStore[1].length - 1] = 'true';
-                this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
+                this.clickTempStore.parameters[this.clickTempStore.parameters.length - 1] = 'true';
+                this.userWebPath.push(this.clickTempStore);
                 this.clickTempStore = null;
             }
         }
         let websiteTrunk = this.constructItemWebsite(message.webPage);
         // clear temporary click storage if necessary before setting input item
         if (this.clickTempStore !== null) {
-            this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
+            this.userWebPath.push(this.clickTempStore);
             this.clickTempStore = null;
         }
         // we might set duplicate entries for an input element at this point, if the user
         // focuses an input element more than once (to correct a wrongly typed password for
         // example); these duplicates are removed after recording, so that we only have one
         // "Input" entry in the blueprint for each input element
-        this.userWebPath.setItem(this.orderNumber, ['Input', tag, message.inputsLength, message.nodeNumber, websiteTrunk]);
-        this.orderNumber++;
+        this.userWebPath.push({
+            action: 'Input',
+            parameters: [
+                tag,
+                message.inputsLength,
+                message.nodeNumber,
+                websiteTrunk
+                ]
+        });
         // store values we need for changing the password after recording stopped
         if (tag === 'U' && !this.loginDone) {
             this.loginData.formSubmitURL = message.nodeFormAction;
@@ -195,7 +211,7 @@ class Recorder {
      * Saves policy to blueprint
      */
     policyEntered(message) {
-        this.pwdPolicy = message.policy;
+        this.pwdPolicy.push(message.policy);
     }
 
     /**
@@ -214,9 +230,8 @@ class Recorder {
         });
         // save last click, if not yet done
         if (this.clickTempStore !== null)
-            this.userWebPath.setItem(this.clickTempStore[0], this.clickTempStore[1]);
+            this.userWebPath.push(this.clickTempStore);
         // clear variables
-        this.orderNumber = 0;
         this.currentWebsite = '';
         this.eventDOMContentLoadedFired = false;
         this.loginDone = false;
@@ -224,7 +239,7 @@ class Recorder {
         this.clickTempStore = null;
         // handle recording results
         if (this.userWebPath.length > 0) {
-            this.userWebPath = this.cleanUpHashTable(this.userWebPath);
+            this.userWebPath = this.cleanUpUserWebPath(this.userWebPath);
             if (this.sanityCheck(this.userWebPath)) {
                 // save recording results as new blueprint in storage
                 const blueprint = {
@@ -256,7 +271,7 @@ class Recorder {
     constructItemWebsite(url) {
         let split = url.split('?');
         let constructedURL = split[0];
-        if (this.orderNumber === 0 && split.length > 1) {
+        if (Object.keys(this.userWebPath).length === 0 && split.length > 1) {
             let args = split[1];
             if (split.length > 2) {
                 // arguments can have questions marks, undo splitting in this case
@@ -281,38 +296,35 @@ class Recorder {
     /**
      * Cleans up the hash table obtained by a recording
      */
-    cleanUpHashTable(hashTable) {
+    cleanUpUserWebPath(userWebPath) {
         // remove duplicate entries (e.g. user clicked twice on the same spot)
-        let temp = new HashTable();
-        let i = 0;
-        hashTable.each(function (k, v) {
+        let temp = [];
+        userWebPath.forEach(function (v, k) {
             let noDuplicateEntry = true;
-            hashTable.each(function (k2, v2) {
-                if (k2 > k && Utils.arraysEqual(v, v2)) {
+            userWebPath.forEach(function (v2, k2) {
+                if (k2 > k && v.action === v2.action && Utils.arraysEqual(v.parameters, v2.parameters)) {
                     noDuplicateEntry = false;
                 }
             });
             if (noDuplicateEntry) {
-                temp.setItem(i, v);
-                i++;
+                temp.push(v);
             }
         });
         // remove unnecessary entries
         // we can have multiple entries for an input element between site load events, if the
         // user first tagged wrongly and then corrected his choice; we only keep the last one
-        let result = new HashTable();
-        i = 0;
+        let result = [];
         let lastSiteLoadClickKey = -1;
-        temp.each(function (k, v) {
-            if (v[0] === 'Input') {
+        temp.forEach(function (v, k) {
+            if (v.action === 'Input') {
                 let olderEntryFound = false;
                 let key;
-                result.each(function (k3, v3) {
-                    if (v3[0] === 'Input') {
+                result.forEach(function (v3, k3) {
+                    if (v3.action === 'Input') {
                         // for all input items that came after the last site load, but before the current item
                         // we are looking at right now (implicit, because the are stored in result already),
                         // check if position of input element on the site is the same -> same element, but older entry
-                        if (v[3] === v3[3] && k3 > lastSiteLoadClickKey) {
+                        if (v.parameters[2] === v3.parameters[2] && k3 > lastSiteLoadClickKey) {
                             olderEntryFound = true;
                             key = k3;
                         }
@@ -320,18 +332,15 @@ class Recorder {
                 });
                 if (olderEntryFound && typeof key !== 'undefined') {
                     // override older entry
-                    result.removeItem(key);
-                    result.setItem(key, v);
+                    result[key] = v;
                 } else {
-                    result.setItem(i, v);
-                    i++;
+                    result.push(v);
                 }
             } else {
                 // else case is for click items
-                if (v[7] === 'true')
-                    lastSiteLoadClickKey = i;
-                result.setItem(i, v);
-                i++;
+                if (v.parameters[6] === 'true')
+                    lastSiteLoadClickKey = result.length - 1;
+                result.push(v);
             }
         });
         return result;
@@ -352,10 +361,10 @@ class Recorder {
     sanityCheck(userWebPath) {
         let conditionMet = false;
         let hasNewPasswordInputEntry = false;
-        userWebPath.each(function (k, v) {
-            if (v[0] === 'Click' && v[7] === 'true' && hasNewPasswordInputEntry)
+        userWebPath.forEach(function (v, k) {
+            if (v.action === 'Click' && v.parameters[v.parameters.length - 1] === 'true' && hasNewPasswordInputEntry)
                 conditionMet = true;
-            if (v[0] === 'Input' && v[1] === 'N')
+            if (v.action === 'Input' && v.parameters[0] === 'N')
                 hasNewPasswordInputEntry = true;
         });
         return conditionMet && this.loginData.password !== '';

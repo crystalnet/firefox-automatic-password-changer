@@ -43,13 +43,13 @@ class Player {
      */
     _invokePasswordGenerator() {
         const passwordGenerator = new PasswordGen();
-        let maxLength = this.blueprint[0].pwdPolicy[0].maxLength;
+        let maxLength = this.blueprint.pwdPolicy[0].maxLength;
         let arrayOfChars = [];
         let lowerCaseCounter = 0;
         let upperCaseCounter = 0;
         let digitCounter = 0;
         let specialCounter = 0;
-        let RequirementSet = this.blueprint[0].pwdPolicy[0].compositionRequirements;
+        let RequirementSet = this.blueprint.pwdPolicy[0].compositionRequirements;
         let array = ['[az]', '[AZ]', '[num]', '[special]'];
         // go through the array of requirements
         for (let count = 0; count < RequirementSet.length; count++) {
@@ -80,7 +80,7 @@ class Player {
             }
         }
 
-        let characterSets = this.blueprint[0].pwdPolicy[0].allowedCharacterSets;
+        let characterSets = this.blueprint.pwdPolicy[0].allowedCharacterSets;
         //go through every property of the object characterSets of the blueprint
         Object.keys(characterSets).forEach(prop => {
             // check, which set of characters is part of the property and add the fitting one to the arrayOfChars
@@ -116,7 +116,7 @@ class Player {
      * @private
      */
     _validatePassword(password) {
-        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
+        let pwdPolicy = this.blueprint.pwdPolicy[0];
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special + ']');
         charExp = new RegExp(charExp, 'g');
         let minLength = pwdPolicy.minLength;
@@ -199,7 +199,7 @@ class Player {
      *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.
      */
     validateUserPassword(password) {
-        let pwdPolicy = this.blueprint[0].pwdPolicy[0];
+        let pwdPolicy = this.blueprint.pwdPolicy[0];
         let unSatReq = [];
         let satReq = [];
         let satisfied = true;

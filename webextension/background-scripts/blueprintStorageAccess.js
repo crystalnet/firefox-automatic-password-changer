@@ -10,7 +10,7 @@ class BlueprintStorageAccess {
                 for (let domain in pwcPaths) {
                     if (pwcPaths.hasOwnProperty(domain)) {
                         // rebuild individual blueprints
-                        pwcPaths[domain].changeProcedure = new HashTable(pwcPaths[domain].changeProcedure.items);
+                        // pwcPaths[domain].changeProcedure = new HashTable(pwcPaths[domain].changeProcedure.items);
                         blueprints[domain] = pwcPaths[domain];
                     }
                 }
