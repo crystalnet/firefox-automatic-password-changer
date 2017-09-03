@@ -49,7 +49,7 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 function loadSpecificationInterface(inputField) {
     let specificationDialog = $('#specificationDialog');
     if (specificationDialog.length) {
-        $('#specifiactionDailog').dialog('open');
+        specificationDialog.dialog('open');
     } else {
         const url = browser.extension.getURL('/content-scripts/specificationDialog.htm');
 
@@ -238,8 +238,8 @@ function policyEntered(dialog) {
 function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     let policy = {
         allowedCharacterSets: {},
-        minLength: characterSetRestrictions.minLength,
-        maxLength: characterSetRestrictions.maxLength,
+        minLength: parseInt(characterSetRestrictions.minLength),
+        maxLength: parseInt(characterSetRestrictions.maxLength),
         compositionRequirements: []
     };
 
@@ -262,7 +262,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     if (characterSetRestrictions.minLower) {
         let requirement = {
             kind: 'must',
-            num: characterSetRestrictions.minLower,
+            num: parseInt(characterSetRestrictions.minLower),
             rule: {
                 description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
                 regexp: '.*[az].*'
@@ -274,7 +274,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     if (characterSetRestrictions.minCapital) {
         let requirement = {
             kind: 'must',
-            num: characterSetRestrictions.minCapital,
+            num: parseInt(characterSetRestrictions.minCapital),
             rule: {
                 description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' upper case letters.',
                 regexp: '.*[AZ].*'
@@ -286,7 +286,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     if (characterSetRestrictions.minNumber) {
         let requirement = {
             kind: 'must',
-            num: characterSetRestrictions.minNumber,
+            num: parseInt(characterSetRestrictions.minNumber),
             rule: {
                 description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
                 regexp: '.*[num].*'
@@ -298,7 +298,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
     if (characterSetRestrictions.minSpecial) {
         let requirement = {
             kind: 'must',
-            num: characterSetRestrictions.minSpecial,
+            num: parseInt(characterSetRestrictions.minSpecial),
             rule: {
                 description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
                 regexp: '.*[special].*'
@@ -335,7 +335,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
  */
 function onClickEventHandler(event) {
     // ignore right button click and events triggered by javascript
-    if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0)) {
+    if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0) && !Boolean($(event.target).parents('.pwdChanger').length)) {
         browser.runtime.sendMessage({
             type: 'clickHappened',
             webPage: window.content.location.href,
@@ -373,12 +373,19 @@ function onBlurEventHandler(event) {
             break;
         }
     }
+    let numberOfInputs = inputs.length;
+    const dialog = $('#specificationDialog');
+    if (dialog.length) {
+        const ignorerdInputs = dialog.find('input').length;
+        numberOfInputs -= ignorerdInputs;
+    }
+
     browser.runtime.sendMessage({
         type: 'blurHappened',
         webPage: window.content.location.href,
         scrollTop: document.documentElement.scrollTop,
         nodeNumber: nodeNumber,
-        inputsLength: inputs.length,
+        inputsLength: numberOfInputs,
         nodeFormAction: node.form.action,
         nodeValue: node.value,
         nodeName: node.name
