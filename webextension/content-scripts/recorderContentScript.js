@@ -236,6 +236,7 @@ function policyEntered(dialog) {
  * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
  */
 function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
+
     let policy = {
         allowedCharacterSets: {},
         minLength: characterSetRestrictions.minLength,
@@ -243,48 +244,112 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         compositionRequirements: []
     };
 
-    let charSets = [{
-        set: '[az]',
-        allowed: characterSetRestrictions.lowerAllowed,
-        min: characterSetRestrictions.minLower
-    }, {
-        set: '[AZ]',
-        allowed: characterSetRestrictions.capitalAllowed,
-        min: characterSetRestrictions.minCapital
-    },{
-        set: '[num]',
-        allowed: characterSetRestrictions.numberAllowed,
-        min: characterSetRestrictions.minNumber
-    },{
-        set: '[special]',
-        allowed: characterSetRestrictions.specialAllowed,
-        min: characterSetRestrictions.minSpecial
-    }];
+    if (characterSetRestrictions.lowerAllowed) {
+        policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
 
-    for(charSet in charSets) {
-
-        let setRequirement = {
+        let requirement = {
             kind: 'must',
-            num: 0,
+            num: characterSetRestrictions.minLower,
             rule: {
-                description:  charSet.set,
-                regexp: '.*'+ charSet.set +'.*'
+                description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
+                regexp: '.*[az].*'
             }
         };
-        if(!charSet.allowed){
-            requirement.kind = 'mustNot';
-        }
-        if(charSet.min){
-            requirement.num = charSet.min;
-        };
+        policy.compositionRequirements.push(requirement);
 
-        policy.compositionRequirements.push(setRequirement);
+    } else {
+        let setRequirement = {
+            kind: 'mustNot',
+            num: 0,
+            rule: {
+                description:  '[az]',
+                regexp: '.*'+ '[az]' +'.*'
+            }
+        };
+        policy.compositionRequirements.push(setRequirement)
+
     }
+
+    if (characterSetRestrictions.capitalAllowed) {
+        policy.allowedCharacterSets.AZ = characterSetRestrictions.capitalSet;
+
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minCapital,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' upper case letters.',
+                regexp: '.*[AZ].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+
+    } else {
+        let setRequirement = {
+            kind: 'mustNot',
+            num: 0,
+            rule: {
+                description:  '[AZ]',
+                regexp: '.*'+ '[AZ]' +'.*'
+            }
+        };
+        policy.compositionRequirements.push(setRequirement)
+    }
+
+    if (characterSetRestrictions.numberAllowed) {
+        policy.allowedCharacterSets.num = characterSetRestrictions.numberSet;
+
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minNumber,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
+                regexp: '.*[num].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+
+    } else {
+        let setRequirement = {
+            kind: 'mustNot',
+            num: 0,
+            rule: {
+                description:  '[num]',
+                regexp: '.*'+ '[num]' +'.*'
+            }
+        };
+        policy.compositionRequirements.push(setRequirement)
+    }
+
+    if (characterSetRestrictions.specialAllowed) {
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet;
+
+        let requirement = {
+            kind: 'must',
+            num: characterSetRestrictions.minSpecial,
+            rule: {
+                description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
+                regexp: '.*[special].*'
+            }
+        };
+        policy.compositionRequirements.push(requirement);
+
+    } else {
+        let setRequirement = {
+            kind: 'mustNot',
+            num: 0,
+            rule: {
+                description:  '[special]',
+                regexp: '.*'+ '[special]' +'.*'
+            }
+        };
+        policy.compositionRequirements.push(setRequirement)
+    }
+
 
     if (characterSetRestrictions.lowerAllowed) {
         //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
         policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
-        if (characterSetRestrictions.minLower|characterSetRestrictions.maxLower){
+        if (characterSetRestrictions.minLower || characterSetRestrictions.maxLower){
             //if both min and max amount of lowercase letters are set
             if (characterSetRestrictions.minLower && characterSetRestrictions.maxLower){
                 let requirement = {
@@ -292,10 +357,11 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     num: characterSetRestrictions.minLower,
                     rule: {
                         description: 'Must contain between' + characterSetRestrictions.minLower + 'and'+ characterSetRestrictions.maxLower +' lower case letters.',
-                        regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',' + characterSetRestrictions.minLower+ '}$'
+                        regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',' + characterSetRestrictions.maxLower+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
                 };
+                policy.compositionRequirements.push(requirement);
                 //if only a minimum is set
             } else if(characterSetRestrictions.minLower) {
 
@@ -308,6 +374,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
+                policy.compositionRequirements.push(requirement);
 
                 //the last case is when only a maximum is set
             } else {
@@ -320,11 +387,9 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9]?(^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
                     }
                 };
-
+                policy.compositionRequirements.push(requirement);
             }
 
-
-            policy.compositionRequirements.push(requirement);
         }
 
 
@@ -341,10 +406,11 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     num: characterSetRestrictions.minCapital,
                     rule: {
                         description: 'Must contain between' + characterSetRestrictions.minCapital + 'and'+ characterSetRestrictions.maxCapital +' Capital case letters.',
-                        regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet+']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',' + characterSetRestrictions.minCapital+ '}$'
+                        regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet+']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',' + characterSetRestrictions.maxCapital+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
                 };
+                policy.compositionRequirements.push(requirement);
                 //if only a minimum is set
             } else if(characterSetRestrictions.minCapital) {
 
@@ -357,7 +423,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
-
+                policy.compositionRequirements.push(requirement);
                 //the last case is when only a maximum is set
             } else {
                 let requirement = {
@@ -369,8 +435,8 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9]?([^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
                     }
                 };
+                policy.compositionRequirements.push(requirement);
             }
-            policy.compositionRequirements.push(requirement);
         }
     }
 
@@ -385,10 +451,11 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     num: characterSetRestrictions.minNumber,
                     rule: {
                         description: 'Must contain between' + characterSetRestrictions.minNumber + 'and'+ characterSetRestrictions.maxNumber +' Numbers.',
-                        regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet+']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',' + characterSetRestrictions.minNumber+ '}$'
+                        regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet+']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',' + characterSetRestrictions.maxNumber+ '}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
                     }
                 };
+                policy.compositionRequirements.push(requirement);
                 //if only a minimum is set
             } else if(characterSetRestrictions.minNumber) {
 
@@ -401,6 +468,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
+                policy.compositionRequirements.push(requirement);
 
                 //the last case is when only a maximum is set
             } else {
@@ -413,68 +481,70 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                         //basically looks like this: ^(([^0-9]*)[0-9]?([^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
                     }
                 };
+                policy.compositionRequirements.push(requirement);
             }
-            policy.compositionRequirements.push(requirement);
         }
 
     }
 
     if (characterSetRestrictions.specialAllowed) {
 
-            policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").replace(/'/g,"\\\'");
-            //escape all potentially problematic characters
-            let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
-            replace(/\[/g, "\\[").
-            replace(/]/g, "\\[").
-            replace(/\^/g, "\\^").
-            replace(/\$/g, "\\$").
-            replace(/\\/g, "\\\\");
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").replace(/'/g,"\\\'");
+        //escape all potentially problematic characters
+        let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
+        replace(/\[/g, "\\[").
+        replace(/]/g, "\\[").
+        replace(/\^/g, "\\^").
+        replace(/\$/g, "\\$").
+        replace(/\\/g, "\\\\");
 
-            // add whitespaces if necessary
-            if(characterSetRestrictions.whitespaceAllowed){
-                policy.allowedCharacterSets.special = policy.allowedCharacterSets.special +" ";
-                specialRegExSet = specialRegExSet + "\s";
+        // add whitespaces if necessary
+        if(characterSetRestrictions.whitespaceAllowed){
+            policy.allowedCharacterSets.special = policy.allowedCharacterSets.special +" ";
+            specialRegExSet = specialRegExSet + "\s";
 
-            }
-            if (characterSetRestrictions.minSpecial|characterSetRestrictions.maxSpecial){
-                //if both min and max amount of uppercase letters are set
-                if (characterSetRestrictions.minSpecial && characterSetRestrictions.maxSpecial){
-                    let requirement = {
-                        kind: 'must',
-                        num: characterSetRestrictions.minSpecial,
-                        rule: {
-                            description: 'Must contain between' + characterSetRestrictions.minSpecial + 'and'+ characterSetRestrictions.maxSpecial +' special Characters.',
-                            regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet+']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',' + characterSetRestrictions.maxSpecial+ '}$'
-                            //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
-                        }
-                    };
-                    //if only a minimum is set
-                } else if(characterSetRestrictions.minSpecial) {
+        }
+        if (characterSetRestrictions.minSpecial|characterSetRestrictions.maxSpecial){
+            //if both min and max amount of uppercase letters are set
+            if (characterSetRestrictions.minSpecial && characterSetRestrictions.maxSpecial){
+                let requirement = {
+                    kind: 'must',
+                    num: characterSetRestrictions.minSpecial,
+                    rule: {
+                        description: 'Must contain between' + characterSetRestrictions.minSpecial + 'and'+ characterSetRestrictions.maxSpecial +' special Characters.',
+                        regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet+']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',' + characterSetRestrictions.maxSpecial+ '}$'
+                        //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,3}$  The dot identifier could be used too.
+                    }
+                };
+                policy.compositionRequirements.push(requirement);
+                //if only a minimum is set
+            } else if(characterSetRestrictions.minSpecial) {
 
-                    let requirement = {
-                        kind: 'must',
-                        num: characterSetRestrictions.minSpecial,
-                        rule: {
-                            description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
-                            regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',}$'
-                            //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
-                        }
-                    };
+                let requirement = {
+                    kind: 'must',
+                    num: characterSetRestrictions.minSpecial,
+                    rule: {
+                        description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
+                        regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',}$'
+                        //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
+                    }
+                };
+                policy.compositionRequirements.push(requirement);
 
-                    //the last case is when only a maximum is set
-                } else {
-                    let requirement = {
-                        kind: 'must',
-                        num: 0,
-                        rule: {
-                            description: 'Must not contain more than ' + characterSetRestrictions.minSpecial + ' special characters.',
-                            regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']?([^'+specialRegExSet +']*)){'+characterSetRestrictions.maxSpecial +'}$'
-                            //basically looks like this: ^(([^0-9]*)[0-9]?([^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
-                        }
-                    };
-                }
+                //the last case is when only a maximum is set
+            } else {
+                let requirement = {
+                    kind: 'must',
+                    num: 0,
+                    rule: {
+                        description: 'Must not contain more than ' + characterSetRestrictions.minSpecial + ' special characters.',
+                        regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']?([^'+specialRegExSet +']*)){'+characterSetRestrictions.maxSpecial +'}$'
+                        //basically looks like this: ^(([^0-9]*)[0-9]?([^0-9]*)){2}$  The questionmark let's it accept 0 occurences of the charSet
+                    }
+                };
                 policy.compositionRequirements.push(requirement);
             }
+        }
     }
     // Translate position restrictions
     for (let restriction of positionRestrictions) {
@@ -506,7 +576,6 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         }
 
 
-
         if (restriction.restrictionType === 'must') {
             requirement.rule = {
                 description: 'Position ' + restriction.restrictionPosition + ' must be ' + restriction.restrictionContent,
@@ -520,6 +589,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         }
         policy.compositionRequirements.push(requirement);
     }
+
     return policy;
     //don't need this anymore
     /**
