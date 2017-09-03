@@ -146,14 +146,12 @@
   "cancel_dialog":{
     "message": "Abbrechen"
   },
-
   "requirements":{
     "message": "Passwortanforderungen:"
   },
   "website":{
     "message": "Webseite"
   },
-
   "manual-password-change":{
     "message": "Manuelle Passworteingabe"
   },
@@ -246,6 +244,20 @@
   },
   "additional-Restrictions":{
     "message": "Zusätzliche Einschränkungen:"
+  },
+  "contain-at-least":{
+    "message": "Muss mindestens"
+  },
+  "characters":{
+    "message": "Zeichen enthalten"
+  },
+  "contain-max":{
+    "message": "Darf maximal "
+  },
+  "in-your-password":{
+    "message": " in Ihrem Passwort."
+  },
+  "do-not-use":{
+    "message": "Bitte verwenden sie nicht: "
   }
-
 }

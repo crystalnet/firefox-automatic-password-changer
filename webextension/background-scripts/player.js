@@ -208,16 +208,16 @@ class Player {
 
         if (password.length < minLength) {
             satisfied = false;
-            unSatReq.push('Must contain at least ' + minLength + ' letters.');
+            unSatReq.push(browser.i18n.getMessage('contain-at-least') +" "+ minLength +" "+ browser.i18n.getMessage('characters')+".");
         } else {
-            satReq.push('Must contain at least ' + minLength + ' letters.');
+            satReq.push(browser.i18n.getMessage('contain-at-least') +" "+ minLength +" "+ browser.i18n.getMessage('characters')+".");
         }
 
         if (password.length > maxLength) {
             satisfied = false;
-            unSatReq.push('May not contain more than ' + maxLength + ' letters.');
+            unSatReq.push(browser.i18n.getMessage('contain-max')+" " + maxLength +" " +browser.i18n.getMessage('characters')+ ".");
         } else {
-            satReq.push('May not contain more than ' + maxLength + ' letters.');
+            satReq.push( browser.i18n.getMessage('contain-max') +" "+ maxLength +" "+ browser.i18n.getMessage('characters')+ ".");
         }
 
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special + ']');
@@ -228,7 +228,7 @@ class Player {
         if (check !== null) {
             satisfied = false;
             check = [...new Set(check)].toString();
-            unSatReq.push('Your password contains: ' + check + ' , please do not use these characters.');
+            unSatReq.push( browser.i18n.getMessage('do-not-use') + check + browser.i18n.getMessage('in-your-password'));
         }
 
         let ascii = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
@@ -236,7 +236,7 @@ class Player {
 
         if (ascii !== null) {
             ascii = [...new Set(ascii)].toString();
-            satReq.push('You can\'t use: ' + ascii + 'in your password.');
+            satReq.push( browser.i18n.getMessage('do-not-use') + ascii + browser.i18n.getMessage('in-your-password'));
         }
 
 

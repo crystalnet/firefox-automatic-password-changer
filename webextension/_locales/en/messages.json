@@ -149,7 +149,6 @@
   "cancel_dialog":{
     "message": "Cancel"
   },
-
   "requirements":{
     "message": "Requirements"
   },
@@ -225,7 +224,6 @@
   "must-not-be":{
     "message": "Must not be/contain"
   },
-
   "capital-letter":{
     "message": "Capital letter"
   },
@@ -249,5 +247,20 @@
   },
   "additional-Restrictions":{
     "message": "Additional restrictions:"
+  },
+  "contain-at-least":{
+    "message": "Must contain at least"
+  },
+  "characters":{
+    "message": "characters"
+  },
+  "contain-max":{
+    "message": "May not contain more than"
+  },
+  "in-your-password":{
+    "message": "in your password."
+  },
+  "do-not-use":{
+    "message": "Please do not use"
   }
 }
