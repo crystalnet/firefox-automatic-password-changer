@@ -15,6 +15,10 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            // Test dependencies
+            'node_modules/sinon-chrome/bundle/sinon-chrome-webextensions.min.js',
+
+
             // Source
             'webextension/external-scripts/ajv.min.js',
             'webextension/external-scripts/argon2.js',
@@ -34,7 +38,6 @@ module.exports = function (config) {
                 reporter: 'html',
             },
         },
-
 
         // test results reporter to use
         // possible values: 'dots', 'progress'

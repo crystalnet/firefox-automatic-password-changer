@@ -43,8 +43,8 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 })();
 
 /**
- * Loads specification interface
- * @param inputField
+ * Loads specification interface from the htm file and triggers its initialization
+ * @param inputField (DOM Element) to which the dialog belongs
  */
 function loadSpecificationInterface(inputField) {
     let specificationDialog = $('#specificationDialog');
@@ -68,8 +68,8 @@ function loadSpecificationInterface(inputField) {
 
 /**
  * Initialize specification dialog
- * @param data
- * @param inputField
+ * @param data (HTML) html code containing the dialog
+ * @param inputField (DOM Element) input field to which the dialog aligns
  */
 function initializeSpecifiactionDialog(data, inputField) {
     // Append html containing dialog to body
@@ -107,8 +107,8 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#specialOption').html(browser.i18n.getMessage('special-characters'));
     $('#specificOption').html(browser.i18n.getMessage('specific'));
 
-    $('#specificRestriction').attr("placeholder", browser.i18n.getMessage("specific-character"));
-    $('#general-legend')
+    $('#specificRestriction').attr('placeholder', browser.i18n.getMessage('specific-character'));
+    $('#general-legend');
     // Initialize and open dialog
     $('#specificationDialog').dialog({
         classes: {
@@ -163,7 +163,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         clone.find('#numberOption').html(browser.i18n.getMessage('number'));
         clone.find('#specialOption').html(browser.i18n.getMessage('special-characters'));
         clone.find('#specificOption').html(browser.i18n.getMessage('specific'));
-        clone.find('#specificRestriction').attr("placeholder", browser.i18n.getMessage("specific-character"));
+        clone.find('#specificRestriction').attr('placeholder', browser.i18n.getMessage('specific-character'));
 
         clone.appendTo('#positionRestrictionsContainer');
         $('.ui-spinner-input').spinner();
@@ -172,8 +172,8 @@ function initializeSpecifiactionDialog(data, inputField) {
 }
 
 /**
- * TODO documentation
- * @param dialog
+ * Parses the dialog form into a blueprint and sends it to the recorder
+ * @param dialog (DOM Element) the dialog on the page
  */
 function policyEntered(dialog) {
     let error = false;
@@ -266,7 +266,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 regexp: '.*'+ '[az]' +'.*'
             }
         };
-        policy.compositionRequirements.push(setRequirement)
+        policy.compositionRequirements.push(setRequirement);
 
     }
 
@@ -292,7 +292,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 regexp: '.*'+ '[AZ]' +'.*'
             }
         };
-        policy.compositionRequirements.push(setRequirement)
+        policy.compositionRequirements.push(setRequirement);
     }
 
     if (characterSetRestrictions.numberAllowed) {
@@ -317,7 +317,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 regexp: '.*'+ '[num]' +'.*'
             }
         };
-        policy.compositionRequirements.push(setRequirement)
+        policy.compositionRequirements.push(setRequirement);
     }
 
     if (characterSetRestrictions.specialAllowed) {
@@ -342,7 +342,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 regexp: '.*'+ '[special]' +'.*'
             }
         };
-        policy.compositionRequirements.push(setRequirement)
+        policy.compositionRequirements.push(setRequirement);
     }
 
 
@@ -420,21 +420,21 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
     if (characterSetRestrictions.specialAllowed) {
 
-        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").replace(/'/g,"\\'");
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,'\\"').replace(/'/g,'\\\'');
         //escape all potentially problematic characters
-        let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
-        replace(/\[/g, "\\[").
-        replace(/]/g, "\\]").
-        replace(/\^/g, "\\^").
-        replace(/\$/g, "\\$").
-        replace(/'/g, "\\'").
-        replace(/-/g, "\\-").
-        replace(/\\/g, "\\");
+        let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,'\\"').
+        replace(/\[/g, '\\[').
+        replace(/]/g, '\\]').
+        replace(/\^/g, '\\^').
+        replace(/\$/g, '\\$').
+        replace(/'/g, '\\\'').
+        replace(/-/g, '\\-').
+        replace(/\\/g, '\\');
 
         // add whitespaces if necessary
         if(characterSetRestrictions.whitespaceAllowed){
-            policy.allowedCharacterSets.special = policy.allowedCharacterSets.special +" ";
-            specialRegExSet = specialRegExSet + "\s";
+            policy.allowedCharacterSets.special = policy.allowedCharacterSets.special +' ';
+            specialRegExSet = specialRegExSet + '\s';
 
         }
 
@@ -462,31 +462,31 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
             kind: restriction.restrictionType,
             num: parseInt(restriction.restrictionPosition)
         };
-        let regExContent = "";
+        let regExContent = '';
         if(restriction.restrictionContent == 'capital'){
-            regExContent = characterSetRestrictions.capitalSet
+            regExContent = characterSetRestrictions.capitalSet;
         } else if(restriction.restrictionContent == 'lowercase'){
-            regExContent = characterSetRestrictions.lowerSet
+            regExContent = characterSetRestrictions.lowerSet;
         } else if(restriction.restrictionContent == 'number'){
-            regExContent = characterSetRestrictions.numberSet
+            regExContent = characterSetRestrictions.numberSet;
         } else if(restriction.restrictionContent == 'special'){
-            regExContent = characterSetRestrictions.characterSetRestrictions.specialSet.replace(/"/g,"\\\"").
-            replace(/\[/g, "\\[").
-            replace(/]/g, "\\]").
-            replace(/\^/g, "\\^").
-            replace(/\$/g, "\\$").
-            replace(/-/g, "\\-").
-            replace(/'/g, "\\'").
-            replace(/\\/g, "\\");
+            regExContent = characterSetRestrictions.characterSetRestrictions.specialSet.replace(/"/g,'\\"').
+            replace(/\[/g, '\\[').
+            replace(/]/g, '\\]').
+            replace(/\^/g, '\\^').
+            replace(/\$/g, '\\$').
+            replace(/-/g, '\\-').
+            replace(/'/g, '\\\'').
+            replace(/\\/g, '\\');
         } else {
-            regExContent = restriction.restrictionContent.replace(/"/g,"\\\"").
-            replace(/\[/g, "\\[").
-            replace(/]/g, "\\]").
-            replace(/\^/g, "\\^").
-            replace(/\$/g, "\\$").
-            replace(/-/g, "\\-").
-            replace(/'/g, "\\'").
-            replace(/\\/g, "\\");
+            regExContent = restriction.restrictionContent.replace(/"/g,'\\"').
+            replace(/\[/g, '\\[').
+            replace(/]/g, '\\]').
+            replace(/\^/g, '\\^').
+            replace(/\$/g, '\\$').
+            replace(/-/g, '\\-').
+            replace(/'/g, '\\\'').
+            replace(/\\/g, '\\');
         }
 
         let pos = parseInt(restriction.restrictionPosition) - 1;
@@ -574,7 +574,7 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
  */
 function onClickEventHandler(event) {
     // ignore right button click and events triggered by javascript
-    if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0) && !Boolean($(event.target).parents('.pwdChanger').length)) {
+    if (event.button === 0 && (event.clientX !== 0 || event.clientY !== 0) && !$(event.target).parents('.pwdChanger').length) {
         browser.runtime.sendMessage({
             type: 'clickHappened',
             webPage: window.content.location.href,

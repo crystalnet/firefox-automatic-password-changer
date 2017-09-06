@@ -178,26 +178,26 @@ class Player {
 
         if (password.length < minLength) {
             satisfied = false;
-            unSatReq.push(browser.i18n.getMessage('contain-at-least') +" "+ minLength +" "+ browser.i18n.getMessage('characters')+".");
+            unSatReq.push(chrome.i18n.getMessage('contain-at-least') + ' ' + minLength + ' ' + chrome.i18n.getMessage('characters')+'.');
         } else {
-            satReq.push(browser.i18n.getMessage('contain-at-least') +" "+ minLength +" "+ browser.i18n.getMessage('characters')+".");
+            satReq.push(chrome.i18n.getMessage('contain-at-least') + ' ' + minLength + ' ' + chrome.i18n.getMessage('characters')+'.');
         }
 
         if (password.length > maxLength) {
             satisfied = false;
-            unSatReq.push(browser.i18n.getMessage('contain-max')+" " + maxLength +" " +browser.i18n.getMessage('characters')+ ".");
+            unSatReq.push(chrome.i18n.getMessage('contain-max')+ ' ' + maxLength + ' ' + chrome.i18n.getMessage('characters')+ '.');
         } else {
-            satReq.push( browser.i18n.getMessage('contain-max') +" "+ maxLength +" "+ browser.i18n.getMessage('characters')+ ".");
+            satReq.push(chrome.i18n.getMessage('contain-max') + ' ' + maxLength + ' ' + chrome.i18n.getMessage('characters')+ '.');
         }
 
-        let specialRegEx = pwdPolicy.allowedCharacterSets.special.replace(/"/g,"\\\"").
-        replace(/\[/g, "\\[").
-        replace(/]/g, "\\]").
-        replace(/\^/g, "\\^").
-        replace(/\$/g, "\\$").
-        replace(/-/g, "\\-").
-        replace(/'/g, "\\'").
-        replace(/\\/g, "\\");
+        let specialRegEx = pwdPolicy.allowedCharacterSets.special.replace(/"/g,'\\"').
+        replace(/\[/g, '\\[').
+        replace(/]/g, '\\]').
+        replace(/\^/g, '\\^').
+        replace(/\$/g, '\\$').
+        replace(/-/g, '\\-').
+        replace(/'/g, '\\\'').
+        replace(/\\/g, '\\');
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + specialRegEx  + ']');
         charExp = new RegExp(charExp, 'g');
 
@@ -206,25 +206,25 @@ class Player {
         if (check !== null) {
             satisfied = false;
             check = [...new Set(check)].toString();
-            unSatReq.push( browser.i18n.getMessage('do-not-use') + check + browser.i18n.getMessage('in-your-password'));
+            unSatReq.push( chrome.i18n.getMessage('do-not-use') + check + chrome.i18n.getMessage('in-your-password'));
         }
 
-        let ascii = "!\"#$%&()*+,-./:;<=>?@{|}~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz";
+        let ascii = '!"#$%&()*+,-./:;<=>?@{|}~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz';
         ascii = ascii.match(charExp);
 
         if (ascii !== null) {
             ascii = [...new Set(ascii)].toString();
-            satReq.push( browser.i18n.getMessage('do-not-use') + ascii + browser.i18n.getMessage('in-your-password'));
+            satReq.push( chrome.i18n.getMessage('do-not-use') + ascii + chrome.i18n.getMessage('in-your-password'));
         }
 
         let skip = 0;
         for (let requirement of pwdPolicy.compositionRequirements) {
             if(skip>3) {
                 if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
-                satisfied = false;
-                unSatReq.push(requirement.rule.description);
+                    satisfied = false;
+                    unSatReq.push(requirement.rule.description);
                 } else {
-                satReq.push(requirement.rule.description);
+                    satReq.push(requirement.rule.description);
                 }
 
             }
@@ -253,7 +253,7 @@ class Player {
             if (result) {
                 return val;
             }  else if(Math.abs(start- new Date().getSeconds())> 2){
-                return "";
+                return '';
 
             }else {
                     //returns a new valid password recursively if the first one wasn't valid
