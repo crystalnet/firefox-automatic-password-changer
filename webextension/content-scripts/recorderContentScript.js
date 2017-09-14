@@ -76,7 +76,12 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('body').append(data);
 
     // Language specific content
-    $('#lengthHeader').html(browser.i18n.getMessage('length'));
+    $('#lengthLegend').html(browser.i18n.getMessage('length-legend'));
+
+    $('label.minimum').html(browser.i18n.getMessage('minimum'));
+    $('label.maximum').html(browser.i18n.getMessage('maximum'));
+
+    $('#characterSetLegend').html(browser.i18n.getMessage('characterset-legend'));
 
     //$('#capitalHeader').html(browser.i18n.getMessage('capital-letters'));
     $('#capitalAllowedLabel').html(browser.i18n.getMessage('capital-allowed'));
@@ -108,15 +113,13 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#specificOption').html(browser.i18n.getMessage('specific'));
 
     $('#specificRestriction').attr('placeholder', browser.i18n.getMessage('specific-character'));
-    $('#general-legend');
     // Initialize and open dialog
     $('#specificationDialog').dialog({
         classes: {
             'ui-dialog': 'ui-dialog-no-close'
         },
-        width: 400,
-        height: 600,
-        position: {my: 'left top', at: 'right top', of: inputField},
+        width: 470,
+        position: {my: 'left top', at: 'right top', of: inputField, collision: 'none'},
         buttons: [
             {
                 text: browser.i18n.getMessage('save-password-policy'),
@@ -124,7 +127,14 @@ function initializeSpecifiactionDialog(data, inputField) {
                     policyEntered(this);
                 }
             }
-        ]
+        ],
+        resize: function (event, ui) {
+            if (ui.size.height < 0) {
+                $(this).dialog({height: ui.originalSize.height});
+                $(this).dialog({width: ui.size.width});
+            }
+            $(this).dialog({position: {my: 'left top', at: 'right top', of: inputField, collision: 'none'}});
+        }
     });
 
     // Initialize form elements
@@ -133,6 +143,7 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('.ui-spinner-input').spinner();
     $('.ui-selectmenu').selectmenu();
     $('.ui-checkboxradio-input').checkboxradio();
+    $('.controlgroup').controlgroup();
 
 
 

@@ -143,127 +143,139 @@
   "visit_website": {
     "message": "Visit website"
   },
-  "change_Password":{
+  "change_Password": {
     "message": "Change password"
   },
-  "cancel_dialog":{
+  "cancel_dialog": {
     "message": "Cancel"
   },
-  "requirements":{
+  "requirements": {
     "message": "Requirements"
   },
-  "website":{
+  "website": {
     "message": "Website"
   },
-  "manual-password-change":{
+  "manual-password-change": {
     "message": "Manual Password Change"
   },
-  "hide-password":{
+  "hide-password": {
     "message": "Hide"
   },
-  "show-password":{
+  "show-password": {
     "message": "Show"
   },
-  "instructions_manualPWChange1":{
+  "instructions_manualPWChange1": {
     "message": "Please enter a new password for the following website."
   },
-  "instructions_manualPWChange2":{
+  "instructions_manualPWChange2": {
     "message": "All the required password policies of the website are displayed below."
   },
-  "instructions_manualPWChange3":{
+  "instructions_manualPWChange3": {
     "message": "Alternatively, generate a cryptographically secure password."
   },
-  "instructions_manualPWChange4":{
-    "message":"Once all password policies are fulfilled, the automatic change process can be started."
+  "instructions_manualPWChange4": {
+    "message": "Once all password policies are fulfilled, the automatic change process can be started."
   },
-  "lowercase-letters":{
+  "lowercase-letters": {
     "message": "lowercase letters"
   },
-  "lowercase-allowed":{
+  "lowercase-allowed": {
     "message": "Lowercase Letters Allowed"
   },
-  "capital-letters":{
+  "capital-letters": {
     "message": "Capital letters"
   },
-  "capital-allowed":{
+  "capital-allowed": {
     "message": "Capital Letters Allowed"
   },
-  "numbers":{
+  "numbers": {
     "message": "Numbers"
   },
-  "numbers-allowed":{
+  "numbers-allowed": {
     "message": "Numbers Allowed"
   },
-  "special-characters":{
+  "special-characters": {
     "message": "Special Characters and Punctuation"
   },
-  "special-allowed":{
+  "special-allowed": {
     "message": "Special Characters Allowed"
   },
-  "whitespace-allowed":{
+  "whitespace-allowed": {
     "message": "Whitespaces allowed?"
   },
-  "position-specific":{
+  "position-specific": {
     "message": "Position specific restrictions:"
   },
-  "add-Restriction":{
+  "add-Restriction": {
     "message": "Add Restriction"
   },
-  "more":{
+  "more": {
     "message": "More"
   },
-  "less":{
+  "less": {
     "message": "Less"
   },
-  "position":{
+  "position": {
     "message": "position"
   },
-  "must-be":{
+  "must-be": {
     "message": "Must be/contain"
   },
-  "must-not-be":{
+  "must-not-be": {
     "message": "Must not be/contain"
   },
-  "capital-letter":{
+  "capital-letter": {
     "message": "Capital letter"
   },
-  "lowercase-letter":{
+  "lowercase-letter": {
     "message": "lowercase letter"
   },
-  "number":{
+  "number": {
     "message": "Number"
   },
-  "specific":{
+  "specific": {
     "message": "specific"
   },
-  "specific-character":{
+  "specific-character": {
     "message": "specific character"
   },
-  "general":{
+  "general": {
     "message": "General:"
   },
-  "allowed-character-sets":{
+  "allowed-character-sets": {
     "message": "Allowed character sets:"
   },
-  "additional-Restrictions":{
+  "additional-Restrictions": {
     "message": "Additional restrictions:"
   },
-  "contain-at-least":{
+  "contain-at-least": {
     "message": "Must contain at least"
   },
-  "characters":{
+  "characters": {
     "message": "characters"
   },
-  "contain-max":{
+  "contain-max": {
     "message": "May not contain more than"
   },
-  "in-your-password":{
+  "in-your-password": {
     "message": "in your password."
   },
-  "do-not-use":{
+  "do-not-use": {
     "message": "Please do not use"
   },
-  "save-password-policy":{
+  "save-password-policy": {
     "message": "Save policy"
+  },
+  "length-legend": {
+    "message": "Length"
+  },
+  "minimum": {
+    "message": "at least"
+  },
+  "maximum": {
+    "message": "at most"
+  },
+  "characterset-legend": {
+    "message": "Character Sets"
   }
 }

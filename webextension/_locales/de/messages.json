@@ -140,127 +140,139 @@
   "visit_website": {
     "message": "Webseite besuchen"
   },
-  "change_Password":{
+  "change_Password": {
     "message": "Passwort ändern"
   },
-  "cancel_dialog":{
+  "cancel_dialog": {
     "message": "Abbrechen"
   },
-  "requirements":{
+  "requirements": {
     "message": "Passwortanforderungen:"
   },
-  "website":{
+  "website": {
     "message": "Webseite"
   },
-  "manual-password-change":{
+  "manual-password-change": {
     "message": "Manuelle Passworteingabe"
   },
-  "hide-password":{
+  "hide-password": {
     "message": "Verbergen"
   },
-  "show-password":{
+  "show-password": {
     "message": "Zeigen"
   },
-  "instructions_manualPWChange1":{
+  "instructions_manualPWChange1": {
     "message": "Hier können Sie ein neues Passwort für die nachfolgende Website festlegen."
   },
-  "instructions_manualPWChange2":{
+  "instructions_manualPWChange2": {
     "message": "Als Hilfe sind die Passwortanforderungen der Website unten aufgelistet."
   },
-  "instructions_manualPWChange3":{
+  "instructions_manualPWChange3": {
     "message": "Alternativ können Sie sich ein zufälliges Passwort generieren lassen."
   },
-  "instructions_manualPWChange4":{
-    "message":"Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
+  "instructions_manualPWChange4": {
+    "message": "Sofern alle Anforderungen erfüllt sind, können Sie den automatischen Änderungsvorgang starten."
   },
-  "lowercase-letters":{
+  "lowercase-letters": {
     "message": "Kleinbuchstaben"
   },
-  "lowercase-allowed":{
+  "lowercase-allowed": {
     "message": "Kleinbuchstaben erlaubt?"
   },
-  "capital-letters":{
+  "capital-letters": {
     "message": "Großbuchstaben"
   },
-  "capital-allowed":{
+  "capital-allowed": {
     "message": "Großbuchstaben erlaubt?"
   },
-  "numbers":{
+  "numbers": {
     "message": "Zahlen"
   },
-  "numbers-allowed":{
+  "numbers-allowed": {
     "message": "Zahlen erlaubt?"
   },
-  "special-characters":{
+  "special-characters": {
     "message": "Sonderzeichen"
   },
-  "special-allowed":{
+  "special-allowed": {
     "message": "Sonderzeichen erlaubt?"
   },
-  "whitespace-allowed":{
+  "whitespace-allowed": {
     "message": "Leerzeichen erlaubt?"
   },
-  "position-specific":{
+  "position-specific": {
     "message": "Positionsspezifische Vorgaben:"
   },
-  "add-Restriction":{
+  "add-Restriction": {
     "message": "Weitere Einschränkungen hinzufügen"
   },
-  "more":{
+  "more": {
     "message": "Mehr"
   },
-  "less":{
+  "less": {
     "message": "Weniger"
   },
-  "position":{
+  "position": {
     "message": "Position"
   },
-  "must-be":{
+  "must-be": {
     "message": "Soll sein:"
   },
-  "must-not-be":{
+  "must-not-be": {
     "message": "Soll nicht sein:"
   },
-  "capital-letter":{
+  "capital-letter": {
     "message": "Großbuchstabe"
   },
-  "lowercase-letter":{
+  "lowercase-letter": {
     "message": "Kleinbuchstabe"
   },
-  "number":{
+  "number": {
     "message": "Zahl"
   },
-  "specific":{
+  "specific": {
     "message": "spezifische Zeichen"
   },
-  "specific-character":{
+  "specific-character": {
     "message": "spezifische Zeichen"
   },
-  "general":{
+  "general": {
     "message": "Allgemein:"
   },
-  "allowed-character-sets":{
+  "allowed-character-sets": {
     "message": "Erlaubte Zeichensätze:"
   },
-  "additional-Restrictions":{
+  "additional-Restrictions": {
     "message": "Zusätzliche Einschränkungen:"
   },
-  "contain-at-least":{
+  "contain-at-least": {
     "message": "Muss mindestens"
   },
-  "characters":{
+  "characters": {
     "message": "Zeichen enthalten"
   },
-  "contain-max":{
+  "contain-max": {
     "message": "Darf maximal "
   },
-  "in-your-password":{
+  "in-your-password": {
     "message": " in Ihrem Passwort."
   },
-  "do-not-use":{
+  "do-not-use": {
     "message": "Bitte verwenden sie nicht: "
   },
-  "save-password-policy":{
+  "save-password-policy": {
     "message": "Richtlinien speichern"
+  },
+  "length-legend": {
+    "message": "Länge"
+  },
+  "minimum": {
+    "message": "mindestens"
+  },
+  "maximum": {
+    "message": "höchstens"
+  },
+  "characterset-legend": {
+    "message": "Zeichensätze"
   }
 }

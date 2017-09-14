@@ -148,8 +148,6 @@ class Player {
 
         regExp = new RegExp(regExp, 'g');
         let result = regExp.test(password);
-        console.log(username);
-        console.log('Password: ' + password + '  Regexp: ' + regExp.toString() + '  Result: ' + result + '  Description: ' + requirement.rule.description);
         if (requirement.kind === 'must') {
             return result;
         } else {
