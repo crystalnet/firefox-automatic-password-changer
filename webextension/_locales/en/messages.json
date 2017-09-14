@@ -262,5 +262,8 @@
   },
   "do-not-use":{
     "message": "Please do not use"
+  },
+  "save-password-policy":{
+    "message": "Save policy"
   }
 }

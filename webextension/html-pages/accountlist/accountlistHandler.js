@@ -199,9 +199,7 @@ function openPasswordChangeDialog(url, username) {
             modal: true,
             close: function () {
                 sbmtForm[0].reset();
-                form.dialog("destroy");
-
-
+                form.dialog('destroy');
             }
         });
 
@@ -222,15 +220,16 @@ function openPasswordChangeDialog(url, username) {
         }).on('click', function () {
             const newPassword = $('#new-password').val();
             changeThisPasswordAut(url, username, newPassword);
+            form.dialog('close');
         });
 
         form.find('#generatePasswordBtn').button({
             label: browser.i18n.getMessage('generate_pwd')
         }).on('click', function () {
-            player.generatePassword()
+            player.generatePassword(username)
                 .then(function (value) {
-                    $('#manual-password-change-dialog-form').find('#new-password').val(value);
-                    checkRequirements(player);
+                    form.find('#new-password').val(value);
+                    checkRequirements(player, username);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -246,11 +245,11 @@ function openPasswordChangeDialog(url, username) {
         // Hide/Show functionality for password
         let inputBar = form.find('#new-password');
         inputBar.focus(function () {
-            inputBar.on('keyup', () => checkRequirements(player));
+            inputBar.on('keyup', () => checkRequirements(player, username));
         });
 
         inputBar.blur(function () {
-            inputBar.off('keyup', () => checkRequirements(player));
+            inputBar.off('keyup', () => checkRequirements(player, username));
         });
 
         let togglePasswordField = form.find('#togglePasswordField');
@@ -283,7 +282,7 @@ function togglePasswordFieldClicked() {
  * and updates the DOM
  * @param player (Player) Player class that handles the check of requirements
  */
-function checkRequirements(player) {
+function checkRequirements(player, username) {
     let password = $('#new-password').val();
     let notSatisfied = $('#requirementsNotSat');
     let satisfied = $('#requirementsSat');
@@ -293,7 +292,7 @@ function checkRequirements(player) {
     notSatisfied.html('');
     satisfied.html('');
 
-    const checkedRequirements = player.validateUserPassword(password);
+    const checkedRequirements = player.validateUserPassword(password, username);
     if (checkedRequirements.sat) {
         changeButton.button('enable');
     } else if (changeButton.hasClass('ui-button')) {

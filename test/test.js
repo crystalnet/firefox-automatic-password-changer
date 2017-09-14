@@ -24,6 +24,7 @@ describe('Player', function () {
     const blueprint3 =  {'version': 1, 'scope': ['github.com', 'www.github.com'], 'changeProcedure': [{'action' : 'Click', 'parameters' : [1052,33,736,1366,0,'https://github.com/','true']}, {'action' : 'Input', 'parameters' : ['U',5,2,'https://github.com/login']}, {'action' : 'Input', 'parameters' : ['C',5,3,'https://github.com/login']}, {'action' : 'Click', 'parameters' : [684,355,736,1366,0,'https://github.com/login','true']}, {'action' : 'Click', 'parameters' : [1141,28,736,1366,0,'https://github.com/','false']}, {'action' : 'Click', 'parameters' : [1033,304,736,1366,0,'https://github.com/','true']}, {'action' : 'Click', 'parameters' : [236,172,736,1366,0,'https://github.com/settings/profile','false']}, {'action' : 'Input', 'parameters' : ['C',20,9,'https://github.com/settings/admin']}, {'action' : 'Input', 'parameters' : ['N',20,10,'https://github.com/settings/admin']},{'action' : 'Input', 'parameters' : ['N',20,11,'https://github.com/settings/admin']}, {'action' : 'Click', 'parameters' : [520,388,736,1366,0,'https://github.com/settings/admin','true']}, {'action' : 'Click', 'parameters' : [1142,30,736,1366,0,'https://github.com/settings/admin','false']}, {'action' : 'Click', 'parameters' : [1043,329,736,1366,0,'https://github.com/settings/admin','true']}], 'pwdPolicy' : [{'allowedCharacterSets' : {'az' : 'abcdefghijklmnopqrstuvwxyz', 'AZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'num' : '0123456789', 'special' : '!@#$%^*._'}, 'minLength' : 7, 'maxLength' : 15, 'compositionRequirements' : [{'kind':'must','num':1,'rule':{'description':'Must contain at least one lower case letter.','regexp':'.*[az].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one upper case letter.', 'regexp' : '.*[AZ].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one number.','regexp':'.*[num].*'}},{'kind':'must','num':1,'rule':{'description':'Must contain at least one special character.','regexp':'.*[special].*'}},{'kind':'mustNot','num':5,'rule':{'description':'May not be the same as any of the 5 previous passwords used.','regexp':'^[password]'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind':'mustNot','num':1,'rule':{'description':'The special character cannot be the first character in the password.','regexp':'^[special].*'}},{'kind':'mustNot','num':1,'rule':{'description':'May not be the same as your username or contain your username.','regexp':'.*[username].*'}},{'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one number.', 'regexp' : '.*[num].*'}}, {'kind' : 'must', 'num' : 1, 'rule' : {'description' : 'Must contain at least one lower case letter.', 'regexp' : '.*[az].*'}}]}]};
     const data3 = JSON.stringify(blueprint3);
     const invokePGPlayer = new Player(data3, schema);
+    const username = 'testusernameA$0';
 
     describe('#constructor()', function () {
         it('should not accept a faulty JSON as Input', function () {
@@ -62,40 +63,40 @@ describe('Player', function () {
     //the following tests call _validateGeneratedPassword() but necessarily test the _test() function too, as the validation function just calls upon the test function for each regular expression.
     describe('#_validatePassword()', function () {
         it('should reject password containig excluded letters', function () {
-            abPlayer._validatePassword('0aBCc7&$', abPlayer.blueprint).should.be.false();
+            abPlayer._validatePassword('0aBCc7&$', username).should.be.false();
         });
 
         it('should reject a empty password', function () {
-            player._validatePassword('', player.blueprint).should.be.false();
+            player._validatePassword('', username).should.be.false();
         });
 
         it('should reject an overlong password', function () {
-            player._validatePassword('0123456789Ab$012345678901234567890123456789', player.blueprint).should.be.false();
+            player._validatePassword('0123456789Ab$012345678901234567890123456789', username).should.be.false();
         });
 
         it('should reject an too short password', function() {
-            player._validatePassword('3.aH!#', player.blueprint).should.be.false();
+            player._validatePassword('3.aH!#', username).should.be.false();
         });
 
         it('should accept a valid password', function () {
-            player._validatePassword('12345678Ab$', player.blueprint).should.be.true();
+            player._validatePassword('12345678Ab$', username).should.be.true();
         });
 
         it('should reject the username as password', function () {
-            player._validatePassword('testusernameA$0', player.blueprint).should.be.false();
+            player._validatePassword('testusernameA$0', username).should.be.false();
         });
 
         it('should reject a password with only lowercase letters', function () {
-            player._validatePassword('asdfasdf', player.blueprint).should.be.false();
+            player._validatePassword('asdfasdf', username).should.be.false();
         });
 
         it('should reject a previously used password', function () {
-            player._validatePassword('P@ssword123', player.blueprint).should.be.false();
+            player._validatePassword('P@ssword123', username).should.be.false();
         });
 
         // using blueprint without compositionRequirement about [password] and [username]
         it('should accept a valid password even if it´s equal to the username', function() {
-            playerWithout._validatePassword('testusernameA$0', playerWithout.blueprint).should.be.true();
+            playerWithout._validatePassword('testusernameA$0', playerWithout.blueprint, username).should.be.true();
         });
 
     });
@@ -104,39 +105,39 @@ describe('Player', function () {
     // Tests don't work anymore, because browser.i18n.getMessage() is not compatible with the test framework right now
     describe('#validateUserPassword()', function () {
         it('should reject password containig excluded letters', function () {
-            abPlayer.validateUserPassword('0a++BCc7&$', abPlayer.blueprint).sat.should.be.false();
+            abPlayer.validateUserPassword('0a++BCc7&$', username).sat.should.be.false();
         });
 
         it('should reject a empty password', function () {
-            player.validateUserPassword('', player.blueprint).sat.should.be.false();
+            player.validateUserPassword('', username).sat.should.be.false();
         });
 
         it('should reject an overlong password', function () {
-            player.validateUserPassword('0123456789Ab$012345678901234567890123456789', player.blueprint).sat.should.be.false();
+            player.validateUserPassword('0123456789Ab$012345678901234567890123456789', username).sat.should.be.false();
         });
 
         it('should reject an too short password', function() {
-            player.validateUserPassword('3.aH!#', player.blueprint).sat.should.be.false();
+            player.validateUserPassword('3.aH!#', username).sat.should.be.false();
         });
 
         it('should accept a valid password', function () {
-            player.validateUserPassword('12345678Ab$', player.blueprint).sat.should.be.true();
+            player.validateUserPassword('12345678Ab$', username).sat.should.be.true();
         });
 
         it('should reject the username as password', function () {
-            //player.validateUserPassword('testusernameA$0', player.blueprint).sat.should.be.false();
+            //player.validateUserPassword('testusernameA$0', username).sat.should.be.false();
         });
 
         it('should reject a password with only lowercase letters', function () {
-            player.validateUserPassword('asdfasdf', player.blueprint).sat.should.be.false();
+            player.validateUserPassword('asdfasdf', username).sat.should.be.false();
         });
 
         it('should reject a previously used password', function () {
-            //player.validateUserPassword('P@ssword123', player.blueprint).sat.should.be.false();
+            //player.validateUserPassword('P@ssword123', username).sat.should.be.false();
         });
 
         it('should reject a password with ascii', function () {
-            player.validateUserPassword('i37.HDoe♦f', player.blueprint).sat.should.be.false();
+            player.validateUserPassword('i37.HDoe♦f', username).sat.should.be.false();
         });
     });
 
@@ -161,15 +162,15 @@ describe('Player', function () {
 
     describe('#generatePassword()', function () {
         it('should resolve the promise', () => {
-            return invokePGPlayer.generatePassword().should.be.fulfilled();
+            return invokePGPlayer.generatePassword(username).should.be.fulfilled();
         });
 
         it('should resolve with a string', () => {
-            return invokePGPlayer.generatePassword().should.finally.be.a.String();
+            return invokePGPlayer.generatePassword(username).should.finally.be.a.String();
         });
 
         it('should resolve with a password', () => {
-            return invokePGPlayer.generatePassword().should.finally.not.be.empty();
+            return invokePGPlayer.generatePassword(username).should.finally.not.be.empty();
         });
     });
 });

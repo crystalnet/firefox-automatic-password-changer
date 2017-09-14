@@ -259,5 +259,8 @@
   },
   "do-not-use":{
     "message": "Bitte verwenden sie nicht: "
+  },
+  "save-password-policy":{
+    "message": "Richtlinien speichern"
   }
 }

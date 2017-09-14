@@ -119,7 +119,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         position: {my: 'left top', at: 'right top', of: inputField},
         buttons: [
             {
-                text: 'OK',
+                text: browser.i18n.getMessage('save-password-policy'),
                 click: function () {
                     policyEntered(this);
                 }
@@ -179,27 +179,20 @@ function policyEntered(dialog) {
     let error = false;
     $('.pwdChanger .ui-state-error').removeClass('ui-state-error');
 
-    // form validation
     let minLength = $('#minLength');
     if (!minLength.val()) {
-        minLength.parent().addClass('ui-state-error');
-        error = true;
+        minLength.val(1);
     }
 
     let maxLength = $('#maxLength');
     if (!maxLength.val()) {
-        maxLength.parent().addClass('ui-state-error');
-        error = true;
+        maxLength.val(64);
     }
 
     let capitalAllowed = $('#capitalAllowed');
     let lowerAllowed = $('#lowerAllowed');
     let specialAllowed = $('#specialAllowed');
     let numberAllowed = $('#numberAllowed');
-
-    if (error) {
-        return false;
-    }
 
     $(dialog).dialog('close');
 

@@ -85,7 +85,7 @@ class Player {
      * @returns {boolean} true if the password satisfies the policies
      * @private
      */
-    _validatePassword(password) {
+    _validatePassword(password, username) {
         let pwdPolicy = this.blueprint.pwdPolicy[0];
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + pwdPolicy.allowedCharacterSets.special + ']');
         charExp = new RegExp(charExp, 'g');
@@ -106,7 +106,7 @@ class Player {
         }
 
         for (let requirement of pwdPolicy.compositionRequirements) {
-            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
+            if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets, username)) {
                 return false;
             }
         }
@@ -122,14 +122,13 @@ class Player {
      * @returns {boolean} only true if the password meets the specified requirements
      * @private
      */
-    _test(password, requirement, allowedCharacterSets) {
+    _test(password, requirement, allowedCharacterSets, username) {
         let regExp = requirement.rule.regexp;
 
         const az = allowedCharacterSets.az;
         const AZ = allowedCharacterSets.AZ;
         const num = allowedCharacterSets.num;
         const special = allowedCharacterSets.special;
-        const username = 'testusernameA$0';
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
         regExp = regExp.replace('az', az);
@@ -137,7 +136,6 @@ class Player {
         regExp = regExp.replace('num', num);
         regExp = regExp.replace('special', special);
         regExp = regExp.replace('[username]', username);
-        // TODO: Test the username correctly
 
         if (regExp.includes('[password]')) {
             let newValue = '(';
@@ -150,7 +148,8 @@ class Player {
 
         regExp = new RegExp(regExp, 'g');
         let result = regExp.test(password);
-
+        console.log(username);
+        console.log('Password: ' + password + '  Regexp: ' + regExp.toString() + '  Result: ' + result + '  Description: ' + requirement.rule.description);
         if (requirement.kind === 'must') {
             return result;
         } else {
@@ -168,7 +167,7 @@ class Player {
      *                                                           failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
      *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.
      */
-    validateUserPassword(password) {
+    validateUserPassword(password, username) {
         let pwdPolicy = this.blueprint.pwdPolicy[0];
         let unSatReq = [];
         let satReq = [];
@@ -220,7 +219,7 @@ class Player {
         let skip = 0;
         for (let requirement of pwdPolicy.compositionRequirements) {
             if(skip>3) {
-                if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets)) {
+                if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets, username)) {
                     satisfied = false;
                     unSatReq.push(requirement.rule.description);
                 } else {
@@ -239,7 +238,7 @@ class Player {
      *
      * @returns {Promise} new, valid password
      */
-    generatePassword() {
+    generatePassword(username) {
         //this is necessary because otherwise we wouldn't be able to access class methods(and variables like the blueprint) from within the then block.
         let store = this;
 
@@ -249,15 +248,15 @@ class Player {
 
         return this._invokePasswordGenerator().then(function (val) {
 
-            let result = store._validatePassword(val);
+            let result = store._validatePassword(val, username);
             if (result) {
                 return val;
             }  else if(Math.abs(start- new Date().getSeconds())> 2){
                 return '';
 
-            }else {
+            } else {
                     //returns a new valid password recursively if the first one wasn't valid
-                return (store.generatePassword());
+                return (store.generatePassword(username));
             }
 
         });
