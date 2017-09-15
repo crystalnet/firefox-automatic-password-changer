@@ -277,5 +277,23 @@
   },
   "characterset-legend": {
     "message": "Character Sets"
+  },
+  "recording=successful": {
+    "message": "Recording was successful. Blueprint was saved to storage and the password has been updated."
+  },
+  "recording-failed-no-new-password": {
+    "message": "Recording failed. No new password was entered."
+  },
+  "recording-failed-no-password-policy": {
+    "message": "Recording failed. No password policy was specified."
+  },
+  "recording-failed-no-new-password-labeled": {
+    "message": "Recording failed. No field was labeled as new password."
+  },
+  "recording-failed-no-site-load-after-new-password": {
+    "message": "Recording failed. No site load happened after labeling a field as new password."
+  },
+  "recording-failed-invalid-password-policy": {
+    "message": "Recording failed. The password policy is invalid."
   }
 }

@@ -274,5 +274,23 @@
   },
   "characterset-legend": {
     "message": "Zeichensätze"
+  },
+  "recording-successful": {
+    "message": "Aufnahme war erfolgreich. Das Blueprint wurde gespeichert und das Passwort aktualisiert."
+  },
+  "recording-failed-no-new-password": {
+    "message": "Aufnahme fehlgeschlagen. Es wurde kein neues Passwort eingegeben."
+  },
+  "recording-failed-no-password-policy": {
+    "message": "Aufnahme fehlgeschlagen. Es wurde keine Passwortrichtlinie eingegeben."
+  },
+  "recording-failed-no-new-password-labeled": {
+    "message": "Aufnahme fehlgeschlagen. Es wurde keine Feld für das neue Passwort markiert."
+  },
+  "recording-failed-no-site-load-after-new-password": {
+    "message": "Aufnahme fehlgeschlagen. Es wurde keine Seite geladen, nachdem ein Feld als neues Passwort markiert wurde."
+  },
+  "recording-failed-invalid-password-policy": {
+    "message": "Aufnahme fehlgeschlagen. Die Passwortrichtlinie ist ungültig."
   }
 }

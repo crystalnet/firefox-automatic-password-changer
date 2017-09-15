@@ -43,12 +43,12 @@ class Recorder {
         browser.tabs.onUpdated.addListener(this.injectContentScripts);
         // get active tab
         let querying = browser.tabs.query({currentWindow: true, active: true});
-        querying.then(function(tabs) {
+        querying.then(function (tabs) {
             // store the id of the tab the recording takes place in, so we can check for changes in this tab
             recorder.recordingTabId = tabs[0].id;
             // inject recorderContentScript
             recorder.injectContentScripts();
-        }, function(error) {
+        }, function (error) {
             console.log(`Getting active tab in startRecording() failed. ${error}`);
         });
     }
@@ -70,7 +70,7 @@ class Recorder {
             file: '../external-scripts/lodash_throttle.min.js',
             runAt: 'document_start'
         });
-        executing1.then(null, function(error) {
+        executing1.then(null, function (error) {
             console.log(`Injecting lodash_throttle in active tab failed. ${error}`);
         });
         // inject recorderContentScript
@@ -78,7 +78,7 @@ class Recorder {
             file: '../content-scripts/recorderContentScript.js',
             runAt: 'document_end'
         });
-        executing2.then(recorder.DOMContentLoaded, function(error) {
+        executing2.then(recorder.DOMContentLoaded, function (error) {
             console.log(`Injecting recorderContentScript in active tab failed. ${error}`);
         });
     }
@@ -90,7 +90,7 @@ class Recorder {
         recorder.eventDOMContentLoadedFired = true;
         recorder.scrollPosition = 0;
         let sending = browser.tabs.sendMessage(recorder.recordingTabId, {type: 'getWebPage'});
-        sending.then(function(message) {
+        sending.then(function (message) {
             recorder.currentWebsite = message.webPage;
         }, null);
         if (recorder.loginData.username !== '') {
@@ -144,7 +144,7 @@ class Recorder {
                 scrollTop,
                 websiteTrunk,
                 'false'
-                ]
+            ]
         };
     }
 
@@ -188,7 +188,7 @@ class Recorder {
                 message.inputsLength,
                 message.nodeNumber,
                 websiteTrunk
-                ]
+            ]
         });
         // store values we need for changing the password after recording stopped
         if (tag === 'U' && !this.loginDone) {
@@ -225,7 +225,7 @@ class Recorder {
         let sending = browser.tabs.sendMessage(this.recordingTabId, {
             type: 'stopRecording'
         });
-        sending.then(null, function(error) {
+        sending.then(null, function (error) {
             console.log(`Getting recording results in stopRecording() failed. ${error}`);
         });
         // save last click, if not yet done
@@ -238,27 +238,34 @@ class Recorder {
         this.scrollPosition = 0;
         this.clickTempStore = null;
         // handle recording results
-        if (this.userWebPath.length > 0) {
+        if (this.sanityCheck(this.userWebPath, this.pwdPolicy)) {
             this.userWebPath = this.cleanUpUserWebPath(this.userWebPath);
-            if (this.sanityCheck(this.userWebPath)) {
-                // save recording results as new blueprint in storage
-                const blueprint = {
-                    version: 0,
-                    scope: [this.webPage],
-                    changeProcedure: this.userWebPath,
-                    pwdPolicy: this.pwdPolicy
-                };
-                // TODO validate blueprint against schema
-                blueprintStorageAccess.saveBlueprint(this.webPage, blueprint);
-                // use legacy add-on code to store password
-                portToLegacyAddOn.postMessage({
-                    type: 'setPassword',
-                    loginData: this.loginData,
-                    sender: 'Recorder'
-                });
-                // clear loginData
-                this.loginDone = null;
+            // save recording results as new blueprint in storage
+            const blueprint = {
+                version: 0,
+                scope: [this.webPage],
+                changeProcedure: this.userWebPath,
+                pwdPolicy: this.pwdPolicy
+            };
+
+            try {
+                const schema = '{"$schema":"http://json-schema.org/schema#","title":"Blueprint","description":"Blueprint Format Schema, DRAFT v3","type":"object","required":["version","scope","changeProcedure"],"properties":{"version":{"type":"number"},"scope":{"type":"array","description":"Scope, to which domains this blueprint applies (in particular wildcard * as for *.wikipedia.org)","items":{"type":"string"},"minItems":1,"uniqueItems":true},"changeProcedure":{"type":"array","description":"Step, by step description of the procedure to change the password","items":{"type":"object","properties":{"action":{"type":"string"},"parameters":{"type":"array","items":{"type":["string","number"]}}}},"minItems":1,"uniqueItems":true},"pwdPolicy":{"type":"array","items":{"type":"object","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT v3","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. Threre are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}}}';
+                //new Player(JSON.stringify(blueprint), schema);
+            } catch(e) {
+                console.log(e);
+                Utils.showNotification(browser.i18n.getMessage('recording-failed-invalid-password-policy'));
+                return;
             }
+
+            blueprintStorageAccess.saveBlueprint(this.webPage, blueprint);
+            // use legacy add-on code to store password
+            portToLegacyAddOn.postMessage({
+                type: 'setPassword',
+                loginData: this.loginData,
+                sender: 'Recorder'
+            });
+            // clear loginData
+            this.loginDone = null;
         }
     }
 
@@ -281,7 +288,7 @@ class Recorder {
             // for Google these are 'continue', 'hl' and 'followup', but you can extend the array for other websites if necessary
             let argumentsToAppend = ['continue', 'hl', 'followup', 'next', 'forward', 'scope'];
             let argumentsAppended = 0;
-            argumentsToAppend.forEach(function(value) {
+            argumentsToAppend.forEach(function (value) {
                 let argumentIndex = args.indexOf(value + '=');
                 if (argumentIndex !== -1) {
                     constructedURL += argumentsAppended === 0 ? '?' : '&';
@@ -358,20 +365,36 @@ class Recorder {
      * @param userWebPath
      * @returns {boolean}
      */
-    sanityCheck(userWebPath) {
-        let conditionMet = false;
+    sanityCheck(userWebPath, pwdPolicy) {
+        if (!this.loginData.password) {
+            Utils.showNotification(browser.i18n.getMessage('recording-failed-no-new-password'));
+            return false;
+        }
+        if (Object.keys(pwdPolicy).length === 0) {
+            Utils.showNotification(browser.i18n.getMessage('recording-failed-no-password-policy'));
+            return false;
+        }
         let hasNewPasswordInputEntry = false;
+        let hasSiteLoadAfterNewPassword = false;
         userWebPath.forEach(function (v, k) {
-            if (v.action === 'Click' && v.parameters[v.parameters.length - 1] === 'true' && hasNewPasswordInputEntry)
-                conditionMet = true;
             if (v.action === 'Input' && v.parameters[0] === 'N')
                 hasNewPasswordInputEntry = true;
+            if (v.action === 'Click' && v.parameters[v.parameters.length - 1] === 'true' && hasNewPasswordInputEntry)
+                hasSiteLoadAfterNewPassword = true;
         });
-        return conditionMet && this.loginData.password !== '';
+        if (!hasNewPasswordInputEntry) {
+            Utils.showNotification(browser.i18n.getMessage('recording-failed-no-new-password-labeled'));
+            return false;
+        }
+        if (!hasSiteLoadAfterNewPassword) {
+            Utils.showNotification(browser.i18n.getMessage('recording-failed-no-site-load-after-new-password'));
+            return false;
+        }
+        return true;
     }
 }
 
-browser.runtime.onMessage.addListener(function(message) {
+browser.runtime.onMessage.addListener(function (message) {
     switch (message.type) {
     case 'clickHappened':
         recorder.clickHappened(message);
@@ -389,16 +412,21 @@ browser.runtime.onMessage.addListener(function(message) {
 });
 
 // listen for answers from the legacy add-on
-portToLegacyAddOn.onMessage.addListener(function(message) {
+portToLegacyAddOn.onMessage.addListener(function (message) {
     // imitator also listens for "storePassword" messages, so we need to check the intended receiver
-    if (message.type === 'storePassword' && message.status === 'Error' && message.receiver === 'Recorder') {
-        switch (message.errorCode) {
-        case 'missingInformation':
-            Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
-            break;
-        default:
-            Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
-            break;
+    if (message.type === 'storePassword' && message.receiver === 'Recorder') {
+        if (message.status === 'Success') {
+            Utils.showNotification(browser.i18n.getMessage('recording-successful'));
+        } else {
+            // message.status is "Error", no need to check this
+            switch (message.errorCode) {
+            case 'missingInformation':
+                Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
+                break;
+            default:
+                Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
+                break;
+            }
         }
     }
 });
