@@ -140,26 +140,42 @@ class Imitator {
      * @param positionOfInputElement Identifies with input element should be filled
      */
     performInput(tag, numberOfInputElements, positionOfInputElement) {
-        let valueToSend = "";
-        switch (tag) {
-            case "U":
-                valueToSend = this.username;
-                break;
-            case "C":
-                valueToSend = this.loginCredential.password;
-                break;
-            case "N":
-                if (this.newPassword === "") {
-                    this.newPassword = passwordGenerator.generatePassword();
-                }
-                valueToSend = this.newPassword;
-                break;
-        }
-        let sending = browser.tabs.sendMessage(this.imitationTabId, {
-            type: "fillInput",
-            data: {value: valueToSend, numberOfInputElements: numberOfInputElements, positionOfInputElement: positionOfInputElement}
+        // using a promise since generating a new password runs asynchronously.
+        let promise = new Promise((resolve) => {
+            switch (tag) {
+                case "U":
+                    resolve(this.username);
+                    break;
+                case "C":
+                    resolve(this.loginCredential.password);
+                    break;
+                case "N":
+                    if (this.newPassword === "") {
+                        // TODO: remove debug code and replace with variables for password length and policy.
+                        passwordGenerator.generatePassword(20,
+                            [
+                              { char: "upper", min: 5 },
+                              { char: "lower", min: 5 },
+                              { char: "digit", min: 4 },
+                              { char: "punct", min: 3 },
+                              { char: "emoji_common", min: 3 }
+                            ])
+                            .then(password => resolve(password));
+                    }
+                    else {
+                      resolve(this.newPassword);
+                    }
+                    break;
+            }
         });
-        sending.then(null, imitator.stopImitating);
+
+        promise.then((valueToSend) => {
+            let sending = browser.tabs.sendMessage(this.imitationTabId, {
+                type: "fillInput",
+                data: {value: valueToSend, numberOfInputElements: numberOfInputElements, positionOfInputElement: positionOfInputElement}
+            });
+            sending.then(null, imitator.stopImitating);
+        });
     }
 
     /**
