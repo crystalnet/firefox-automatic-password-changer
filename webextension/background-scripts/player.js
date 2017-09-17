@@ -187,14 +187,13 @@ class Player {
             satReq.push(chrome.i18n.getMessage('contain-max') + ' ' + maxLength + ' ' + chrome.i18n.getMessage('characters')+ '.');
         }
 
-        let specialRegEx = pwdPolicy.allowedCharacterSets.special.replace(/"/g,'\\"').
+        let specialRegEx = pwdPolicy.allowedCharacterSets.special.replace(/\\/,'\\\\').
         replace(/\[/g, '\\[').
         replace(/]/g, '\\]').
         replace(/\^/g, '\\^').
         replace(/\$/g, '\\$').
-        replace(/-/g, '\\-').
-        replace(/'/g, '\\\'').
-        replace(/\\/g, '\\');
+        replace(/-/g, '\\-');
+        console.log(specialRegEx);
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + specialRegEx  + ']');
         charExp = new RegExp(charExp, 'g');
 

@@ -10,12 +10,12 @@
             </Legend>
             <fieldset form="characterSetRestrictionsForm" name="length">
                 <div class="controlgroup">
-                    <label for="minLength" class="ui-controlgroup-label minimum"></label>
+                    <label for="minLength" class="ui-controlgroup-label minimum" style ="font-weight: bold;"></label>
                     <input id="minLength" name="minLength" class="ui-spinner-input" style="width: 25px" value="6" min="0">
                 </div>
 
                 <div class="controlgroup">
-                    <label for="maxLength" class="ui-controlgroup-label maximum"></label>
+                    <label for="maxLength" class="ui-controlgroup-label maximum" style ="font-weight: bold;"></label>
                     <input id="maxLength" name="maxLength" class="ui-spinner-input" style="width: 25px" min="0">
                 </div>
             </fieldset>
@@ -30,9 +30,9 @@
 
                 <label id="capitalAllowedLabel" for="capitalAllowed" style ="font-weight: bold;">Capital Letters Allowed</label>
                 <input type="checkbox" name="capitalAllowed" id="capitalAllowed" class="ui-checkboxradio-input">
-                <div class="controlgroup">
-                    <label for="minCapital" class="ui-controlgroup-label minimum"></label>
-                    <input id="minCapital" name="minCapital" class="ui-spinner-input" style="width: 25px" value="0" min="0">
+                <div class="controlgroup" style="float: right;">
+                    <label for="minCapital" class="ui-controlgroup-label minimum" style ="font-weight: bold; "></label>
+                    <input id="minCapital" name="minCapital" class="ui-spinner-input" style="width: 25px;" value="0" min="0">
                 </div>
                 <br/>
 
@@ -46,9 +46,9 @@
             <fieldset>
                 <label id="lowercaseAllowedLabel" for="lowerAllowed" style ="font-weight: bold;">Lowercase Letters Allowed</label>
                 <input type="checkbox" name="lowerAllowed" id="lowerAllowed" class="ui-checkboxradio-input">
-                <div class="controlgroup">
-                    <label for="minLower" class="ui-controlgroup-label minimum"></label>
-                    <input id="minLower" name="minLower" class="ui-spinner-input" style="width: 25px" value="0" min="0">
+                <div class="controlgroup" style="float: right;">
+                    <label for="minLower" class="ui-controlgroup-label minimum" style ="font-weight: bold;"></label>
+                    <input id="minLower" name="minLower" class="ui-spinner-input" style="width: 25px;" value="0" min="0">
                 </div>
                 <br/>
 
@@ -60,9 +60,9 @@
             <fieldset>
                 <label id="numbersAllowedLabel" for="numberAllowed" style ="font-weight: bold;">Numbers Allowed</label>
                 <input type="checkbox" name="numberAllowed" id="numberAllowed" class="ui-checkboxradio-input">
-                <div class="controlgroup">
-                    <label for="minNumber" class="ui-controlgroup-label minimum"></label>
-                    <input id="minNumber" name="minNumber" class="ui-spinner-input" style="width: 25px" value="0" min="0">
+                <div class="controlgroup" style="float: right;">
+                    <label for="minNumber" class="ui-controlgroup-label minimum" style ="font-weight: bold;"></label>
+                    <input id="minNumber" name="minNumber" class="ui-spinner-input" style="width: 25px;" value="0" min="0">
                 </div>
                 <br/>
 
@@ -75,9 +75,9 @@
             <fieldset>
                 <label id="specialsAllowedLabel" for="specialAllowed" style ="font-weight: bold;">Special characters Allowed</label>
                 <input type="checkbox" name="specialAllowed" id="specialAllowed" class="ui-checkboxradio-input">
-                <div class="controlgroup">
-                    <label for="minSpecial" class="ui-controlgroup-label minimum"></label>
-                    <input id="minSpecial" name="minSpecial" class="ui-spinner-input" style="width: 25px" value="0" min="0">
+                <div class="controlgroup" style="float: right;">
+                    <label for="minSpecial" class="ui-controlgroup-label minimum" style ="font-weight: bold;"> </label>
+                    <input id="minSpecial" name="minSpecial" class="ui-spinner-input" style="width: 25px;" value="0" min="0">
                 </div>
                 <br/>
 
@@ -92,6 +92,7 @@
             </fieldset>
         </form>
         <button class="ui-button ui-widget ui-corner-all" id="showPositionRestrictions">More</button>
+        <button class="ui-button ui-widget ui-corner-all" id="showCustomRestrictions" style="float: right;">Custom restrictions</button>
         <div id="positionRestrictions">
             <Legend id="addRes-legend" style ="font-weight: bold;
                     font-size: 1.3em;
@@ -121,11 +122,42 @@
                         </select>
                         <input id="specificRestriction" name="specificRestriction" type="text"
                                class="text ui-widget-content ui-corner-all"
-                               placeholder="specific character" style="width: 120px">
+                               placeholder="specific character" style="width: 180px">
                     </fieldset>
                 </form>
             </div>
             <button class="ui-button ui-widget ui-corner-all" id="addPositionRestriction">Add restriction</button>
+        </div>
+        <div id="customRestrictions">
+            <Legend id="customRes-legend" style ="font-weight: bold;
+                    font-size: 1.5em;
+                    border-bottom: 2px solid;
+                    width: 100%;">
+                Custom Restrictions:
+            </Legend>
+            <div id="customRestrictionExplanation">You can copy your custom Regular Expression here.
+                Please provide a short description for the policy.
+            </div>
+
+            <div id="customRegExContainer">
+                <form id="customRestrictionForm">
+                    <fieldset>
+                        <label id="customRegExLabel" for="customRegEx" style ="font-weight: bold;">Custom Regular Expression:</label><br/>
+                        <label for="customRegEx" class="ui-controlgroup-label">/</label>
+                        <input type="text" name="customRegEx" id="customRegEx"
+                               class="text ui-widget-content ui-corner-all" style="width: 300px">
+                        <label for="customRegEx" class="ui-controlgroup-label">/g</label>
+                        <br/>
+                        <label id="customRegExDescLabel" for="customRegExDesc" style ="font-weight: bold;">Policy Description:</label><br/>
+                        <input type="text" name="customRegExDesc" id="customRegExDesc"
+                               class="text ui-widget-content ui-corner-all" style="width: 300px">
+                    </fieldset>
+                </form>
+            </div>
+            <!--<button class="ui-button ui-widget ui-corner-all" id="addCustomRestriction">Add restriction</button>-->
+
+
+
         </div>
     </div>
 </div>

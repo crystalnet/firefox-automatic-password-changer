@@ -98,11 +98,13 @@ function initializeSpecifiactionDialog(data, inputField) {
 
     $('#posResHeader').html(browser.i18n.getMessage('position-specific'));
     $('#showPositionRestrictions').html(browser.i18n.getMessage('more'));
+    $('#showCustomRestrictions').html(browser.i18n.getMessage('more'));
     $('#positionLabel').html(browser.i18n.getMessage('position'));
     $('#addPositionRestriction').html(browser.i18n.getMessage('add-Restriction'));
     $('#general-legend').html(browser.i18n.getMessage('general'));
     $('#characterset-legend').html(browser.i18n.getMessage('allowed-character-sets'));
     $('#addRes-legend').html(browser.i18n.getMessage('additional-Restrictions'));
+
     //select options
     $('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
     $('#mustBeOption').html(browser.i18n.getMessage('must-be'));
@@ -161,11 +163,23 @@ function initializeSpecifiactionDialog(data, inputField) {
         }
     });
 
+    const customRestrictions = $('#customRestrictions');
+    customRestrictions.hide();
+    $('#showCustomRestrictions').click(function () {
+        if (customRestrictions.is(':visible')) {
+            customRestrictions.hide();
+            $(this).html(browser.i18n.getMessage('more'));
+        } else {
+            customRestrictions.show();
+            $(this).html(browser.i18n.getMessage('less'));
+        }
+    });
+
     $('#addPositionRestriction').click(function () {
         let clone = $(data).find('.positionRestrictionForm').clone();
 
 
-        // the clone() function clones the original div, without the custom language so we need to change them again
+        // the clone() function clones the original form, without the custom language so we need to change them again
         //clone.find('#positionLabel').html(browser.i18n.getMessage('position'));
         clone.find('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
         clone.find('#mustBeOption').html(browser.i18n.getMessage('must-be'));
@@ -177,6 +191,16 @@ function initializeSpecifiactionDialog(data, inputField) {
         clone.find('#specificRestriction').attr('placeholder', browser.i18n.getMessage('specific-character'));
 
         clone.appendTo('#positionRestrictionsContainer');
+        $('.ui-spinner-input').spinner();
+        $('.ui-selectmenu').selectmenu();
+    });
+
+    $('#addCustomRestriction').click(function () {
+        let clone = $(data).find('.customRestrictionForm').clone();
+        //#TODO: i18n
+
+        clone.appendTo('#customRegExContainer');
+
         $('.ui-spinner-input').spinner();
         $('.ui-selectmenu').selectmenu();
     });
@@ -197,7 +221,7 @@ function policyEntered(dialog) {
 
     let maxLength = $('#maxLength');
     if (!maxLength.val()) {
-        maxLength.val(64);
+        maxLength.val(32);
     }
 
     let capitalAllowed = $('#capitalAllowed');
@@ -210,6 +234,7 @@ function policyEntered(dialog) {
     // Parse form restrictions
     let characterSetRestrictions = {};
     let positionRestrictions = [];
+    let customRestrictions = [];
     $.each($('#characterSetRestrictionsForm').serializeArray(), function () {
         characterSetRestrictions[this.name] = this.value;
     });
@@ -224,8 +249,12 @@ function policyEntered(dialog) {
         }
         positionRestrictions.push(restriction);
     });
+    $.each($('#customRestrictionForm').serializeArray(), function () {
 
-    const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions);
+        customRestrictions [this.name]= this.value;
+    });
+
+    const policy = convertFormToPolicy(characterSetRestrictions, positionRestrictions, customRestrictions);
 
     browser.runtime.sendMessage({
         type: 'policyEntered',
@@ -239,7 +268,7 @@ function policyEntered(dialog) {
  * @param positionRestrictions
  * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
  */
-function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
+function convertFormToPolicy(characterSetRestrictions, positionRestrictions, customRestrictions) {
 
     let policy = {
         allowedCharacterSets: {},
@@ -354,8 +383,8 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
         policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
 
-            //if both min and max amount of lowercase letters are set
-            if(characterSetRestrictions.minLower) {
+            //if a minimum is set
+            if(parseInt(characterSetRestrictions.minLower)) {
 
                 let requirement = {
                     kind: 'must',
@@ -368,20 +397,16 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 };
                 policy.compositionRequirements.push(requirement);
 
-                //the last case is when only a maximum is set
+
             }
-
-
-
-
     }
 
     if (characterSetRestrictions.capitalAllowed) {
         policy.allowedCharacterSets.AZ = characterSetRestrictions.capitalSet;
 
 
-            //if both min and max amount of uppercase letters are set
-            if(characterSetRestrictions.minCapital) {
+            //if a minimum is set
+            if(parseInt(characterSetRestrictions.minCapital)) {
 
                 let requirement = {
                     kind: 'must',
@@ -393,7 +418,6 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     }
                 };
                 policy.compositionRequirements.push(requirement);
-                //the last case is when only a maximum is set
             }
 
     }
@@ -402,8 +426,8 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
         policy.allowedCharacterSets.num = characterSetRestrictions.numberSet;
 
 
-            //if both min and max amount of uppercase letters are set
-            if(characterSetRestrictions.minNumber) {
+            //if a minimum is set
+            if(parseInt(characterSetRestrictions.minNumber)) {
 
                 let requirement = {
                     kind: 'must',
@@ -416,7 +440,6 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                 };
                 policy.compositionRequirements.push(requirement);
 
-                //the last case is when only a maximum is set
             }
 
 
@@ -424,26 +447,25 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
 
     if (characterSetRestrictions.specialAllowed) {
 
-        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet.replace(/"/g,'\\"').replace(/'/g,'\\\'');
+        policy.allowedCharacterSets.special = characterSetRestrictions.specialSet;
         //escape all potentially problematic characters
-        let specialRegExSet = characterSetRestrictions.specialSet.replace(/"/g,'\\"').
-        replace(/\[/g, '\\[').
-        replace(/]/g, '\\]').
-        replace(/\^/g, '\\^').
-        replace(/\$/g, '\\$').
-        replace(/'/g, '\\\'').
-        replace(/-/g, '\\-').
-        replace(/\\/g, '\\');
+        let specialRegExSet = characterSetRestrictions.specialSet.
+            replace(/\\/,'\\\\').
+            replace(/\[/g, '\\[').
+            replace(/]/g, '\\]').
+            replace(/\^/g, '\\^').
+            replace(/\$/g, '\\$').
+            replace(/-/g, '\\-');
 
         // add whitespaces if necessary
         if(characterSetRestrictions.whitespaceAllowed){
             policy.allowedCharacterSets.special = policy.allowedCharacterSets.special +' ';
-            specialRegExSet = specialRegExSet + '\s';
+            specialRegExSet = specialRegExSet + ' ';
 
         }
 
-            //if both min and max amount of uppercase letters are set
-           if(characterSetRestrictions.minSpecial) {
+            //if a minimum is set
+            if(parseInt(characterSetRestrictions.minSpecial)) {
 
                 let requirement = {
                     kind: 'must',
@@ -455,58 +477,78 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions) {
                     }
                 };
                 policy.compositionRequirements.push(requirement);
-
-                //the last case is when only a maximum is set
             }
 
     }
     // Translate position restrictions
     for (let restriction of positionRestrictions) {
-        let requirement = {
-            kind: restriction.restrictionType,
-            num: parseInt(restriction.restrictionPosition)
-        };
-        let regExContent = '';
-        if(restriction.restrictionContent == 'capital'){
-            regExContent = characterSetRestrictions.capitalSet;
-        } else if(restriction.restrictionContent == 'lowercase'){
-            regExContent = characterSetRestrictions.lowerSet;
-        } else if(restriction.restrictionContent == 'number'){
-            regExContent = characterSetRestrictions.numberSet;
-        } else if(restriction.restrictionContent == 'special'){
-            regExContent = characterSetRestrictions.characterSetRestrictions.specialSet.replace(/"/g,'\\"').
-            replace(/\[/g, '\\[').
-            replace(/]/g, '\\]').
-            replace(/\^/g, '\\^').
-            replace(/\$/g, '\\$').
-            replace(/-/g, '\\-').
-            replace(/'/g, '\\\'').
-            replace(/\\/g, '\\');
-        } else {
-            regExContent = restriction.restrictionContent.replace(/"/g,'\\"').
-            replace(/\[/g, '\\[').
-            replace(/]/g, '\\]').
-            replace(/\^/g, '\\^').
-            replace(/\$/g, '\\$').
-            replace(/-/g, '\\-').
-            replace(/'/g, '\\\'').
-            replace(/\\/g, '\\');
+        if(restriction.restrictionContent) {
+
+
+            let requirement = {
+                kind: restriction.restrictionType,
+                num: parseInt(restriction.restrictionPosition)
+            };
+            let regExContent = '';
+            if (restriction.restrictionContent == 'capital') {
+                regExContent = characterSetRestrictions.capitalSet;
+            } else if (restriction.restrictionContent == 'lowercase') {
+                regExContent = characterSetRestrictions.lowerSet;
+            } else if (restriction.restrictionContent == 'number') {
+                regExContent = characterSetRestrictions.numberSet;
+            } else if (restriction.restrictionContent == 'special') {
+                regExContent = characterSetRestrictions.specialSet.
+                replace(/\\/,'\\\\').
+                replace(/\[/g, '\\[').
+                replace(/]/g, '\\]').
+                replace(/\^/g, '\\^').
+                replace(/\$/g, '\\$').
+                replace(/-/g, '\\-');
+            } else {
+                regExContent = restriction.restrictionContent.
+                replace(/\\/,'\\\\').
+                replace(/\[/g, '\\[').
+                replace(/]/g, '\\]').
+                replace(/\^/g, '\\^').
+                replace(/\$/g, '\\$').
+                replace(/-/g, '\\-');
+            }
+
+            let pos = parseInt(restriction.restrictionPosition) - 1;
+            if (restriction.restrictionType === 'must') {
+                requirement.rule = {
+                    description: 'Position ' + restriction.restrictionPosition + ' must be: ' + restriction.restrictionContent,
+                    regexp: '^((.){' + pos + '}[' + regExContent + '])'
+                };
+            } else {
+                requirement.rule = {
+                    description: 'Position ' + restriction.restrictionPosition + ' must not be ' + restriction.restrictionContent,
+                    regexp: '^((.){' + pos + '}[' + regExContent + '])'
+                };
+            }
+            policy.compositionRequirements.push(requirement);
+        }
+    }
+
+
+        if(customRestrictions.customRegEx){
+            let customRequirement = {
+                kind: 'must',
+                num: 0,
+                rule: {
+                    description: customRestrictions.customRegExDesc,
+                    regexp: customRestrictions.customRegEx
+
+                }
+            };
+            policy.compositionRequirements.push(customRequirement);
         }
 
-        let pos = parseInt(restriction.restrictionPosition) - 1;
-        if (restriction.restrictionType === 'must') {
-            requirement.rule = {
-                description: 'Position ' + restriction.restrictionPosition + ' must be: ' + restriction.restrictionContent,
-                regexp: '^((.){'+ pos +'}['+ regExContent+'])'
-            };
-        } else {
-            requirement.rule = {
-                description: 'Position ' + restriction.restrictionPosition + ' must not be ' + restriction.restrictionContent,
-                regexp: '^((.){'+ pos +'}['+ regExContent+'])'
-            };
-        }
-        policy.compositionRequirements.push(requirement);
-    }
+
+
+
+
+    console.log(customRestrictions);
 
     return policy;
     //don't need this anymore
