@@ -149,14 +149,14 @@ function buildContextMenu() {
                     contexts: ["editable", "password"]
                 });
                 // send generated password to contextMenuContentScript
-                // TODO: remove debug code and replace with real password policy.
-                passwordGenerator.generatePassword(40,
+                // TODO: remove debug code and replace with variables for password length and policy.
+                passwordGenerator.generatePassword(20,
                     [
-                      { char: "upper", min: 3 },
-                      { char: "digit", min: 2 },
-                      { char: "lower", min: 2 },
-                      { char: "punct", min: 1 },
-                      { char: "\u002f", min: 1 }
+                      { char: "upper", min: 5 },
+                      { char: "lower", min: 5 },
+                      { char: "digit", min: 4 },
+                      { char: "punct", min: 3 },
+                      { char: "emoji_common", min: 3 }
                     ])
                     .then(password => browser.tabs.sendMessage(tab.id, {
                         case: "password",
