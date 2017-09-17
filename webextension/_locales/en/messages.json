@@ -33,10 +33,10 @@
     "message": "New Password"
   },
   "change_password_now_automatically": {
-    "message": "Change Password automatically"
+    "message": "Change password automatically"
   },
   "change_password_now_manually": {
-    "message": "Change Password manually"
+    "message": "Enter new password"
   },
   "record_blueprint_btn": {
     "message": "Record Blueprint"
@@ -310,5 +310,8 @@
   },
   "hide-custom-regexp": {
     "message": "Hide Custom Regular Expressions"
+  },
+  "password-suggestion": {
+    "message": "Random Password Suggestion"
   }
 }

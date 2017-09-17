@@ -30,10 +30,10 @@
     "message": "Neues Passwort"
   },
   "change_password_now_automatically": {
-    "message": "Passwort jetzt automatisch ändern"
+    "message": "Passwort automatisch ändern"
   },
   "change_password_now_manually": {
-    "message": "Passwort jetzt manuell ändern"
+    "message": "Neues Passwort eingeben"
   },
   "record_blueprint_btn": {
     "message": "Blaupause aufzeichnen"
@@ -307,5 +307,8 @@
   },
   "hide-custom-regexp": {
     "message": "Eigene Regular Expression verstecken"
+  },
+  "password-suggestion": {
+    "message": "zufälliger Passwortvorschlag"
   }
 }
