@@ -295,5 +295,20 @@
   },
   "recording-failed-invalid-password-policy": {
     "message": "Recording failed. The password policy is invalid."
+  },
+  "password-specification": {
+    "message": "Password Specification"
+  },
+  "show-position-restrictions": {
+    "message": "Show Position Restrictions"
+  },
+  "hide-position-restrictions": {
+    "message": "Hide Position Restrictions"
+  },
+  "show-custom-regexp": {
+    "message": "Show Custom Regular Expressions"
+  },
+  "hide-custom-regexp": {
+    "message": "Hide Custom Regular Expressions"
   }
 }

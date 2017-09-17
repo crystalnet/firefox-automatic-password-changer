@@ -34,6 +34,12 @@
   "background": {
     "scripts": [
       "/external-scripts/ajv.min.js",
+      "/external-scripts/argon2.js",
+      "/external-scripts/argon2-asm.min.js",
+      "/external-scripts/salsa20.js",
+      "/external-scripts/jquery.min.js",
+      "/external-scripts/jquery-ui.min.js",
+      "/external-scripts/jquery-ui.min.css",
       "/background-scripts/utils.js",
       "/background-scripts/hashTable.js",
       "/background-scripts/blueprintStorageAccess.js",
@@ -42,13 +48,7 @@
       "/background-scripts/recorder.js",
       "/background-scripts/player.js",
       "/background-scripts/passwordChanger.js",
-      "/background-scripts/imitator.js",
-      "/external-scripts/argon2.js",
-      "/external-scripts/argon2-asm.min.js",
-      "/external-scripts/salsa20.js",
-      "/external-scripts/jquery.min.js",
-      "/external-scripts/jquery-ui.min.js",
-      "/external-scripts/jquery-ui.min.css"
+      "/background-scripts/imitator.js"
     ]
   },
   "content_scripts": [
@@ -69,6 +69,7 @@
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
   "web_accessible_resources": [
-    "/content-scripts/specificationDialog.htm"
+    "/content-scripts/specificationDialog.htm",
+    "/images/icons/icon-16.png"
   ]
 }

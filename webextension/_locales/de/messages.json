@@ -292,5 +292,20 @@
   },
   "recording-failed-invalid-password-policy": {
     "message": "Aufnahme fehlgeschlagen. Die Passwortrichtlinie ist ungültig."
+  },
+  "password-specification": {
+    "message": "Passwortrichtlinie"
+  },
+  "show-position-restrictions": {
+    "message": "Positionsbedingungen anzeigen"
+  },
+  "hide-position-restrictions": {
+    "message": "Positionsbedingungen verstecken"
+  },
+  "show-custom-regexp": {
+    "message": "Eigene Regular Expression anzeigen"
+  },
+  "hide-custom-regexp": {
+    "message": "Eigene Regular Expression verstecken"
   }
 }

@@ -97,8 +97,8 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#whitespaceLabel').html(browser.i18n.getMessage('whitespace-allowed'));
 
     $('#posResHeader').html(browser.i18n.getMessage('position-specific'));
-    $('#showPositionRestrictions').html(browser.i18n.getMessage('more'));
-    $('#showCustomRestrictions').html(browser.i18n.getMessage('more'));
+    $('#showPositionRestrictions').html(browser.i18n.getMessage('show-position-restrictions'));
+    $('#showCustomRestrictions').html(browser.i18n.getMessage('show-custom-regexp'));
     $('#positionLabel').html(browser.i18n.getMessage('position'));
     $('#addPositionRestriction').html(browser.i18n.getMessage('add-Restriction'));
     $('#general-legend').html(browser.i18n.getMessage('general'));
@@ -122,6 +122,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         },
         width: 470,
         position: {my: 'left top', at: 'right top', of: inputField, collision: 'none'},
+        title: browser.i18n.getMessage('password-specification'),
         buttons: [
             {
                 text: browser.i18n.getMessage('save-password-policy'),
@@ -142,24 +143,24 @@ function initializeSpecifiactionDialog(data, inputField) {
     // Initialize form elements
     $('.ui-dialog').appendTo('.pwdChanger');
     $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
+    $('.ui-dialog-title').html('&#9664; <img src="' + browser.extension.getURL('/images/icons/icon-16.png') + '"/> ' +  browser.i18n.getMessage('password-specification'));
     $('.ui-spinner-input').spinner();
     $('.ui-selectmenu').selectmenu();
     $('.ui-checkboxradio-input').checkboxradio();
+    $('.ui-checkboxradio-input.check').attr('checked', 'checked');
+    $('.ui-checkboxradio-input').checkboxradio('refresh');
     $('.controlgroup').controlgroup();
 
-
-
-    
     // Add button functionality
     const positionRestrictions = $('#positionRestrictions');
     positionRestrictions.hide();
     $('#showPositionRestrictions').click(function () {
         if (positionRestrictions.is(':visible')) {
             positionRestrictions.hide();
-            $(this).html(browser.i18n.getMessage('more'));
+            $(this).html(browser.i18n.getMessage('show-position-restrictions'));
         } else {
             positionRestrictions.show();
-            $(this).html(browser.i18n.getMessage('less'));
+            $(this).html(browser.i18n.getMessage('hide-position-restrictions'));
         }
     });
 
@@ -168,16 +169,15 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#showCustomRestrictions').click(function () {
         if (customRestrictions.is(':visible')) {
             customRestrictions.hide();
-            $(this).html(browser.i18n.getMessage('more'));
+            $(this).html(browser.i18n.getMessage('show-custom-regexp'));
         } else {
             customRestrictions.show();
-            $(this).html(browser.i18n.getMessage('less'));
+            $(this).html(browser.i18n.getMessage('hide-custom-regexp'));
         }
     });
 
     $('#addPositionRestriction').click(function () {
         let clone = $(data).find('.positionRestrictionForm').clone();
-
 
         // the clone() function clones the original form, without the custom language so we need to change them again
         //clone.find('#positionLabel').html(browser.i18n.getMessage('position'));
@@ -199,7 +199,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         let clone = $(data).find('.customRestrictionForm').clone();
         //#TODO: i18n
 
-        clone.appendTo('#customRegExContainer');
+        clone.appendTo('#customRegExpContainer');
 
         $('.ui-spinner-input').spinner();
         $('.ui-selectmenu').selectmenu();
@@ -211,7 +211,6 @@ function initializeSpecifiactionDialog(data, inputField) {
  * @param dialog (DOM Element) the dialog on the page
  */
 function policyEntered(dialog) {
-    let error = false;
     $('.pwdChanger .ui-state-error').removeClass('ui-state-error');
 
     let minLength = $('#minLength');
@@ -249,8 +248,7 @@ function policyEntered(dialog) {
         }
         positionRestrictions.push(restriction);
     });
-    $.each($('#customRestrictionForm').serializeArray(), function () {
-
+    $.each($('.customRestrictionForm').serializeArray(), function () {
         customRestrictions [this.name]= this.value;
     });
 
@@ -384,21 +382,21 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
         policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
 
             //if a minimum is set
-            if(parseInt(characterSetRestrictions.minLower)) {
+        if(parseInt(characterSetRestrictions.minLower)) {
 
-                let requirement = {
-                    kind: 'must',
-                    num: parseInt(characterSetRestrictions.minLower),
-                    rule: {
-                        description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
-                        regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',}$'
+            let requirement = {
+                kind: 'must',
+                num: parseInt(characterSetRestrictions.minLower),
+                rule: {
+                    description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
+                    regexp: '^(([^'+ characterSetRestrictions.lowerSet+ ']*)['+ characterSetRestrictions.lowerSet +']([^'+characterSetRestrictions.lowerSet +']*)){' +characterSetRestrictions.minLower + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
-                    }
-                };
-                policy.compositionRequirements.push(requirement);
+                }
+            };
+            policy.compositionRequirements.push(requirement);
 
 
-            }
+        }
     }
 
     if (characterSetRestrictions.capitalAllowed) {
@@ -406,19 +404,19 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
 
 
             //if a minimum is set
-            if(parseInt(characterSetRestrictions.minCapital)) {
+        if(parseInt(characterSetRestrictions.minCapital)) {
 
-                let requirement = {
-                    kind: 'must',
-                    num: parseInt(characterSetRestrictions.minCapital),
-                    rule: {
-                        description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' Capital case letters.',
-                        regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet +']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',}$'
+            let requirement = {
+                kind: 'must',
+                num: parseInt(characterSetRestrictions.minCapital),
+                rule: {
+                    description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' Capital case letters.',
+                    regexp: '^(([^'+ characterSetRestrictions.capitalSet+ ']*)['+ characterSetRestrictions.capitalSet +']([^'+characterSetRestrictions.capitalSet +']*)){' +characterSetRestrictions.minCapital + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
-                    }
-                };
-                policy.compositionRequirements.push(requirement);
-            }
+                }
+            };
+            policy.compositionRequirements.push(requirement);
+        }
 
     }
 
@@ -427,20 +425,20 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
 
 
             //if a minimum is set
-            if(parseInt(characterSetRestrictions.minNumber)) {
+        if(parseInt(characterSetRestrictions.minNumber)) {
 
-                let requirement = {
-                    kind: 'must',
-                    num: parseInt(characterSetRestrictions.minNumber),
-                    rule: {
-                        description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
-                        regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet +']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',}$'
+            let requirement = {
+                kind: 'must',
+                num: parseInt(characterSetRestrictions.minNumber),
+                rule: {
+                    description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
+                    regexp: '^(([^'+ characterSetRestrictions.numberSet+ ']*)['+ characterSetRestrictions.numberSet +']([^'+characterSetRestrictions.numberSet +']*)){' +characterSetRestrictions.minNumber + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
-                    }
-                };
-                policy.compositionRequirements.push(requirement);
+                }
+            };
+            policy.compositionRequirements.push(requirement);
 
-            }
+        }
 
 
     }
@@ -465,19 +463,19 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
         }
 
             //if a minimum is set
-            if(parseInt(characterSetRestrictions.minSpecial)) {
+        if(parseInt(characterSetRestrictions.minSpecial)) {
 
-                let requirement = {
-                    kind: 'must',
-                    num: parseInt(characterSetRestrictions.minSpecial),
-                    rule: {
-                        description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
-                        regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',}$'
+            let requirement = {
+                kind: 'must',
+                num: parseInt(characterSetRestrictions.minSpecial),
+                rule: {
+                    description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
+                    regexp: '^(([^'+ specialRegExSet+ ']*)['+ specialRegExSet +']([^'+specialRegExSet +']*)){' + characterSetRestrictions.minSpecial + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
-                    }
-                };
-                policy.compositionRequirements.push(requirement);
-            }
+                }
+            };
+            policy.compositionRequirements.push(requirement);
+        }
 
     }
     // Translate position restrictions
@@ -531,18 +529,18 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
     }
 
 
-        if(customRestrictions.customRegEx){
-            let customRequirement = {
-                kind: 'must',
-                num: 0,
-                rule: {
-                    description: customRestrictions.customRegExDesc,
-                    regexp: customRestrictions.customRegEx
+    if(customRestrictions.customRegEx){
+        let customRequirement = {
+            kind: 'must',
+            num: 0,
+            rule: {
+                description: customRestrictions.customRegExDesc,
+                regexp: customRestrictions.customRegEx
 
-                }
-            };
-            policy.compositionRequirements.push(customRequirement);
-        }
+            }
+        };
+        policy.compositionRequirements.push(customRequirement);
+    }
 
 
 
