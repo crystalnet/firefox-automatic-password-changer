@@ -108,10 +108,10 @@
     "message": "Das Passwort wurde wahrscheinlich geändert, konnte aber nicht im Passwort-Manager eingetragen werden. Nutzen sie die Passwort-Reset Funktion der Webseite."
   },
   "recorder_failed_saving_new_password": {
-    "message": "Das neue Passwort konnte nicht gespeichert werden."
+    "message": "Problem bei der Aufnahme. Das neue Passwort konnte nicht gespeichert werden. Der Blueprint wurde trotzdem gespeichert."
   },
   "store_password_failed_missing_information": {
-    "message": "Das neue Passwort konnte nicht im Passwort-Manager gespeichert werden, weil dazu notwendige Informationen fehlen."
+    "message": "Problem bei der Aufnahme. Das neue Passwort konnte nicht im Passwort-Manager gespeichert werden, weil dazu notwendige Informationen fehlen. Der Blueprint wurde trotzdem gespeichert."
   },
   "label as": {
     "message": "Markieren als"

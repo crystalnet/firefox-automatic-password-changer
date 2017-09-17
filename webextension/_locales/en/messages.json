@@ -111,10 +111,10 @@
     "message": "The password was possibly changed, but could not be saved in the password manager. Please use the password reset function of the website."
   },
   "recorder_failed_saving_new_password": {
-    "message": "The new password could not be saved."
+    "message": "Recording encountered a problem. The new password could not be saved, but the blueprint has been saved to storage."
   },
   "store_password_failed_missing_information": {
-    "message": "The new password could not be stored in the password manager, because some necessary information to do so is missing."
+    "message": "Recording encountered a problem. The new password could not be stored in the password manager, because some necessary information to do so is missing. The blueprint has been saved to storage."
   },
   "label as": {
     "message": "Label as"
@@ -278,7 +278,7 @@
   "characterset-legend": {
     "message": "Character Sets"
   },
-  "recording=successful": {
+  "recording-successful": {
     "message": "Recording was successful. Blueprint was saved to storage and the password has been updated."
   },
   "recording-failed-no-new-password": {

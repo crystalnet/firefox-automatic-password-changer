@@ -242,3 +242,24 @@ function toggleRecorder() {
         contexts: contexts
     });
 }
+
+// Event handling for messages from the legacy addon to the recorder. Cannot be executed in the recorder
+// because the recorder is loaded before this file and only this file declares portToLegacyAddon
+portToLegacyAddOn.onMessage.addListener(function (message) {
+    // imitator also listens for "storePassword" messages, so we need to check the intended receiver
+    if (message.type === 'storePassword' && message.receiver === 'Recorder') {
+        if (message.status === 'Success') {
+            Utils.showNotification(browser.i18n.getMessage('recording-successful'));
+        } else {
+            // message.status is "Error", no need to check this
+            switch (message.errorCode) {
+                case 'missingInformation':
+                    Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
+                    break;
+                default:
+                    Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
+                    break;
+            }
+        }
+    }
+});
