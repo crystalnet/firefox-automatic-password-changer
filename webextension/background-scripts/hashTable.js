@@ -1,6 +1,7 @@
 /**
  * Got idea for hashtable implementation from http://www.mojavelinux.com/articles/javascript_hashes.html
  */
+/* exported HashTable */
 class HashTable {
     constructor(obj) {
         this.length = 0;

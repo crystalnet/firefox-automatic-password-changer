@@ -1,3 +1,4 @@
+/* exported Badge */
 class Badge {
     /**
      * Initializes counterValue variable
@@ -39,14 +40,14 @@ class Badge {
      */
     display() {
         if (this.recording) {
-            browser.browserAction.setBadgeText({text: "rec"});
-            browser.browserAction.setBadgeBackgroundColor({color: "red"});
+            browser.browserAction.setBadgeText({text: 'rec'});
+            browser.browserAction.setBadgeBackgroundColor({color: 'red'});
         } else if (this.counterValue === 0) {
-            browser.browserAction.setBadgeText({text: "ok"});
-            browser.browserAction.setBadgeBackgroundColor({color: "#00AAAA"});
+            browser.browserAction.setBadgeText({text: 'ok'});
+            browser.browserAction.setBadgeBackgroundColor({color: '#00AAAA'});
         } else {
             browser.browserAction.setBadgeText({text: this.counterValue.toString()});
-            browser.browserAction.setBadgeBackgroundColor({color: "orange"});
+            browser.browserAction.setBadgeBackgroundColor({color: 'orange'});
         }
     }
 

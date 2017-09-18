@@ -9,11 +9,23 @@
   "globals": {
     "Player": true,
     "Ajv": true,
-    "PasswordGen": true
+    "PasswordGen": true,
+    "_": true,
+    "recorder": true,
+    "Recorder": true,
+    "blueprintStorageAccess": true,
+    "BlueprintStorageAccess": true,
+    "Badge": true,
+    "HashTable": true,
+    "portToLegacyAddOn": true,
+    "Utils": true,
+    "Argon2": true,
+    "Salsa20": true,
+    "require": true
   },
   "parserOptions": {
     "ecmaVersion": 8,
-    "sourceType": "module"
+    "sourceType": "script"
   },
   "extends": "eslint:recommended",
   "rules": {
@@ -34,6 +46,12 @@
       "always"
     ],
     "no-unused-vars": [
+      "warn"
+    ],
+    "no-console": [
+      "warn"
+    ],
+    "no-case-declarations": [
       "warn"
     ]
   }

@@ -14,18 +14,18 @@ let messagesDismissedByUser = [];
 let portToLegacyAddOn;
 
 (function init() {
-    portToLegacyAddOn = browser.runtime.connect({name: "connection-to-legacy-from-passwordChanger"});
+    portToLegacyAddOn = browser.runtime.connect({name: 'connection-to-legacy-from-passwordChanger'});
     portToLegacyAddOn.onMessage.addListener(function(message) {
         switch (message.type) {
-            case "LoginDomains":
-                queryInfoWebservice(message.content);
-                break;
+        case 'LoginDomains':
+            queryInfoWebservice(message.content);
+            break;
         }
     });
     // get all domains the user has stored login credentials for, so we can call the
     // queryInfoWebservice function, which then sets the correct badge on the add-on button
     portToLegacyAddOn.postMessage({
-        type: "getLoginDomains"
+        type: 'getLoginDomains'
     });
     // build the context menu
     buildContextMenu();
@@ -90,99 +90,99 @@ function createPlayer(blueprint, schema) {
  */
 function buildContextMenu() {
     browser.contextMenus.create({
-        id: "topLevelItem",
-        title: browser.i18n.getMessage("extensionName"),
-        contexts: ["all"]
+        id: 'topLevelItem',
+        title: browser.i18n.getMessage('extensionName'),
+        contexts: ['all']
     });
     browser.contextMenus.create({
-        id: "labelAs",
-        parentId: "topLevelItem",
-        title: browser.i18n.getMessage("label as"),
-        contexts: ["page_action"]
+        id: 'labelAs',
+        parentId: 'topLevelItem',
+        title: browser.i18n.getMessage('label as'),
+        contexts: ['page_action']
     });
     browser.contextMenus.create({
-        id: "labelAsUsername",
-        parentId: "labelAs",
-        title: browser.i18n.getMessage("username slash mail"),
-        contexts: ["editable"]
+        id: 'labelAsUsername',
+        parentId: 'labelAs',
+        title: browser.i18n.getMessage('username slash mail'),
+        contexts: ['editable']
     });
     browser.contextMenus.create({
-        id: "labelAsCurrentPassword",
-        parentId: "labelAs",
-        title: browser.i18n.getMessage("current password"),
-        contexts: ["editable", "password"]
+        id: 'labelAsCurrentPassword',
+        parentId: 'labelAs',
+        title: browser.i18n.getMessage('current password'),
+        contexts: ['editable', 'password']
     });
     browser.contextMenus.create({
-        id: "labelAsNewPassword",
-        parentId: "labelAs",
-        title: browser.i18n.getMessage("new password"),
-        contexts: ["page_action"]
+        id: 'labelAsNewPassword',
+        parentId: 'labelAs',
+        title: browser.i18n.getMessage('new password'),
+        contexts: ['page_action']
     });
     browser.contextMenus.create({
-        id: "startStopRecording",
-        parentId: "topLevelItem",
-        title: browser.i18n.getMessage("record"),
-        contexts: ["all"]
+        id: 'startStopRecording',
+        parentId: 'topLevelItem',
+        title: browser.i18n.getMessage('record'),
+        contexts: ['all']
     });
     browser.contextMenus.create({
-        id: "generatePassword",
-        parentId: "topLevelItem",
-        title: browser.i18n.getMessage("generate_pwd"),
-        contexts: ["editable", "password"]
+        id: 'generatePassword',
+        parentId: 'topLevelItem',
+        title: browser.i18n.getMessage('generate_pwd'),
+        contexts: ['editable', 'password']
     });
     browser.contextMenus.create({
-        id: "reuseGeneratedPassword",
-        parentId: "topLevelItem",
-        title: browser.i18n.getMessage("reuse_pwd"),
-        contexts: ["page_action"]
+        id: 'reuseGeneratedPassword',
+        parentId: 'topLevelItem',
+        title: browser.i18n.getMessage('reuse_pwd'),
+        contexts: ['page_action']
     });
     browser.contextMenus.onClicked.addListener(function(info, tab) {
         switch (info.menuItemId) {
-            case "startStopRecording":
+        case 'startStopRecording':
                 // start or stop the recorder; handling the corresponding context menu changes is done
                 // in toggleRecorder, because it also has to be done, when using the main menu
-                toggleRecorder();
-                break;
-            case "generatePassword":
+            toggleRecorder();
+            break;
+        case 'generatePassword':
                 // make reuseGeneratedPassword item visible
-                browser.contextMenus.update("reuseGeneratedPassword", {
-                    contexts: ["editable", "password"]
-                });
+            browser.contextMenus.update('reuseGeneratedPassword', {
+                contexts: ['editable', 'password']
+            });
                 // send generated password to contextMenuContentScript
                 // TODO: remove debug code and replace with variables for password length and policy.
-                passwordGenerator.generatePassword(20,
-                    [
-                      { char: "upper", min: 5 },
-                      { char: "lower", min: 5 },
-                      { char: "digit", min: 4 },
-                      { char: "punct", min: 3 },
-                      { char: "emoji_common", min: 3 }
-                    ])
+            passwordGenerator.generatePassword(20,
+                [
+                      { char: 'upper', min: 5 },
+                      { char: 'lower', min: 5 },
+                      { char: 'digit', min: 4 },
+                      { char: 'punct', min: 3 },
+                      { char: 'emoji_common', min: 3 }
+                ])
                     .then(password => browser.tabs.sendMessage(tab.id, {
-                        case: "password",
+                        case: 'password',
                         content: password
                     }));
-                break;
-            case "reuseGeneratedPassword":
+            break;
+        case 'reuseGeneratedPassword':
                 // make reuseGeneratedPassword item invisible
-                browser.contextMenus.update(info.menuItemId, {
-                    contexts: ["page_action"]
-                });
+            browser.contextMenus.update(info.menuItemId, {
+                contexts: ['page_action']
+            });
                 // send last generated password to contextMenuContentScript
-                browser.tabs.sendMessage(tab.id, {
-                    case: "password",
-                    content: passwordGenerator.getLastPassword()
-                });
-                break;
-            case "labelAsUsername":
-                handleLabelAsContextMenuClick("U", tab.id);
-                break;
-            case "labelAsCurrentPassword":
-                handleLabelAsContextMenuClick("C", tab.id);
-                break;
-            case "labelAsNewPassword":
-                handleLabelAsContextMenuClick("N", tab.id);
-                break;
+            browser.tabs.sendMessage(tab.id, {
+                case: 'password',
+                content: passwordGenerator.getLastPassword()
+            });
+            break;
+        case 'labelAsUsername':
+            handleLabelAsContextMenuClick('U', tab.id);
+            break;
+        case 'labelAsCurrentPassword':
+            handleLabelAsContextMenuClick('C', tab.id);
+            break;
+        case 'labelAsNewPassword':
+            handleLabelAsContextMenuClick('N', tab.id);
+            break;
         }
     });
 }
@@ -195,7 +195,7 @@ function buildContextMenu() {
 function handleLabelAsContextMenuClick(label, tabId) {
     // send highlight command to contextMenuContentScript
     let sending = browser.tabs.sendMessage(tabId, {
-        case: "highlight"
+        case: 'highlight'
     });
     sending.then(function(message) {
         recorder.tagTracker[message.inputNumber] = label;
@@ -203,7 +203,7 @@ function handleLabelAsContextMenuClick(label, tabId) {
         // we get the number of the input element the context menu was invoked on as response
         // and send this information to the RecorderContentScript
         browser.tabs.sendMessage(tabId, {
-            type: "label",
+            type: 'label',
             inputNumber: message.inputNumber,
             policyEntered: policyEntered,
             label: label
@@ -223,8 +223,8 @@ function toggleRecorder() {
         badge.deactivateRecording();
         recorder.stopRecording();
         // hide labelAsNewPassword context menu item
-        browser.contextMenus.update("labelAsNewPassword", {
-            contexts: ["page_action"]
+        browser.contextMenus.update('labelAsNewPassword', {
+            contexts: ['page_action']
         });
     } else {
         badge.activateRecording();
@@ -232,13 +232,13 @@ function toggleRecorder() {
     }
     /* actual recorderStatus is now flipped after starting or stopping recorder ! */
     // update the startStopRecording item title
-    let messageString = !recorderStatus ? "stop_recording" : "record";
-    browser.contextMenus.update("startStopRecording", {
+    let messageString = !recorderStatus ? 'stop_recording' : 'record';
+    browser.contextMenus.update('startStopRecording', {
         title: browser.i18n.getMessage(messageString)
     });
     // hide or show labelAs submenu
-    let contexts = !recorderStatus ? ["editable", "password"] : ["page_action"];
-    browser.contextMenus.update("labelAs", {
+    let contexts = !recorderStatus ? ['editable', 'password'] : ['page_action'];
+    browser.contextMenus.update('labelAs', {
         contexts: contexts
     });
 }
@@ -253,12 +253,12 @@ portToLegacyAddOn.onMessage.addListener(function (message) {
         } else {
             // message.status is "Error", no need to check this
             switch (message.errorCode) {
-                case 'missingInformation':
-                    Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
-                    break;
-                default:
-                    Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
-                    break;
+            case 'missingInformation':
+                Utils.showNotification(browser.i18n.getMessage('store_password_failed_missing_information'));
+                break;
+            default:
+                Utils.showNotification(browser.i18n.getMessage('recorder_failed_saving_new_password'));
+                break;
             }
         }
     }

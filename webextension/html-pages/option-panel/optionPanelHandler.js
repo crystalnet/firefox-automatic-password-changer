@@ -15,28 +15,28 @@ function initDone(page) {
  * Add missing parts to panel HTML
  */
 function complementPanelHTML() {
-    let iconSrc = "../../images/icons/stop.png";
-    let label = browser.i18n.getMessage("stop_recording");
+    let iconSrc = '../../images/icons/stop.png';
+    let label = browser.i18n.getMessage('stop_recording');
     if (backgroundPage.getRecorder().recorderStatus() === false) {
-        iconSrc = "../../images/icons/recording_16x16.png";
-        label = browser.i18n.getMessage("record");
+        iconSrc = '../../images/icons/recording_16x16.png';
+        label = browser.i18n.getMessage('record');
     }
-    complementOptionButton("record-button", label, iconSrc, startRecord_endRecord);
-    complementOptionButton("accountlist", browser.i18n.getMessage("accountlist"), "../../images/icons/list-v1_16.png", openAccounts);
-    complementOptionButton("help", browser.i18n.getMessage("help"), "../../images/icons/help-16.png", openHelp);
+    complementOptionButton('record-button', label, iconSrc, startRecord_endRecord);
+    complementOptionButton('accountlist', browser.i18n.getMessage('accountlist'), '../../images/icons/list-v1_16.png', openAccounts);
+    complementOptionButton('help', browser.i18n.getMessage('help'), '../../images/icons/help-16.png', openHelp);
     // add info messages
     let infoMessages = backgroundPage.getMessagesToDisplay();
     infoMessages.each(function(key, value) {
         addInfoMessage(value[0], value[1], key);
     });
     // append appropriate event listeners for info messages
-    let closeIcons = document.getElementsByClassName("closeIcon");
+    let closeIcons = document.getElementsByClassName('closeIcon');
     Array.prototype.forEach.call(closeIcons, function (closeIcon) {
-        closeIcon.addEventListener("click", removeInfoMessage);
+        closeIcon.addEventListener('click', removeInfoMessage);
     });
-    let buttons = document.getElementsByTagName("button");
+    let buttons = document.getElementsByTagName('button');
     Array.prototype.forEach.call(buttons, function (button) {
-        button.addEventListener("click", visitWebsite);
+        button.addEventListener('click', visitWebsite);
     });
 }
 
@@ -55,11 +55,11 @@ function complementOptionButton(id, text, iconSrc, newFunction) {
     let div = document.getElementById(id);
     if (div !== null) {
         div.innerHTML = text;
-        let icon = document.createElement("img");
-        icon.setAttribute("src", iconSrc);
-        icon.setAttribute("class", "icon");
+        let icon = document.createElement('img');
+        icon.setAttribute('src', iconSrc);
+        icon.setAttribute('class', 'icon');
         div.appendChild(icon);
-        div.addEventListener("click", newFunction, false);
+        div.addEventListener('click', newFunction, false);
     }
 }
 
@@ -70,46 +70,46 @@ function complementOptionButton(id, text, iconSrc, newFunction) {
  * @param messageGUID
  */
 function addInfoMessage(domain, message, messageGUID) {
-    if (document.getElementById("info_" + domain) === null) {
-        let hr = document.createElement("hr");
-        hr.setAttribute("id", "hr_" + domain);
+    if (document.getElementById('info_' + domain) === null) {
+        let hr = document.createElement('hr');
+        hr.setAttribute('id', 'hr_' + domain);
         document.body.appendChild(hr);
 
-        let icon = document.createElement("IMG");
-        icon.setAttribute("src", "../../images/icons/icon-info.png");
+        let icon = document.createElement('IMG');
+        icon.setAttribute('src', '../../images/icons/icon-info.png');
 
-        let imgContainer = document.createElement("DIV");
-        imgContainer.setAttribute("class", "imgContainer");
+        let imgContainer = document.createElement('DIV');
+        imgContainer.setAttribute('class', 'imgContainer');
         imgContainer.appendChild(icon);
 
-        let dismissIcon = document.createElement("IMG");
-        dismissIcon.setAttribute("class", "closeIcon");
-        dismissIcon.setAttribute("src", "../../images/icons/icon-close.png");
+        let dismissIcon = document.createElement('IMG');
+        dismissIcon.setAttribute('class', 'closeIcon');
+        dismissIcon.setAttribute('src', '../../images/icons/icon-close.png');
 
-        let infoDomain = document.createElement("DIV");
-        infoDomain.setAttribute("class", "infoDomain");
+        let infoDomain = document.createElement('DIV');
+        infoDomain.setAttribute('class', 'infoDomain');
         infoDomain.innerHTML = domain;
         infoDomain.appendChild(dismissIcon);
 
-        let infoMessage = document.createElement("DIV");
-        infoMessage.setAttribute("class", "info");
+        let infoMessage = document.createElement('DIV');
+        infoMessage.setAttribute('class', 'info');
         infoMessage.innerHTML = message;
 
-        let button = document.createElement("BUTTON");
-        button.innerHTML = browser.i18n.getMessage("visit_website");
-        let buttonContainer = document.createElement("DIV");
-        buttonContainer.setAttribute("class", "buttonContainer");
+        let button = document.createElement('BUTTON');
+        button.innerHTML = browser.i18n.getMessage('visit_website');
+        let buttonContainer = document.createElement('DIV');
+        buttonContainer.setAttribute('class', 'buttonContainer');
         buttonContainer.appendChild(button);
 
-        let infoContainer = document.createElement("DIV");
-        infoContainer.setAttribute("class", "infoContainer");
+        let infoContainer = document.createElement('DIV');
+        infoContainer.setAttribute('class', 'infoContainer');
         infoContainer.appendChild(infoDomain);
         infoContainer.appendChild(infoMessage);
         infoContainer.appendChild(buttonContainer);
 
-        let itemContainer = document.createElement("DIV");
-        itemContainer.setAttribute("id", "info_" + messageGUID);
-        itemContainer.setAttribute("class", "itemContainer");
+        let itemContainer = document.createElement('DIV');
+        itemContainer.setAttribute('id', 'info_' + messageGUID);
+        itemContainer.setAttribute('class', 'itemContainer');
         itemContainer.appendChild(imgContainer);
         itemContainer.appendChild(infoContainer);
 
@@ -123,7 +123,7 @@ function addInfoMessage(domain, message, messageGUID) {
  */
 function visitWebsite(event) {
     let infoDomain = event.target.parentNode.parentNode.firstChild;
-    let domain = infoDomain.innerHTML.substring(0, infoDomain.innerHTML.indexOf("<img"));
+    let domain = infoDomain.innerHTML.substring(0, infoDomain.innerHTML.indexOf('<img'));
     let tab = browser.tabs.create({
         url: domain
     });
@@ -154,7 +154,7 @@ function removeInfoMessage(event) {
  */
 function openAccounts() {
     let tab = browser.tabs.create({
-        url: "/html-pages/accountlist/accountlist.html"
+        url: '/html-pages/accountlist/accountlist.html'
     });
     tab.then(function() {
         self.close();
@@ -166,7 +166,7 @@ function openAccounts() {
  */
 function openHelp() {
     let tab = browser.tabs.create({
-        url: browser.i18n.getMessage("help-link")
+        url: browser.i18n.getMessage('help-link')
     });
     tab.then(function() {
         self.close();
@@ -178,5 +178,5 @@ function openHelp() {
  */
 function startRecord_endRecord() {
     backgroundPage.toggleRecorder();
-    self.close()
+    self.close();
 }

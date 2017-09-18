@@ -1,9 +1,10 @@
+/* exported BlueprintStorageAccess */
 class BlueprintStorageAccess {
     constructor() {
         // get content from persistent storage to build the blueprint live collection
-        let getting = browser.storage.local.get("PWCPaths");
+        let getting = browser.storage.local.get('PWCPaths');
         getting.then(function(item) {
-            if (typeof item.PWCPaths !== "undefined") {
+            if (typeof item.PWCPaths !== 'undefined') {
                 // PWCPaths object found in storage, rebuild hash table structure out of it
                 let pwcPaths = item.PWCPaths.items;
                 let blueprints = {};
@@ -20,7 +21,7 @@ class BlueprintStorageAccess {
                 blueprintStorageAccess.storedBlueprints = new HashTable();
             }
         }, function() {
-            console.log("Getting the PWCPaths object from persistent storage failed");
+            console.log('Getting the PWCPaths object from persistent storage failed');
         });
     }
 
@@ -37,7 +38,7 @@ class BlueprintStorageAccess {
             // update persistent storage
             let setting = browser.storage.local.set({PWCPaths: this.storedBlueprints});
             setting.then(null, function () {
-                console.log("Saving blueprint in persistent storage failed");
+                console.log('Saving blueprint in persistent storage failed');
             });
         }
     }
@@ -58,12 +59,12 @@ class BlueprintStorageAccess {
     removeBlueprint(url) {
         // remove blueprint from the live collection
         let removeItem = this.storedBlueprints.removeItem(url);
-        let removeResult = typeof removeItem !== "undefined";
+        let removeResult = typeof removeItem !== 'undefined';
         if (removeResult) {
             // update persistent storage
             let setting = browser.storage.local.set({PWCPaths: this.storedBlueprints});
             setting.then(null, function () {
-                console.log("Updating persistent storage after removing a blueprint failed");
+                console.log('Updating persistent storage after removing a blueprint failed');
             });
         }
         return removeResult;
@@ -92,13 +93,13 @@ class BlueprintStorageAccess {
      */
     exportBlueprint(url) {
         let blueprint = this.getBlueprint(url);
-        if (typeof blueprint !== "undefined") {
+        if (typeof blueprint !== 'undefined') {
             let blob = new Blob([JSON.stringify(blueprint)], {
-                "type": "text/plain;charset=utf8;"
+                'type': 'text/plain;charset=utf8;'
             });
             let date = new Date();
-            let domain = url.split("//")[1];
-            let filename = "blueprint_for_" + domain.replace(/\./g, '_') + "_" + date.toLocaleDateString() + "_" + date.toLocaleTimeString().replace(/:/g, "-") + ".json";
+            let domain = url.split('//')[1];
+            let filename = 'blueprint_for_' + domain.replace(/\./g, '_') + '_' + date.toLocaleDateString() + '_' + date.toLocaleTimeString().replace(/:/g, '-') + '.json';
             browser.downloads.download({
                 url: URL.createObjectURL(blob),
                 filename: filename,
@@ -114,15 +115,15 @@ class BlueprintStorageAccess {
     importBlueprints(files) {
         for (let i = 0; i < files.length; i++) {
             let reader = new FileReader();
-            reader.addEventListener("load", function() {
+            reader.addEventListener('load', function() {
                 let blueprintImport;
                 try {
                     blueprintImport = JSON.parse(reader.result);
                 } catch (e) {
-                    console.log("file does not contain a valid JSON string");
+                    console.log('file does not contain a valid JSON string');
                     return;
                 }
-                if (typeof blueprintImport.scope === "object" && typeof blueprintImport.changeProcedure === "object") {
+                if (typeof blueprintImport.scope === 'object' && typeof blueprintImport.changeProcedure === 'object') {
                     // TODO iterate over scope
                     blueprintImport.changeProcedure = new HashTable(blueprintImport.changeProcedure.items);
                     blueprintStorageAccess.saveBlueprint(blueprintImport.scope[0], blueprintImport);

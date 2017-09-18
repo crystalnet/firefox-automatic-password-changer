@@ -2,6 +2,7 @@
  * Player class reads handles password specification blueprints (JSON-String) and the password generator
  * Created by crystalneth on 10-Jun-17.
  */
+/* exported Player */
 class Player {
 
     /**
@@ -42,7 +43,6 @@ class Player {
      * @private
      */
     _invokePasswordGenerator() {
-
         const passwordGenerator = new PasswordGen();
         let maxLength = this.blueprint.pwdPolicy[0].maxLength;
         let arrayOfChars = [];
@@ -54,18 +54,18 @@ class Player {
             if (r.kind === 'must') {
 
                 switch (count) {
-                    case 0:
-                        arrayOfChars.push({char: characterSets.az, min: r.num});
-                        break;
-                    case 1:
-                        arrayOfChars.push({char: characterSets.AZ, min: r.num});
-                        break;
-                    case 2:
-                        arrayOfChars.push({char: characterSets.num, min: r.num});
-                        break;
-                    case 3:
-                        arrayOfChars.push({char: characterSets.special, min: r.num});
-                        break;
+                case 0:
+                    arrayOfChars.push({char: characterSets.az, min: r.num});
+                    break;
+                case 1:
+                    arrayOfChars.push({char: characterSets.AZ, min: r.num});
+                    break;
+                case 2:
+                    arrayOfChars.push({char: characterSets.num, min: r.num});
+                    break;
+                case 3:
+                    arrayOfChars.push({char: characterSets.special, min: r.num});
+                    break;
                 }
             }
         }
@@ -248,7 +248,7 @@ class Player {
             let result = store._validatePassword(val, username);
             if (result) {
                 return val;
-            }  else if(Math.abs(start- new Date().getSeconds())> 2){
+            }  else if(Math.abs(start- new Date().getSeconds()) > 2){
                 return '';
 
             } else {

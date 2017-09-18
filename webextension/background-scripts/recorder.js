@@ -1,3 +1,4 @@
+/* exported Recorder */
 class Recorder {
     constructor() {
         this.isActive = false;
