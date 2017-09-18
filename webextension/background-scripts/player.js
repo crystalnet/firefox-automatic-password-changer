@@ -248,7 +248,7 @@ class Player {
             let result = store._validatePassword(val, username);
             if (result) {
                 return val;
-            }  else if(Math.abs(start- new Date().getSeconds()) > 2){
+            }  else if(Math.abs(start- new Date().getSeconds()) > 5){
                 return '';
 
             } else {

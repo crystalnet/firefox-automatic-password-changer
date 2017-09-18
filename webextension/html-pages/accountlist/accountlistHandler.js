@@ -204,6 +204,9 @@ function openPasswordChangeDialog(url, username) {
             modal: true,
             close: function () {
                 sbmtForm[0].reset();
+                form.find('#changePasswordBtn').off();
+                form.find('#generatePasswordBtn').off();
+                form.find('#CancelBtn').off();
                 form.dialog('destroy');
             }
         });
