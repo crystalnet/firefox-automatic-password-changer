@@ -126,7 +126,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         classes: {
             'ui-dialog': 'ui-dialog-no-close'
         },
-        width: 470,
+        width: 620,
         position: {my: 'left top', at: 'right top', of: inputField, collision: 'none'},
         title: browser.i18n.getMessage('password-specification'),
         buttons: [
@@ -150,6 +150,7 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('.ui-dialog').appendTo('.pwdChanger');
     $('.ui-dialog-no-close .ui-dialog-titlebar-close').css('display', 'none');
     $('.ui-dialog-title').html('&#9664; <img src="' + browser.extension.getURL('/images/icons/icon-16.png') + '"/> ' +  browser.i18n.getMessage('password-specification'));
+    $('#tabsContainer').tabs();
     $('.ui-spinner-input').spinner();
     $('.ui-selectmenu').selectmenu();
     $('.ui-checkboxradio-input').checkboxradio();
