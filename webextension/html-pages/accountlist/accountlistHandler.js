@@ -207,6 +207,8 @@ function openPasswordChangeDialog(url, username) {
                 form.find('#changePasswordBtn').off();
                 form.find('#generatePasswordBtn').off();
                 form.find('#CancelBtn').off();
+                form.find('#togglePasswordField').off();
+                document.getElementById('new-password').type = 'password';
                 form.dialog('destroy');
             }
         });
@@ -262,7 +264,7 @@ function openPasswordChangeDialog(url, username) {
 
         let togglePasswordField = form.find('#togglePasswordField');
         togglePasswordField.html(browser.i18n.getMessage('show-password'));
-        togglePasswordField.click(togglePasswordFieldClicked);
+        togglePasswordField.on('click', togglePasswordFieldClicked);
     } catch (e) {
         console.log(e);
     }
