@@ -185,12 +185,12 @@ function openPasswordChangeDialog(url, username) {
         let player;
         try {
             player = backgroundPage.createPlayer(data, schema);
+            // initially call checkRequirements to populate dialog window
+            this.checkRequirements(player, username);
         } catch (e) {
-            Utils.showNotification('Error. Blueprint is invalid');
+            backgroundPage.getUtils().showNotification('Error. Blueprint is invalid');
+            return;
         }
-
-        // initially call checkRequirements to populate dialog window
-        this.checkRequirements(player);
 
         const form = $('#manual-password-change-dialog-form');
         form.find('#url').val(url);

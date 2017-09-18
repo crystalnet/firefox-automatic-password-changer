@@ -3,7 +3,7 @@ class BlueprintStorageAccess {
     constructor() {
         // get content from persistent storage to build the blueprint live collection
         let getting = browser.storage.local.get('PWCPaths');
-        getting.then(function(item) {
+        getting.then(function (item) {
             if (typeof item.PWCPaths !== 'undefined') {
                 // PWCPaths object found in storage, rebuild hash table structure out of it
                 let pwcPaths = item.PWCPaths.items;
@@ -20,7 +20,7 @@ class BlueprintStorageAccess {
             } else {
                 blueprintStorageAccess.storedBlueprints = new HashTable();
             }
-        }, function() {
+        }, function () {
             console.log('Getting the PWCPaths object from persistent storage failed');
         });
     }
@@ -115,20 +115,19 @@ class BlueprintStorageAccess {
     importBlueprints(files) {
         for (let i = 0; i < files.length; i++) {
             let reader = new FileReader();
-            reader.addEventListener('load', function() {
+            reader.addEventListener('load', function () {
                 let blueprintImport;
                 try {
                     blueprintImport = JSON.parse(reader.result);
+                    const schema = '{"$schema":"http://json-schema.org/schema#","title":"Blueprint","description":"Blueprint Format Schema, DRAFT v3","type":"object","required":["version","scope","changeProcedure"],"properties":{"version":{"type":"number"},"scope":{"type":"array","description":"Scope, to which domains this blueprint applies (in particular wildcard * as for *.wikipedia.org)","items":{"type":"string"},"minItems":1,"uniqueItems":true},"changeProcedure":{"type":"array","description":"Step, by step description of the procedure to change the password","items":{"type":"object","properties":{"action":{"type":"string"},"parameters":{"type":"array","items":{"type":["string","number"]}}}},"minItems":1,"uniqueItems":true},"pwdPolicy":{"type":"array","items":{"type":"object","description":"Array of password policy descriptions for the automatic creation of new passwords, DRAFT v3","properties":{"allowedCharacterSets":{"type":"object","description":"The different sets of allowed characters. Threre are special charsets available to all policies: username (is filled with the username if available), emanresu (is filled with the reverse username if available), allASCII (represents all ASCII characters), allUnicode (represents all Unicode characters). The names of these special character sets must not be used by other charset definitions.","minProperties":1},"minLength":{"type":"number","description":"The minimum length of the password, if left out: assumed to be 1","minimum":1},"maxLength":{"type":"number","description":"The maximum length of the password, if left out: assumed to be infinite","minimum":1},"compositionRequirements":{"type":"array","description":"The list of composition requirements in this password policy. If left out: assumed that all character sets can be used in any combination.","items":{"type":"object","description":"Representations of composition requirements using rules (regexps) on the allowed character sets, which either must or must not be fulfilled by valid passwords.","required":["kind","num","rule"],"properties":{"kind":{"type":"string","enum":["must","mustNot"]},"num":{"type":"number"},"rule":{"type":"object","description":"The rule of this composition requirement as regexp.","properties":{"description":{"type":"string","description":"A textual description of the rule to display to the user in the UI."},"regexp":{"type":"string","description":"The actual regexp of the rule."}}}},"minItems":1,"uniqueItems":true}}}}}}}';
+                    new Player(reader.result, schema);
                 } catch (e) {
                     console.log('file does not contain a valid JSON string');
+                    Utils.showNotification('Error. Blueprint was not imported because it is not a valid JSON or does not follow the blueprint schema');
                     return;
                 }
-                if (typeof blueprintImport.scope === 'object' && typeof blueprintImport.changeProcedure === 'object') {
-                    // TODO iterate over scope
-                    blueprintImport.changeProcedure = new HashTable(blueprintImport.changeProcedure.items);
-                    blueprintStorageAccess.saveBlueprint(blueprintImport.scope[0], blueprintImport);
-                }
-
+                // TODO iterate over scope
+                blueprintStorageAccess.saveBlueprint(blueprintImport.scope[0], blueprintImport);
             });
             reader.readAsText(files[i]);
         }

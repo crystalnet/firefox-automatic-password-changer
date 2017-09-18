@@ -82,6 +82,14 @@ function createPlayer(blueprint, schema) {
 }
 
 /**
+ * Factory for Utils, so we can access it in accountlistHandler
+ * @returns {Utils}
+ */
+function getUtils() {
+    return Utils;
+}
+
+/**
  * Builds  the context menu
  * We create all necessary context menu items at once, to get the correct display order;
  * page_action context is used to hide items which should currently not be displayed;
