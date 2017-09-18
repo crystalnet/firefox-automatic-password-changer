@@ -310,5 +310,23 @@
   },
   "password-suggestion": {
     "message": "zufälliger Passwortvorschlag"
+  },
+  "custom-RegEx-Intro": {
+    "message": "Hier können Sie einen eigenen Regulären Ausdruck einfügen. Bitte geben Sie auch eine Beschreibung für Ihren Ausdruck an."
+  },
+  "custom-Restrictions": {
+    "message": "Eigene Einschränkungen:"
+  },
+  "custom-RegEx": {
+    "message": "Eigener Regulärer Ausdruck:"
+  },
+  "custom-desc": {
+    "message": "Policy Beschreibung:"
+  },
+  "add-more-custom-Res": {
+    "message": "Weitere Ausdrücke hinzufügen"
+  },
+  "unicode-allowed": {
+    "message": "Unicode erlaubt?"
   }
 }

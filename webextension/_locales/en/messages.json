@@ -313,5 +313,23 @@
   },
   "password-suggestion": {
     "message": "Random Password Suggestion"
+  },
+  "custom-RegEx-Intro": {
+    "message": "You can copy your custom Regular Expression here. Please provide a short description for the policy."
+  },
+  "custom-Restrictions": {
+    "message": "Custom Restrictions:"
+  },
+  "custom-RegEx": {
+    "message": "Custom Regular Expression:"
+  },
+  "custom-desc": {
+    "message": "Custom Policy Description:"
+  },
+  "add-more-custom-Res": {
+    "message": "Add More Custom Restrictions"
+  },
+  "unicode-allowed": {
+    "message": "Unicode allowed"
   }
 }

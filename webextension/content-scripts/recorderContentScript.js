@@ -82,19 +82,18 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('label.maximum').html(browser.i18n.getMessage('maximum'));
 
     $('#characterSetLegend').html(browser.i18n.getMessage('characterset-legend'));
-
-    //$('#capitalHeader').html(browser.i18n.getMessage('capital-letters'));
     $('#capitalAllowedLabel').html(browser.i18n.getMessage('capital-allowed'));
 
     $('#lowercaseLetters').html(browser.i18n.getMessage('lowercase-letters'));
     $('#lowercaseAllowedLabel').html(browser.i18n.getMessage('lowercase-allowed'));
 
-    //$('#numbersHeader').html(browser.i18n.getMessage('numbers'));
+
     $('#numbersAllowedLabel').html(browser.i18n.getMessage('numbers-allowed'));
 
-    //$('#specialsHeader').html(browser.i18n.getMessage('special-characters'));
+
     $('#specialsAllowedLabel').html(browser.i18n.getMessage('special-allowed'));
     $('#whitespaceLabel').html(browser.i18n.getMessage('whitespace-allowed'));
+    $('#unicodeLabel').html(browser.i18n.getMessage('unicode-allowed'));
 
     $('#posResHeader').html(browser.i18n.getMessage('position-specific'));
     $('#showPositionRestrictions').html(browser.i18n.getMessage('show-position-restrictions'));
@@ -104,6 +103,13 @@ function initializeSpecifiactionDialog(data, inputField) {
     $('#general-legend').html(browser.i18n.getMessage('general'));
     $('#characterset-legend').html(browser.i18n.getMessage('allowed-character-sets'));
     $('#addRes-legend').html(browser.i18n.getMessage('additional-Restrictions'));
+
+    // Custom RegEx Block
+    $('#customRestrictionExplanation').html(browser.i18n.getMessage('custom-RegEx-Intro'));
+    $('#customRes-legend').html(browser.i18n.getMessage('custom-Restrictions'));
+    $('#customRegExLabel').html(browser.i18n.getMessage('custom-RegEx'));
+    $('#customRegExDescLabel').html(browser.i18n.getMessage('custom-desc'));
+    $('#addCustomRestriction').html(browser.i18n.getMessage('add-more-custom-Res'));
 
     //select options
     $('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
@@ -180,7 +186,7 @@ function initializeSpecifiactionDialog(data, inputField) {
         let clone = $(data).find('.positionRestrictionForm').clone();
 
         // the clone() function clones the original form, without the custom language so we need to change them again
-        //clone.find('#positionLabel').html(browser.i18n.getMessage('position'));
+        clone.find('#positionLabel').html(browser.i18n.getMessage('position'));
         clone.find('#mustNotBeOption').html(browser.i18n.getMessage('must-not-be'));
         clone.find('#mustBeOption').html(browser.i18n.getMessage('must-be'));
         clone.find('#capitalOption').html(browser.i18n.getMessage('capital-letter'));
@@ -197,7 +203,9 @@ function initializeSpecifiactionDialog(data, inputField) {
 
     $('#addCustomRestriction').click(function () {
         let clone = $(data).find('.customRestrictionForm').clone();
-        //#TODO: i18n
+
+        clone.find('#customRegExLabel').html(browser.i18n.getMessage('custom-RegEx'));
+        clone.find('#customRegExDescLabel').html(browser.i18n.getMessage('custom-desc'));
 
         clone.appendTo('#customRegExpContainer');
 
@@ -375,8 +383,6 @@ function convertFormToPolicy(characterSetRestrictions, positionRestrictions, cus
         };
         policy.compositionRequirements.push(setRequirement);
     }
-
-
     if (characterSetRestrictions.lowerAllowed) {
         //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
         policy.allowedCharacterSets.az = characterSetRestrictions.lowerSet;
