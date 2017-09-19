@@ -141,7 +141,7 @@ function buildContextMenu() {
                     contexts: ["editable", "password"]
                 });
                 // send generated password to contextMenuContentScript
-                // TODO: remove debug code and replace with real password policy.
+                // TODO: remove debug code and replace with variables for password length and policy.
                 passwordGenerator.generatePassword(20,
                     [
                       { char: "upper", min: 5 },
