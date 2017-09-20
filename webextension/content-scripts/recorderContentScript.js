@@ -541,75 +541,9 @@ function convertFormToPolicy(length, characterRestrictions, characterSets, posit
         policy.compositionRequirements.push(customRequirement);
     }
 
-
-
-
-
     console.log(customRestrictions);
 
     return policy;
-    //don't need this anymore
-    /**
-    if (characterSetRestrictions.minLower) {
-        if(characterSetRestrictions.maxLower) {
-            let requirement = {
-                kind: 'must',
-                num: characterSetRestrictions.minLower,
-                rule: {
-                    description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
-                    regexp: '.*[az].*'
-                }
-            };
-        } else {
-            let requirement = {
-                kind: 'must',
-                num: characterSetRestrictions.minLower,
-                rule: {
-                    description: 'Must contain at least ' + characterSetRestrictions.minLower + ' lower case letters.',
-                    regexp: '.*[az].*'
-                }
-            };
-        };
-        policy.compositionRequirements.push(requirement);
-    }
-
-    if (characterSetRestrictions.minCapital) {
-        let requirement = {
-            kind: 'must',
-            num: characterSetRestrictions.minCapital,
-            rule: {
-                description: 'Must contain at least ' + characterSetRestrictions.minCapital + ' upper case letters.',
-                regexp: '.*[AZ].*'
-            }
-        };
-        policy.compositionRequirements.push(requirement);
-    }
-
-    if (characterSetRestrictions.minNumber) {
-        let requirement = {
-            kind: 'must',
-            num: characterSetRestrictions.minNumber,
-            rule: {
-                description: 'Must contain at least ' + characterSetRestrictions.minNumber + ' numbers.',
-                regexp: '.*[num].*'
-            }
-        };
-        policy.compositionRequirements.push(requirement);
-    }
-
-    if (characterSetRestrictions.minSpecial) {
-        let requirement = {
-            kind: 'must',
-            num: characterSetRestrictions.minSpecial,
-            rule: {
-                description: 'Must contain at least ' + characterSetRestrictions.minSpecial + ' special characters.',
-                regexp: '.*[special].*'
-            }
-        };
-        policy.compositionRequirements.push(requirement);
-    }
-     **/
-
 }
 
 /**

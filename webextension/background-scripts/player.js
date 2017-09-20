@@ -81,8 +81,10 @@ class Player {
      * Stops after the first failed Regular Expression.
      * Note that some policies can't be tested, like "May not be the same as the last 5 passwords used." As the old passwords are not stored in the password manager.
      *
-     * @param {String} password Password to be tested
+     * @param password {String}  Password to be tested
+     * @param username (String)  for restricting the password not to be the username
      * @returns {boolean} true if the password satisfies the policies
+     *
      * @private
      */
     _validatePassword(password, username) {
@@ -116,9 +118,10 @@ class Player {
     /**
      * Tests the password on the passed regular expression requirement, with respect to the allowed  Character Sets.
      *
-     * @param {String} password the password to be tested
-     * @param {Array} requirement a regular expression
-     * @param {Array} allowedCharacterSets the allowed character sets
+     * @param password {String}  the password to be tested
+     * @param requirement {Array}  a regular expression
+     * @param allowedCharacterSets {Object}  the allowed character sets
+     * @param username (String)  for restricting the password not to be the username
      * @returns {boolean} only true if the password meets the specified requirements
      * @private
      */
@@ -160,7 +163,8 @@ class Player {
      * Collects the descriptions of the failed requirements in an array and returns them.
      * Also returns a boolean that is true, if no requirement was failed, and is false otherwise.
      *
-     * @param {String} password the password to be tested
+     * @param password {String}  the password to be tested
+     * @param username (String)  for restricting the password not to be the username
      * @returns {{sat: boolean, failReq: Array, passReq: Array}} sat= boolean, true if the password satisfies all requirements specified in the blueprint.
      *                                                           failReq= an array filled with textual descriptions of the unsatisfied requirements as strings.
      *                                                           passReq= an array filled with textual descriptions of all satisfied requirements. Always contains a description of which characters are not allowed.
@@ -193,7 +197,7 @@ class Player {
         replace(/\^/g, '\\^').
         replace(/\$/g, '\\$').
         replace(/-/g, '\\-');
-        console.log(specialRegEx);
+
         let charExp = new RegExp('[^' + pwdPolicy.allowedCharacterSets.az + pwdPolicy.allowedCharacterSets.AZ + pwdPolicy.allowedCharacterSets.num + specialRegEx  + ']');
         charExp = new RegExp(charExp, 'g');
 
@@ -233,14 +237,15 @@ class Player {
     /**
      * Generates a new password by using the PasswordGenerator and validating it against the blueprint
      *
+     * @param username (String) for restricting the password not to be the username
+     * @param timeout (Integer) timeout in seconds after which to stop trying to generate a valid password
+     * @param start (Integer) start time of the first invocation in seconds
      * @returns {Promise} new, valid password
      */
-    generatePassword(username) {
+    generatePassword(username, timeout = 5, start = new Date().getSeconds()) {
         //this is necessary because otherwise we wouldn't be able to access class methods(and variables like the blueprint) from within the then block.
         let store = this;
 
-        //store starting time
-        let start = new Date().getSeconds();
         //accesses the promise of the password generator and returns it if it contains a valid password
 
         return this._invokePasswordGenerator().then(function (val) {
@@ -248,14 +253,12 @@ class Player {
             let result = store._validatePassword(val, username);
             if (result) {
                 return val;
-            }  else if(Math.abs(start- new Date().getSeconds()) > 5){
+            }  else if(Math.abs(start - new Date().getSeconds()) > timeout){
                 return '';
-
             } else {
-                    //returns a new valid password recursively if the first one wasn't valid
-                return (store.generatePassword(username));
+                //returns a new valid password recursively if the first one wasn't valid
+                return (store.generatePassword(username, timeout, start));
             }
-
         });
     }
 }
