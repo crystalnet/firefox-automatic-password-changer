@@ -236,7 +236,7 @@ function policyEntered(dialog) {
     });
     $.each($('.positionRestrictionForm'), function () {
         let restriction = {};
-        $.each($(this).serializeArray(), function () {
+        $.each($(this).find('form').serializeArray(), function () {
             restriction[this.name] = this.value;
         });
         if (restriction.restrictionContent === 'specific') {
@@ -247,7 +247,7 @@ function policyEntered(dialog) {
     });
     $.each($('.customRestrictionForm'), function () {
         let restriction = {};
-        $.each($(this).serializeArray(), function () {
+        $.each($(this).find('form').serializeArray(), function () {
             restriction[this.name] = this.value;
         });
         customRestrictions.push(restriction);
@@ -480,8 +480,6 @@ function convertFormToPolicy(length, characterRestrictions, characterSets, posit
     // Translate position restrictions
     for (let restriction of positionRestrictions) {
         if(restriction.restrictionContent) {
-
-
             let requirement = {
                 kind: restriction.restrictionType,
                 num: parseInt(restriction.restrictionPosition)
@@ -527,21 +525,20 @@ function convertFormToPolicy(length, characterRestrictions, characterSets, posit
         }
     }
 
+    for (let restriction of customRestrictions) {
+        if(restriction.customRegEx){
+            let customRequirement = {
+                kind: 'must',
+                num: 0,
+                rule: {
+                    description: restriction.customRegExDesc,
+                    regexp: restriction.customRegEx
 
-    if(customRestrictions.customRegEx){
-        let customRequirement = {
-            kind: 'must',
-            num: 0,
-            rule: {
-                description: customRestrictions.customRegExDesc,
-                regexp: customRestrictions.customRegEx
-
-            }
-        };
-        policy.compositionRequirements.push(customRequirement);
+                }
+            };
+            policy.compositionRequirements.push(customRequirement);
+        }
     }
-
-    console.log(customRestrictions);
 
     return policy;
 }
