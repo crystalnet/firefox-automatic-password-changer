@@ -16,23 +16,23 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // as the message from the background code is sent shortly after clicking the context menu item,
     // the "node" variable stores a reference to the element the user invoked the context menu on
     switch (request.type) {
-        case 'label': {
-            let inputs = document.getElementsByTagName('input');
-            inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
+    case 'label': {
+        let inputs = document.getElementsByTagName('input');
+        inputs[request.inputNumber].addEventListener('blur', onBlurEventHandler, false);
 
-            if (request.label === 'N' && request.policyEntered === false) {
-                loadSpecificationInterface(inputs[request.inputNumber]);
-            }
-            break;
+        if (request.label === 'N' && request.policyEntered === false) {
+            loadSpecificationInterface(inputs[request.inputNumber]);
         }
-        case 'getWebPage': {
-            sendResponse({webPage: window.content.location.href});
-            break;
-        }
-        case 'stopRecording': {
-            stopRecording();
-            break;
-        }
+        break;
+    }
+    case 'getWebPage': {
+        sendResponse({webPage: window.content.location.href});
+        break;
+    }
+    case 'stopRecording': {
+        stopRecording();
+        break;
+    }
     }
 });
 

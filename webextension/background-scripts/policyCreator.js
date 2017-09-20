@@ -4,7 +4,7 @@
 /* exported PolicyCreator */
 class PolicyCreator {
     constructor() {
-        this.policy = {}
+        this.policy = {};
         this.policy.allowedCharacterSets = {};
         this.policy.compositionRequirements = [];
     }

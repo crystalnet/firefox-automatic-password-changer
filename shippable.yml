@@ -26,9 +26,11 @@ branches:
 before_script:
   - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR
   - npm install -g karma
+  - npm install -g eslint
 
 # Running the tests with mochaJS
 script:
+  - npm run lint
   #use xvfb (X Virtual Framebuffer) to imitate a display
   - "export DISPLAY=:99.0"
   #run tests

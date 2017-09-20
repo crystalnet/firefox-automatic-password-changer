@@ -21,7 +21,8 @@
     "Utils": true,
     "Argon2": true,
     "Salsa20": true,
-    "require": true
+    "require": true,
+    "PolicyCreator": true
   },
   "parserOptions": {
     "ecmaVersion": 8,
