@@ -211,8 +211,8 @@ class Recorder {
     /**
      * Saves policy to blueprint
      */
-    policyEntered(message) {
-        this.pwdPolicy.push(message.policy);
+    policyEntered(policy) {
+        this.pwdPolicy.push(policy);
     }
 
     /**
@@ -405,9 +405,6 @@ browser.runtime.onMessage.addListener(function (message) {
         break;
     case 'blurHappened':
         recorder.blurHappened(message);
-        break;
-    case 'policyEntered':
-        recorder.policyEntered(message);
         break;
     }
 });

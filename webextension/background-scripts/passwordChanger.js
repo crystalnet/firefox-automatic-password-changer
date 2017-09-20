@@ -90,6 +90,14 @@ function getUtils() {
 }
 
 /**
+ * Factory for PolicyCreator, so we can access it in accountlistHandler
+ * @returns {Utils}
+ */
+function getPolicyCreator() {
+    return new PolicyCreator();
+}
+
+/**
  * Builds  the context menu
  * We create all necessary context menu items at once, to get the correct display order;
  * page_action context is used to hide items which should currently not be displayed;

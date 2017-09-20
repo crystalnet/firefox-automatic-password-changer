@@ -47,6 +47,7 @@
       "/background-scripts/passwordGenerator.js",
       "/background-scripts/recorder.js",
       "/background-scripts/player.js",
+      "/background-scripts/policyCreator.js",
       "/background-scripts/passwordChanger.js",
       "/background-scripts/imitator.js"
     ]
