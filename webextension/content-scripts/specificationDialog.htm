@@ -99,37 +99,42 @@
                         </div>
                         <div style="padding-bottom: 0.3cm; width: 100%;"></div>
                     </fieldset>
+                    <fieldset>
+                        <label id="unicodeLabel" for="unicodeAllowed" style="font-weight: bold;">Unicode
+                            allowed</label>
+                        <input type="checkbox" name="unicodeAllowed" id="unicodeAllowed" class="ui-checkboxradio-input">
+                    </fieldset>
                 </form>
             </div>
 
             <div id="characterSetsTab">
                 <form id="characterSetsForm">
-                    <Legend id="" style="font-weight: bold;
-                    font-size: 1.1em;
-                    border-bottom: 2px solid;
-                    margin-bottom: 0.3cm;
-                    width: 100%;">
-                        Character Sets:
-                    </Legend>
-                    <label for="capitalSet">Capital Set:</label>
+
+                    <label for="capitalSet" id="capitalSetLabel">Capital Set:</label>
                     <input type="text" name="capitalSet" id="capitalSet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                            class="text ui-widget-content ui-corner-all" style="width: 350px; padding: .4em;">
                     <div style="padding-bottom: 0.3cm; width: 100%;"></div>
 
-                    <label for="lowerSet">Lower Set:</label>
+                    <label for="lowerSet" id="lowerSetLabel">Lower Set:</label>
                     <input type="text" name="lowerSet" id="lowerSet" value="abcdefghijklmnopqrstuvwxyz"
                            class="text ui-widget-content ui-corner-all" style="width: 350px; padding: .4em;">
                     <div style="padding-bottom: 0.3cm; width: 100%;"></div>
 
-                    <label for="numberSet">Number Set:</label>
+                    <label for="numberSet" id="numberSetLabel">Number Set:</label>
                     <input type="text" name="numberSet" id="numberSet" value="0123456789"
                            class="text ui-widget-content ui-corner-all" style="width: 350px; padding: .4em;">
                     <div style="padding-bottom: 0.3cm; width: 100%;"></div>
 
-                    <label for="specialSet">Special Set:</label>
+                    <label for="specialSet" id="specialSetLabel">Special Set:</label>
                     <input type="text" name="specialSet" id="specialSet"
                            value="!&quot^'$%\/()=?-_,.;:#+*@[]|{}<>&`~"
                            class="text ui-widget-content ui-corner-all" style="width: 350px; padding: .4em;">
+                    <div style="padding-bottom: 0.3cm; width: 100%;"></div>
+                    <label id="whitespaceLabel" for="whitespaceAllowed" style="font-weight: bold;">Whitespace
+                        allowed</label>
+                    <input type="checkbox" name="whitespaceAllowed" id="whitespaceAllowed"
+                           class="ui-checkboxradio-input">
+                    <br/>
                     <div style="padding-bottom: 0.3cm; width: 100%;"></div>
                 </form>
             </div>
@@ -184,25 +189,6 @@
                     margin-bottom: 0.3cm;
                     width: 100%;">
                     Advanced Restrictions:
-                </Legend>
-                <form id="advancedRestrictionsForm">
-                    <label id="whitespaceLabel" for="whitespaceAllowed" style="font-weight: bold;">Whitespace
-                        allowed</label>
-                    <input type="checkbox" name="whitespaceAllowed" id="whitespaceAllowed"
-                           class="ui-checkboxradio-input">
-                    <label id="unicodeLabel" for="unicodeAllowed" style="font-weight: bold; float: right;">Unicode
-                        allowed</label>
-                    <input type="checkbox" name="unicodeAllowed" id="unicodeAllowed" class="ui-checkboxradio-input">
-                    <br/>
-                    <div style="padding-bottom: 0.3cm; width: 100%;"></div>
-                </form>
-
-                <Legend id="" style="font-weight: bold;
-                    font-size: 1.1em;
-                    border-bottom: 2px solid;
-                    margin-bottom: 0.3cm;
-                    width: 100%;">
-                    Custom Regular Expression:
                 </Legend>
 
                 <div id="customRestrictionExplanation">You can copy your custom Regular Expression here.

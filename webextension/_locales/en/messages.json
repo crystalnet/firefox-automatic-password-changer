@@ -177,7 +177,7 @@
     "message": "Once all password policies are fulfilled, the automatic change process can be started."
   },
   "lowercase-letters": {
-    "message": "lowercase letters"
+    "message": "Lowercase letters"
   },
   "lowercase-allowed": {
     "message": "Lowercase Letters Allowed"
@@ -331,5 +331,29 @@
   },
   "unicode-allowed": {
     "message": "Unicode allowed"
+  },
+  "general-tab": {
+    "message": "General"
+  },
+  "position-restrictions-tab": {
+    "message": "Position Restrictions"
+  },
+  "character-sets-tab": {
+    "message": "Character Sets"
+  },
+  "custom-regexp-tab": {
+    "message": "Advanced"
+  },
+  "lowerSetLabel": {
+    "message": "Lower Set:"
+  },
+  "capitalSetLabel": {
+    "message": "Capital Set:"
+  },
+  "numberSetLabel": {
+    "message": "Number Set:"
+  },
+  "specialSetLabel": {
+    "message": "Special Set:"
   }
 }

@@ -188,7 +188,7 @@ function openPasswordChangeDialog(url, username) {
             // initially call checkRequirements to populate dialog window
             this.checkRequirements(player, username);
         } catch (e) {
-            backgroundPage.getUtils().showNotification('Error. Blueprint is invalid');
+            backgroundPage.getUtils().showNotification('Error. Blueprint is invalid' + e);
             return;
         }
 
@@ -220,6 +220,7 @@ function openPasswordChangeDialog(url, username) {
             '</br>' + browser.i18n.getMessage('instructions_manualPWChange2') +
             '</br>' + browser.i18n.getMessage('instructions_manualPWChange3') +
             '</br>' + browser.i18n.getMessage('instructions_manualPWChange4');
+        let a = 0;
         document.getElementById('url-heading').innerHTML = browser.i18n.getMessage('website');
         document.getElementById('heading_password').innerHTML = browser.i18n.getMessage('new password');
         document.getElementById('requirementsHeading').innerHTML = browser.i18n.getMessage('requirements');

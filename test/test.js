@@ -53,7 +53,7 @@ describe('Player', function () {
             player._parseBlueprint(data, player.schema).pwdPolicy[0].compositionRequirements[0].rule.description.should.equal('May not be the same as any of the 5 previous passwords used.');
         });
 
-        it('should not accept a faulty JSON blueprint with no A-Z specification', function () {
+        it('should not accept a faulty JSON blueprint ', function () {
             (function () {
                 player._parseBlueprint(faulty, player.schema);
             }).should.throw('Blueprint doesn\'t follow JSON schema');
@@ -66,10 +66,10 @@ describe('Player', function () {
         });
     });
 
-    //the following tests call _validateGeneratedPassword() but necessarily test the _test() function too, as the validation function just calls upon the test function for each regular expression.
+    //the following tests call _validatePassword() but necessarily test the _test() function too, as the validation function just calls upon the test function for each regular expression.
     describe('#_validatePassword()', function () {
-        it('should reject password containig excluded letters', function () {
-            abPlayer._validatePassword('0aBCc7&$', username).should.be.false();
+        it('should reject a password containing only numbers', function () {
+            abPlayer._validatePassword( '00000', username).should.be.false();
         });
 
         it('should reject a empty password', function () {
@@ -77,11 +77,11 @@ describe('Player', function () {
         });
 
         it('should reject an overlong password', function () {
-            player._validatePassword('0123456789Ab$012345678901234567890123456789', username).should.be.false();
+            player._validatePassword('123456789abcdef', username).should.be.false();
         });
 
-        it('should reject an too short password', function() {
-            player._validatePassword('3.aH!#', username).should.be.false();
+        it('should reject a number as a password instead of a String', function() {
+            player._validatePassword(6214332, username).should.be.false();
         });
 
         it('should accept a valid password', function () {
@@ -142,7 +142,7 @@ describe('Player', function () {
             player.validateUserPassword('P@ssword123', username).sat.should.be.false();
         });
 
-        it('should reject a password with ascii', function () {
+        it('should reject a password with non ascii characters if only ascii is allowed', function () {
             player.validateUserPassword('i37.HDoe♦f', username).sat.should.be.false();
         });
     });

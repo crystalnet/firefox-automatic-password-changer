@@ -77,6 +77,13 @@ function initializeSpecificationDialog(data, inputField) {
     $('body').append(data);
 
     // Language specific content
+
+    //Tabs
+    $('#general').html(browser.i18n.getMessage('general-tab'));
+    $('#position-restrictions').html(browser.i18n.getMessage('position-restrictions-tab'));
+    $('#character-sets').html(browser.i18n.getMessage('character-sets-tab'));
+    $('#custom-regexp').html(browser.i18n.getMessage('custom-regexp-tab'));
+
     $('#lengthLegend').html(browser.i18n.getMessage('length-legend'));
 
     $('label.minimum').html(browser.i18n.getMessage('minimum'));
@@ -104,6 +111,12 @@ function initializeSpecificationDialog(data, inputField) {
     $('#general-legend').html(browser.i18n.getMessage('general'));
     $('#characterset-legend').html(browser.i18n.getMessage('allowed-character-sets'));
     $('#addRes-legend').html(browser.i18n.getMessage('additional-Restrictions'));
+    //Character Set Labels
+    $('#lowerSetLabel').html(browser.i18n.getMessage('lowerSetLabel'));
+    $('#capitalSetLabel').html(browser.i18n.getMessage('capitalSetLabel'));
+    $('#numberSetLabel').html(browser.i18n.getMessage('numberSetLabel'));
+    $('#specialSetLabel').html(browser.i18n.getMessage('specialSetLabel'));
+
 
     // Custom RegEx Block
     $('#customRestrictionExplanation').html(browser.i18n.getMessage('custom-RegEx-Intro'));

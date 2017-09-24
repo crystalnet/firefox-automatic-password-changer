@@ -9,23 +9,23 @@ class PolicyCreator {
         this.policy.compositionRequirements = [];
     }
 
+    /**
+     * Sets the minimum and maximum length of the password in the policy
+     * @param length
+     * @private
+     */
     _createLength(length) {
         this.policy.minLength = parseInt(length.minLength);
         this.policy.maxLength = parseInt(length.maxLength);
     }
 
     /**
-     * Converts the entered restrictions to valid policies
-     * @param length
+     * Sets the character Sets in the policy and creates a rule, for each with it's iderntifier, with num set to the minimum amount of characters of the specified character Set
      * @param characterRestrictions
      * @param characterSets
-     * @param positionRestrictions
-     * @param customRestrictions
-     * @param advancedRestrictions
-     * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
+     * @private
      */
-    createPolicy(length, characterRestrictions, characterSets, positionRestrictions, customRestrictions, advancedRestrictions) {
-        this._createLength(length);
+    _createcharacterSets(characterRestrictions,characterSets){
 
         if (characterRestrictions.lowerAllowed) {
             this.policy.allowedCharacterSets.az = characterSets.lowerSet;
@@ -39,17 +39,6 @@ class PolicyCreator {
                 }
             };
             this.policy.compositionRequirements.push(requirement);
-
-        } else {
-            let setRequirement = {
-                kind: 'mustNot',
-                num: 0,
-                rule: {
-                    description: '[az]',
-                    regexp: '.*' + '[az]' + '.*'
-                }
-            };
-            this.policy.compositionRequirements.push(setRequirement);
 
         }
 
@@ -66,16 +55,6 @@ class PolicyCreator {
             };
             this.policy.compositionRequirements.push(requirement);
 
-        } else {
-            let setRequirement = {
-                kind: 'mustNot',
-                num: 0,
-                rule: {
-                    description: '[AZ]',
-                    regexp: '.*' + '[AZ]' + '.*'
-                }
-            };
-            this.policy.compositionRequirements.push(setRequirement);
         }
 
         if (characterRestrictions.numberAllowed) {
@@ -91,16 +70,6 @@ class PolicyCreator {
             };
             this.policy.compositionRequirements.push(requirement);
 
-        } else {
-            let setRequirement = {
-                kind: 'mustNot',
-                num: 0,
-                rule: {
-                    description: '[num]',
-                    regexp: '.*' + '[num]' + '.*'
-                }
-            };
-            this.policy.compositionRequirements.push(setRequirement);
         }
 
         if (characterRestrictions.specialAllowed) {
@@ -116,17 +85,41 @@ class PolicyCreator {
             };
             this.policy.compositionRequirements.push(requirement);
 
-        } else {
-            let setRequirement = {
-                kind: 'mustNot',
+        }
+
+        if(characterRestrictions.unicodeAllowed){
+            this.policy.allowedCharacterSets.unicode = 'unicode';
+
+            let requirement = {
+                kind: 'must',
                 num: 0,
                 rule: {
-                    description: '[special]',
-                    regexp: '.*' + '[special]' + '.*'
+                    description: 'May contain Unicode characters.',
+                    regexp: '.*[unicode].*'
                 }
             };
-            this.policy.compositionRequirements.push(setRequirement);
+            this.policy.compositionRequirements.push(requirement);
         }
+
+    }
+
+    /**
+     * Converts the entered restrictions to valid policies
+     * @param length
+     * @param characterRestrictions
+     * @param characterSets
+     * @param positionRestrictions
+     * @param customRestrictions
+     * @param advancedRestrictions
+     * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
+     */
+    createPolicy(length, characterRestrictions, characterSets, positionRestrictions, customRestrictions, advancedRestrictions) {
+
+        this._createLength(length);
+
+        this._createcharacterSets(characterRestrictions,characterSets);
+
+
         if (characterRestrictions.lowerAllowed) {
             //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
             this.policy.allowedCharacterSets.az = characterSets.lowerSet;
@@ -200,7 +193,7 @@ class PolicyCreator {
             let specialRegExSet = characterSets.specialSet.replace(/\\/, '\\\\').replace(/\[/g, '\\[').replace(/]/g, '\\]').replace(/\^/g, '\\^').replace(/\$/g, '\\$').replace(/-/g, '\\-');
 
             // add whitespaces if necessary
-            if (advancedRestrictions.whitespaceAllowed) {
+            if (characterSets.whitespaceAllowed) {
                 this.policy.allowedCharacterSets.special = this.policy.allowedCharacterSets.special + ' ';
                 specialRegExSet = specialRegExSet + ' ';
 

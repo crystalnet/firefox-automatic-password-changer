@@ -328,5 +328,29 @@
   },
   "unicode-allowed": {
     "message": "Unicode erlaubt?"
+  },
+  "general-tab": {
+    "message": "Allgemein"
+  },
+  "position-restrictions-tab": {
+    "message": "Positionen"
+  },
+  "character-sets-tab": {
+    "message": "Zeichensätze"
+  },
+  "custom-regexp-tab": {
+    "message": "Erweitert"
+  },
+  "lowerSetLabel": {
+    "message": "Kleinbuchstaben:"
+  },
+  "capitalSetLabel": {
+    "message": "Großbuchstaben:"
+  },
+  "numberSetLabel": {
+    "message": "Zahlen:"
+  },
+  "specialSetLabel": {
+    "message": "Sonderzeichen:"
   }
 }
