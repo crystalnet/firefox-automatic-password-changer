@@ -65,7 +65,9 @@ function buildAccountList(loginCredentials, blueprintKeys) {
 
 /**
  * Merge everything that should get an own entry into one list
- * @return {Array}
+ * @param accountInformationEntries  Login credentials from the password manager
+ * @param blueprintKeys Keys of stored blueprints
+ * @returns {Array}
  */
 function getListItems(accountInformationEntries, blueprintKeys) {
     let listToDisplay = [];
@@ -377,7 +379,9 @@ function exportBlueprint(url) {
 
 /**
  * Trigger function for import of blueprints
+ * @param event
  */
+
 function importBlueprints(event) {
     backgroundPage.getBlueprintStorageAccess().importBlueprints(event.target.files);
     // reload account list, so the change is visible to the user

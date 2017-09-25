@@ -30,76 +30,21 @@ class PolicyCreator {
         if (characterRestrictions.lowerAllowed) {
             this.policy.allowedCharacterSets.az = characterSets.lowerSet;
 
-            let requirement = {
-                kind: 'must',
-                num: parseInt(characterRestrictions.minLower),
-                rule: {
-                    description: 'Must contain at least ' + characterRestrictions.minLower + ' lower case letters.',
-                    regexp: '.*[az].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-
         }
 
         if (characterRestrictions.capitalAllowed) {
             this.policy.allowedCharacterSets.AZ = characterSets.capitalSet;
 
-            let requirement = {
-                kind: 'must',
-                num: parseInt(characterRestrictions.minCapital),
-                rule: {
-                    description: 'Must contain at least ' + characterRestrictions.minCapital + ' upper case letters.',
-                    regexp: '.*[AZ].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-
         }
 
         if (characterRestrictions.numberAllowed) {
             this.policy.allowedCharacterSets.num = characterSets.numberSet;
-
-            let requirement = {
-                kind: 'must',
-                num: parseInt(characterRestrictions.minNumber),
-                rule: {
-                    description: 'Must contain at least ' + characterRestrictions.minNumber + ' numbers.',
-                    regexp: '.*[num].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-
         }
 
         if (characterRestrictions.specialAllowed) {
             this.policy.allowedCharacterSets.special = characterSets.specialSet;
-
-            let requirement = {
-                kind: 'must',
-                num: parseInt(characterRestrictions.minSpecial),
-                rule: {
-                    description: 'Must contain at least ' + characterRestrictions.minSpecial + ' special characters.',
-                    regexp: '.*[special].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-
         }
 
-        if(characterRestrictions.unicodeAllowed){
-            this.policy.allowedCharacterSets.unicode = 'unicode';
-
-            let requirement = {
-                kind: 'must',
-                num: 0,
-                rule: {
-                    description: 'May contain Unicode characters.',
-                    regexp: '.*[unicode].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-        }
 
     }
 
@@ -117,7 +62,7 @@ class PolicyCreator {
 
         this._createLength(length);
 
-        this._createcharacterSets(characterRestrictions,characterSets);
+        //this._createcharacterSets(characterRestrictions,characterSets);
 
 
         if (characterRestrictions.lowerAllowed) {
@@ -131,9 +76,9 @@ class PolicyCreator {
                     kind: 'must',
                     num: parseInt(characterRestrictions.minLower),
                     rule: {
-                        description: 'Must contain at least ' + characterRestrictions.minLower + ' lower case letters.',
-                        regexp: '^(([^' + characterSets.lowerSet + ']*)[' + characterSets.lowerSet + ']([^' + characterSets.lowerSet + ']*)){' + characterRestrictions.minLower + ',}$'
-                        //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
+                        description: 'Must-contain-at-least ' + characterRestrictions.minLower + ' lower-case-letters.',
+                        regexp: '^(([^az]*)[az]([^az]*)){' + characterRestrictions.minLower + ',}$'
+                        //the az identifier will be replaced by the character set when checking the requirement in the player.js class
                     }
                 };
                 this.policy.compositionRequirements.push(requirement);
@@ -153,8 +98,8 @@ class PolicyCreator {
                     kind: 'must',
                     num: parseInt(characterRestrictions.minCapital),
                     rule: {
-                        description: 'Must contain at least ' + characterRestrictions.minCapital + ' Capital case letters.',
-                        regexp: '^(([^' + characterSets.capitalSet + ']*)[' + characterSets.capitalSet + ']([^' + characterSets.capitalSet + ']*)){' + characterRestrictions.minCapital + ',}$'
+                        description: 'Must-contain-at-least ' + characterRestrictions.minCapital + ' capital-case-letters.',
+                        regexp: '^(([^AZ]*)[AZ]([^AZ]*)){' + characterRestrictions.minCapital + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
@@ -174,8 +119,8 @@ class PolicyCreator {
                     kind: 'must',
                     num: parseInt(characterRestrictions.minNumber),
                     rule: {
-                        description: 'Must contain at least ' + characterRestrictions.minNumber + ' numbers.',
-                        regexp: '^(([^' + characterSets.numberSet + ']*)[' + characterSets.numberSet + ']([^' + characterSets.numberSet + ']*)){' + characterRestrictions.minNumber + ',}$'
+                        description: 'Must-contain-at-least ' + characterRestrictions.minNumber + ' numbers.',
+                        regexp: '^(([^num]*)[num]([^num]*)){' + characterRestrictions.minNumber + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
@@ -190,12 +135,11 @@ class PolicyCreator {
 
             this.policy.allowedCharacterSets.special = characterSets.specialSet;
             //escape all potentially problematic characters
-            let specialRegExSet = characterSets.specialSet.replace(/\\/, '\\\\').replace(/\[/g, '\\[').replace(/]/g, '\\]').replace(/\^/g, '\\^').replace(/\$/g, '\\$').replace(/-/g, '\\-');
 
             // add whitespaces if necessary
             if (characterSets.whitespaceAllowed) {
                 this.policy.allowedCharacterSets.special = this.policy.allowedCharacterSets.special + ' ';
-                specialRegExSet = specialRegExSet + ' ';
+
 
             }
 
@@ -206,14 +150,17 @@ class PolicyCreator {
                     kind: 'must',
                     num: parseInt(characterRestrictions.minSpecial),
                     rule: {
-                        description: 'Must contain at least ' + characterRestrictions.minSpecial + ' special characters.',
-                        regexp: '^(([^' + specialRegExSet + ']*)[' + specialRegExSet + ']([^' + specialRegExSet + ']*)){' + characterRestrictions.minSpecial + ',}$'
+                        description: 'Must-contain-at-least ' + characterRestrictions.minSpecial + ' special-characters.',
+                        regexp: '^(([^special]*)[special]([^special]*)){' + characterRestrictions.minSpecial + ',}$'
                         //basically looks like this: ^(([^0-9]*)[0-9](^0-9]*)){2,}$  The dot identifier could be used too.
                     }
                 };
                 this.policy.compositionRequirements.push(requirement);
             }
 
+        }
+        if(characterRestrictions.unicodeAllowed){
+            this.policy.allowedCharacterSets.unicode = 'unicode';
         }
         // Translate position restrictions
         for (let restriction of positionRestrictions) {
@@ -222,28 +169,35 @@ class PolicyCreator {
                     kind: restriction.restrictionType,
                     num: parseInt(restriction.restrictionPosition)
                 };
+                // Choosing the right identifier to write into the RegExp. If specific characters are provided, they are being escaped and written directly into the RegExp
                 let regExContent = '';
+                let type = '';
                 if (restriction.restrictionContent == 'capital') {
-                    regExContent = characterSets.capitalSet;
+                    regExContent = 'AZ';
+                    type = 'a-capital-letter.';
                 } else if (restriction.restrictionContent == 'lowercase') {
-                    regExContent = characterSets.lowerSet;
+                    regExContent = 'az';
+                    type = 'a-lowercase-letter.';
                 } else if (restriction.restrictionContent == 'number') {
-                    regExContent = characterSets.numberSet;
+                    regExContent = 'num';
+                    type = 'a-number.';
                 } else if (restriction.restrictionContent == 'special') {
-                    regExContent = characterSets.specialSet.replace(/\\/, '\\\\').replace(/\[/g, '\\[').replace(/]/g, '\\]').replace(/\^/g, '\\^').replace(/\$/g, '\\$').replace(/-/g, '\\-');
+                    regExContent = 'special';
+                    type = 'a-special-character.';
                 } else {
                     regExContent = restriction.restrictionContent.replace(/\\/, '\\\\').replace(/\[/g, '\\[').replace(/]/g, '\\]').replace(/\^/g, '\\^').replace(/\$/g, '\\$').replace(/-/g, '\\-');
+                    type = ': ' + restriction.restrictionContent;
                 }
 
                 let pos = parseInt(restriction.restrictionPosition) - 1;
                 if (restriction.restrictionType === 'must') {
                     requirement.rule = {
-                        description: 'Position ' + restriction.restrictionPosition + ' must be: ' + restriction.restrictionContent,
+                        description: 'Position: ' + restriction.restrictionPosition + ' must-be: ' + type,
                         regexp: '^((.){' + pos + '}[' + regExContent + '])'
                     };
                 } else {
                     requirement.rule = {
-                        description: 'Position ' + restriction.restrictionPosition + ' must not be ' + restriction.restrictionContent,
+                        description: 'Position: ' + restriction.restrictionPosition + ' must-not-be: ' + type,
                         regexp: '^((.){' + pos + '}[' + regExContent + '])'
                     };
                 }
@@ -253,11 +207,12 @@ class PolicyCreator {
 
         for (let restriction of customRestrictions) {
             if (restriction.customRegEx) {
+                let desc = 'Custom: ' + restriction.customRegExDesc;
                 let customRequirement = {
                     kind: 'must',
                     num: 0,
                     rule: {
-                        description: restriction.customRegExDesc,
+                        description: desc,
                         regexp: restriction.customRegEx
 
                     }
