@@ -355,5 +355,41 @@
   },
   "specialSetLabel": {
     "message": "Special Set:"
+  },
+  "Must-contain-at-least": {
+    "message": "Must contain at least "
+  },
+  "lower-case-letters.": {
+    "message": "lower case letter/s."
+  },
+  "capital-case-letters.": {
+    "message": "capital case letter/s."
+  },
+  "numbers.": {
+    "message": "number/s."
+  },
+  "special-characters.": {
+    "message": "special character/s."
+  },
+  "Position:": {
+    "message": "Position: "
+  },
+  "must-not-be:": {
+    "message": " must not be "
+  },
+  "must-be:": {
+    "message": " must be "
+  },
+  "a-capital-letter.": {
+    "message": "a capital letter."
+  },
+  "a-lowercase-letter.": {
+    "message": "a lowercase letter."
+  },
+  "a-number.": {
+    "message": "a number."
+  },
+  "a-special-character.": {
+    "message": "a special character."
   }
 }

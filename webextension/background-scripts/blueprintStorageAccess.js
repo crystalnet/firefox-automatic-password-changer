@@ -55,6 +55,7 @@ class BlueprintStorageAccess {
     /**
      * Removes blueprint from storage
      * @param url Base url for the blueprint. Identifier for the blueprint.
+     * @returns {boolean}
      */
     removeBlueprint(url) {
         // remove blueprint from the live collection

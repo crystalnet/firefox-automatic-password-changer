@@ -352,5 +352,41 @@
   },
   "specialSetLabel": {
     "message": "Sonderzeichen:"
+  },
+  "Must-contain-at-least": {
+    "message": "Muss mindestens "
+  },
+  "lower-case-letters.": {
+    "message": " Kleinbuchstaben enthalten."
+  },
+  "capital-case-letters.": {
+    "message": " Großbuchstaben enthalten."
+  },
+  "numbers.": {
+    "message": " Zahl/en enthalten."
+  },
+  "special-characters.": {
+    "message": " Sonderzeichen enthalten."
+  },
+  "Position:": {
+    "message": "Position: "
+  },
+  "must-not-be:": {
+    "message": " darf kein"
+  },
+  "must-be:": {
+    "message": " muss ein"
+  },
+  "a-capital-letter.": {
+    "message": " Großbuchstabe sein."
+  },
+  "a-lowercase-letter.": {
+    "message": " Kleinbuchstabe sein."
+  },
+  "a-number.": {
+    "message": "e Zahl sein."
+  },
+  "a-special-character.": {
+    "message": " Sonderzeichen sein."
   }
 }
