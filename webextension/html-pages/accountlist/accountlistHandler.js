@@ -294,6 +294,7 @@ function togglePasswordFieldClicked() {
  * Checks the requirements for the entered password against the blueprint
  * and updates the DOM
  * @param player (Player) Player class that handles the check of requirements
+ * @param username {String} for restricting the password not to be the username
  */
 function checkRequirements(player, username) {
     let password = $('#new-password').val();

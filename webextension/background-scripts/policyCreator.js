@@ -11,7 +11,7 @@ class PolicyCreator {
 
     /**
      * Sets the minimum and maximum length of the password in the policy
-     * @param length
+     * @param length {String} length of the password
      * @private
      */
     _createLength(length) {
@@ -20,9 +20,9 @@ class PolicyCreator {
     }
 
     /**
-     * Sets the character Sets in the policy and creates a rule, for each with it's iderntifier, with num set to the minimum amount of characters of the specified character Set
-     * @param characterRestrictions
-     * @param characterSets
+     * Sets the character Sets in the policy and creates a rule, for each with it's identifier, with num set to the minimum amount of characters of the specified character Set
+     * @param characterRestrictions {Array} restrictions as objects
+     * @param characterSets {Object} the character sets
      * @private
      */
     _createcharacterSets(characterRestrictions,characterSets){
@@ -58,12 +58,12 @@ class PolicyCreator {
 
     /**
      * Converts the entered restrictions to valid policies
-     * @param length
-     * @param characterRestrictions
-     * @param characterSets
-     * @param positionRestrictions
-     * @param customRestrictions
-     * @param advancedRestrictions
+     * @param length {String} length of the password
+     * @param characterRestrictions {Array} restrictions as objects
+     * @param characterSets  {Object} the character sets
+     * @param positionRestrictions {Array} restrictions as objects
+     * @param customRestrictions {Array} restrictions as objects
+     * @param advancedRestrictions {Array} restrictions as objects
      * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
      */
     createPolicy(length, characterRestrictions, characterSets, positionRestrictions, customRestrictions, advancedRestrictions) {
