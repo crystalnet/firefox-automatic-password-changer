@@ -100,7 +100,7 @@ function initializeSpecificationDialog(data, inputField) {
 
 
     $('#specialsAllowedLabel').html(browser.i18n.getMessage('special-allowed'));
-    $('#usernameAllowedLabel').html(browser.i18n.getMessage('username-not-allowed'))
+    $('#usernameAllowedLabel').html(browser.i18n.getMessage('username-not-allowed'));
     $('#whitespaceLabel').html(browser.i18n.getMessage('whitespace-allowed'));
     $('#unicodeLabel').html(browser.i18n.getMessage('unicode-allowed'));
 
