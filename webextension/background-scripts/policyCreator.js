@@ -134,13 +134,12 @@ class PolicyCreator {
         if (characterRestrictions.specialAllowed) {
 
             this.policy.allowedCharacterSets.special = characterSets.specialSet;
-            //escape all potentially problematic characters
 
-            // add whitespaces if necessary
+
+            //because it's hard to see for the user whether there is a whitespace or not in the
+            //character set, the user can also specify this through a button
             if (characterSets.whitespaceAllowed) {
                 this.policy.allowedCharacterSets.special = this.policy.allowedCharacterSets.special + ' ';
-
-
             }
 
             //if a minimum is set
@@ -161,6 +160,19 @@ class PolicyCreator {
         }
         if(characterRestrictions.unicodeAllowed){
             this.policy.allowedCharacterSets.unicode = 'unicode';
+        }
+        if(advancedRestrictions.usernameAllowed){
+
+            let requirement = {
+                kind: 'mustNot',
+                num: 0,
+                rule: {
+                    description: 'May-not-contain-username.',
+                    regexp: '.*[username].*'
+                }
+            };
+            this.policy.compositionRequirements.push(requirement);
+
         }
         // Translate position restrictions
         for (let restriction of positionRestrictions) {

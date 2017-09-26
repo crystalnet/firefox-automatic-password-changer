@@ -388,5 +388,11 @@
   },
   "a-special-character.": {
     "message": " Sonderzeichen sein."
+  },
+  "username-not-allowed": {
+    "message": "Darf Benutzernamen nicht enthalten"
+  },
+  "May-not-contain-username.": {
+    "message": "Darf den Benutzernamen nicht enthalten."
   }
 }
