@@ -43,6 +43,14 @@ class PolicyCreator {
 
         if (characterRestrictions.specialAllowed) {
             this.policy.allowedCharacterSets.special = characterSets.specialSet;
+            //because it's hard to see for the user whether there is a whitespace or not in the
+            //character set, the user can also specify this through a button
+            if (characterSets.whitespaceAllowed) {
+                this.policy.allowedCharacterSets.special = this.policy.allowedCharacterSets.special + ' ';
+            }
+        }
+        if(characterRestrictions.unicodeAllowed){
+            this.policy.allowedCharacterSets.unicode = 'unicode';
         }
 
 
@@ -62,12 +70,11 @@ class PolicyCreator {
 
         this._createLength(length);
 
-        //this._createcharacterSets(characterRestrictions,characterSets);
+        this._createcharacterSets(characterRestrictions,characterSets);
 
 
         if (characterRestrictions.lowerAllowed) {
             //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
-            this.policy.allowedCharacterSets.az = characterSets.lowerSet;
 
             //if a minimum is set
             if (parseInt(characterRestrictions.minLower)) {
@@ -88,7 +95,6 @@ class PolicyCreator {
         }
 
         if (characterRestrictions.capitalAllowed) {
-            this.policy.allowedCharacterSets.AZ = characterSets.capitalSet;
 
 
             //if a minimum is set
@@ -109,8 +115,6 @@ class PolicyCreator {
         }
 
         if (characterRestrictions.numberAllowed) {
-            this.policy.allowedCharacterSets.num = characterSets.numberSet;
-
 
             //if a minimum is set
             if (parseInt(characterRestrictions.minNumber)) {
@@ -133,15 +137,6 @@ class PolicyCreator {
 
         if (characterRestrictions.specialAllowed) {
 
-            this.policy.allowedCharacterSets.special = characterSets.specialSet;
-
-
-            //because it's hard to see for the user whether there is a whitespace or not in the
-            //character set, the user can also specify this through a button
-            if (characterSets.whitespaceAllowed) {
-                this.policy.allowedCharacterSets.special = this.policy.allowedCharacterSets.special + ' ';
-            }
-
             //if a minimum is set
             if (parseInt(characterRestrictions.minSpecial)) {
 
@@ -158,9 +153,7 @@ class PolicyCreator {
             }
 
         }
-        if(characterRestrictions.unicodeAllowed){
-            this.policy.allowedCharacterSets.unicode = 'unicode';
-        }
+
         if(advancedRestrictions.usernameAllowed){
 
             let requirement = {
