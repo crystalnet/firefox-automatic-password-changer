@@ -166,10 +166,7 @@ class Player {
 
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
 
-        //regExp = regExp.replace(/az/g , az);
-        //regExp = regExp.replace(/AZ/g, AZ);
-        //regExp = regExp.replace(/num/g, num);
-        //regExp = regExp.replace(/special/g, special);
+
 
         //We replace all occurences of the identifiers in the RegEx with the corresponding character set
         // Some special characters need to be escaped so that they don't interfere with the RegEx.

@@ -108,7 +108,6 @@ describe('Player', function () {
     });
 
     // TODO: tests for the failExp descriptions
-    // Tests don't work anymore, because browser.i18n.getMessage() is not compatible with the test framework right now
     describe('#validateUserPassword()', function () {
         it('should reject password containig excluded letters', function () {
             abPlayer.validateUserPassword('0a++BCc7&$', username).sat.should.be.false();

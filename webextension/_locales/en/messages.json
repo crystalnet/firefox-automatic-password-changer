@@ -391,5 +391,11 @@
   },
   "a-special-character.": {
     "message": "a special character."
+  },
+  "username-not-allowed": {
+    "message": "May not contain Username"
+  },
+  "May-not-contain-username.": {
+    "message": "May not contain your username."
   }
 }

@@ -183,6 +183,13 @@
             </div>
 
             <div id="customRestrictionsTab">
+                <form id="advancedRestrictionsForm">
+                    <label id="usernameAllowedLabel" for="usernameAllowed" style="font-weight: bold;">May not contain username.</label>
+                    <input type="checkbox" name="usernameAllowed" id="usernameAllowed"
+                           class="ui-checkboxradio-input">
+                    <br/>
+                    <div style="padding-bottom: 0.3cm; width: 100%;"></div>
+                </form>
                 <Legend id="customRes-legend" style="font-weight: bold;
                     font-size: 1.1em;
                     border-bottom: 2px solid;
@@ -190,6 +197,7 @@
                     width: 100%;">
                     Advanced Restrictions:
                 </Legend>
+
 
                 <div id="customRestrictionExplanation">You can copy your custom Regular Expression here.
                     Please provide a short description for the policy.
