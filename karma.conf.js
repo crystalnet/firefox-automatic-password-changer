@@ -26,6 +26,7 @@ module.exports = function (config) {
             'webextension/external-scripts/argon2-asm.min.js',
             'webextension/external-scripts/lodash_throttle.min.js',
             'webextension/background-scripts/passwordGenerator.js',
+            'webextension/background-scripts/policyCreator.js',
             'webextension/background-scripts/player.js',
 
             // Tests
@@ -48,7 +49,8 @@ module.exports = function (config) {
             // source files, that you wanna generate coverage for
             // do not include tests or libraries
             // (these files will be instrumented by Istanbul)
-            'webextension/background-scripts/player.js': ['coverage']
+            'webextension/background-scripts/player.js': ['coverage'],
+            'webextension/background-scripts/policyCreator.js': ['coverage']
         },
 
         junitReporter: {

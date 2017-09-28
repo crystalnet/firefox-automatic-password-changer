@@ -291,13 +291,11 @@ class Player {
      * @private
      */
     _generateDescription(descriptionArg){
-
-
         let descArr = descriptionArg.split(' ');
         let description = '';
 
         //if the first identifier is Custom:, the policy is a custom policy by the user and won't be translated.
-        if(descArr[0]== 'Custom:'){
+        if(descArr[0] === 'Custom:'){
             return descriptionArg.substring(8);
         }
 
@@ -305,16 +303,14 @@ class Player {
 
             //if there is a corresponding locale it is added to the String, if not the identifier is a number or a specific
             //character set and is added directly to the string.
-            if(chrome.i18n.getMessage(id) === ''){
-                description+= id;
-            } else{
-                description+= chrome.i18n.getMessage(id);
+            let message = chrome.i18n.getMessage(id);
+            if (message === ''){
+                description += id;
+            } else {
+                description += chrome.i18n.getMessage(id);
             }
-
         }
-
         return description;
-
     }
 
     /**
