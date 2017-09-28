@@ -9,6 +9,7 @@ describe('Player', function () {
     let policyCreator4 = new PolicyCreator();
     let policyCreator5 = new PolicyCreator();
     let policyCreator6 = new PolicyCreator();
+    let policyCreator7 = new PolicyCreator();
 
     describe('createLength()', function () {
         policyCreator1._createLength({
@@ -96,6 +97,12 @@ describe('Player', function () {
             policyCreator6.policy.compositionRequirements[0].rule.description.should.equal('Custom: This is a regular expression for testing purposes.');
         });
 
+    });
+    describe('createPolicy()', function(){
+        policyCreator7.createPolicy({minLength: 7, maxLength: 15}, {lowerAllowed: true, capitalAllowed: true, numberAllowed: true, specialAllowed: true, unicodeAllowed: true},{ lowerSet: 'abc', capitalSet: 'ABC', numberSet: '1234', specialSet: '#?()[]$%', whitespaceAllowed: true, unicode: 'unicode'},[{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'}],[{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: false});
+        it('should create a valid policy', function(){
+        policyCreator7.policy.minLength.should.equal(7);
+        });
     });
 
 });
