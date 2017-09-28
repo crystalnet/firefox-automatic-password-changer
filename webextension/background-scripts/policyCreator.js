@@ -177,16 +177,16 @@ class PolicyCreator {
                 // Choosing the right identifier to write into the RegExp. If specific characters are provided, they are being escaped and written directly into the RegExp
                 let regExContent = '';
                 let type = '';
-                if (restriction.restrictionContent == 'capital') {
+                if (restriction.restrictionContent === 'capital') {
                     regExContent = 'AZ';
                     type = 'a-capital-letter.';
-                } else if (restriction.restrictionContent == 'lowercase') {
+                } else if (restriction.restrictionContent === 'lowercase') {
                     regExContent = 'az';
                     type = 'a-lowercase-letter.';
-                } else if (restriction.restrictionContent == 'number') {
+                } else if (restriction.restrictionContent === 'number') {
                     regExContent = 'num';
                     type = 'a-number.';
-                } else if (restriction.restrictionContent == 'special') {
+                } else if (restriction.restrictionContent === 'special') {
                     regExContent = 'special';
                     type = 'a-special-character.';
                 } else {
@@ -230,7 +230,7 @@ class PolicyCreator {
     }
 }
 
-browser.runtime.onMessage.addListener(function (message) {
+chrome.runtime.onMessage.addListener(function (message) {
     if (message.type === 'createPolicy') {
         const policyCreator = new PolicyCreator();
 

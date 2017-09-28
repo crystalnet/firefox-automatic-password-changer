@@ -26,6 +26,7 @@ module.exports = function (config) {
             'webextension/external-scripts/argon2-asm.min.js',
             'webextension/external-scripts/lodash_throttle.min.js',
             'webextension/background-scripts/passwordGenerator.js',
+            'webextension/background-scripts/policyCreator.js',
             'webextension/background-scripts/player.js',
 
             // Tests
