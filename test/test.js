@@ -32,6 +32,11 @@ describe('Player', function () {
     const data4 = JSON.stringify(blueprint4);
     const impossiblePlayer = new Player(data4, schema);
 
+    // blueprint with unicode
+    const blueprintUnicode = {'version':0,'scope':['https://github.com'],'changeProcedure':[{'action':'Click','parameters':[1216,40,774,1708,0,'https://github.com/','true']},{'action':'Click','parameters':[870,220,774,1708,0,'https://github.com/login','false']},{'action':'Input','parameters':['U',5,2,'https://github.com/login']},{'action':'Click','parameters':[794,311,774,1708,0,'https://github.com/login','false']},{'action':'Input','parameters':['C',5,3,'https://github.com/login']},{'action':'Click','parameters':[811,345,774,1708,0,'https://github.com/login','true']},{'action':'Click','parameters':[1315,33,774,1708,0,'https://github.com/','false']},{'action':'Click','parameters':[1179,251,774,1708,0,'https://github.com/','true']},{'action':'Click','parameters':[379,158,774,1708,0,'https://github.com/settings/profile','false']},{'action':'Click','parameters':[734,180,774,1708,0,'https://github.com/settings/admin','false']},{'action':'Input','parameters':['C',21,10,'https://github.com/settings/admin']},{'action':'Input','parameters':['N',21,11,'https://github.com/settings/admin']},{'action':'Input','parameters':['N',21,12,'https://github.com/settings/admin']},{'action':'Click','parameters':[673,229,774,1708,149,'https://github.com/settings/admin','true']},{'action':'Click','parameters':[1326,33,774,1708,0,'https://github.com/settings/admin','false']},{'action':'Click','parameters':[1206,263,774,1708,0,'https://github.com/settings/admin','true']}],'pwdPolicy':[{'allowedCharacterSets':{'az':'abcdefghijklmnopqrstuvwxyz','AZ':'ABCDEFGHIJKLMNOPQRSTUVWXYZ','num':'0123456789','special':'!\“^$%\\/()=?-_,.;:#+*@[]|{}<>&`~','unicode':'unicode'},'compositionRequirements':[{'kind':'must','num':1,'rule':{'description':'Must-contain-at-least 1 lower-case-letters.','regexp':'^(([^az]*)[az]([^az]*)){1,}$'}},{'kind':'must','num':1,'rule':{'description':'Must-contain-at-least 1 capital-case-letters.','regexp':'^(([^AZ]*)[AZ]([^AZ]*)){1,}$'}},{'kind':'must','num':1,'rule':{'description':'Must-contain-at-least 1 special-characters.','regexp':'^(([^special]*)[special]([^special]*)){1,}$'}}],'minLength':7,'maxLength':15}]};
+    const dataUnicode = JSON.stringify(blueprintUnicode);
+    const playerUnicode = new Player(dataUnicode, schema);
+
     describe('#constructor()', function () {
         it('should not accept a faulty JSON as Input', function () {
             (function () {
@@ -105,6 +110,10 @@ describe('Player', function () {
             playerWithout._validatePassword('testusernameA$0', 'testusernameA$0').should.be.true();
         });
 
+        // using blueprint included unicode as allowed charset
+        it('should accept a password with unicode if this is an allowed charset', function() {
+            playerUnicode._validatePassword('8Unicode!🌂😉⋚↩', username).should.be.true();
+        });
     });
 
     // TODO: tests for the failExp descriptions
@@ -144,6 +153,14 @@ describe('Player', function () {
         it('should reject a password with non ascii characters if only ascii is allowed', function () {
             player.validateUserPassword('i37.HDoe♦f', username).sat.should.be.false();
         });
+
+        it('should accept a password with unicode if this is an allowed charset', function () {
+            playerUnicode.validateUserPassword('WoW😙!⇎1🌼👻₩⊕', username).sat.should.be.true();
+        });
+
+        it('should reject a password with unicode', function () {
+            player.validateUserPassword('WoW😙!⇎1🌼👻d', username).sat.should.be.false();
+        });
     });
 
     describe('#_invokePasswordGenerator()', function () {
@@ -162,6 +179,25 @@ describe('Player', function () {
         // test with undefined regexp
         it('should resolve the promise', () => {
             return playerReg._invokePasswordGenerator().should.be.fulfilled();
+        });
+
+        it('should resolve the promise', () => {
+            return playerUnicode._invokePasswordGenerator().should.be.fulfilled();
+        });
+    });
+
+    describe('#_generateDescription()', function () {
+        it('should not change a custom description', () => {
+            return player._generateDescription('Custom: It´s a test description.').should.equal('It´s a test description.');
+        });
+
+        it('should not change a custom description', () => {
+            return player._generateDescription('Custom: Eine deutsche Beschreibung!').should.equal('Eine deutsche Beschreibung!');
+        });
+
+        // don´t know which language will be used by identifier
+        it('should change identifier to a valid description', () => {
+            return player._generateDescription("chrome.i18n.getMessage('do-not-use') + '0' + chrome.i18n.getMessage('in-your-password')").should.equal('Bitte verwenden sie nicht: 0 in Ihrem Passwort.');
         });
     });
 
