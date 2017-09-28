@@ -70,7 +70,7 @@ describe('Player', function () {
         });
     });
     describe('createPositionRequirements()', function(){
-        policyCreator4._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'},{restrictionPosition: '1', restrictionType: 'mustNot', restrictionContent: 'lowercase'},{restrictionPosition: '3', restrictionType: 'must', restrictionContent: 'number'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: 'special'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: null}]);
+        policyCreator4._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'},{restrictionPosition: '1', restrictionType: 'mustNot', restrictionContent: 'lowercase'},{restrictionPosition: '3', restrictionType: 'must', restrictionContent: 'number'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: 'special'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: null}, {restrictionPosition: '7', restrictionType: 'mustNot', restrictionContent: 'x'}]);
 
         it('should create position requirement for a capital letter on position 4 in password', function(){
             policyCreator4.policy.compositionRequirements[0].rule.description.should.equal('Position: 4 must-be: a-capital-letter.');
@@ -83,6 +83,9 @@ describe('Player', function () {
         });
         it('should create position restriction for a special character on position 5 in password', function(){
             policyCreator4.policy.compositionRequirements[3].rule.description.should.equal('Position: 5 must-not-be: a-special-character.');
+        });
+        it('should create position restriction for a specific character on position 7 in password', function(){
+            policyCreator4.policy.compositionRequirements[4].rule.description.should.equal('Position: 7 must-not-be: : x');
         });
 
     });
@@ -103,6 +106,12 @@ describe('Player', function () {
         it('should create a valid policy', function(){
         policyCreator7.policy.minLength.should.equal(7);
         });
+    });
+
+    describe('constructor()', function(){
+    it('should create a new policyCreator', function(){
+        new PolicyCreator().should.be.an.instanceOf(PolicyCreator);
+    });
     });
 
 });
