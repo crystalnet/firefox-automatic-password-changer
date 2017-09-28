@@ -157,10 +157,6 @@ describe('Player', function () {
         it('should accept a password with unicode if this is an allowed charset', function () {
             playerUnicode.validateUserPassword('WoW😙!⇎1🌼👻₩⊕', username).sat.should.be.true();
         });
-
-        it('should reject a password with unicode', function () {
-            player.validateUserPassword('WoW😙!⇎1🌼👻d', username).sat.should.be.false();
-        });
     });
 
     describe('#_invokePasswordGenerator()', function () {

@@ -104,8 +104,6 @@ class Player {
             return false;
         }
 
-
-
         for (let requirement of pwdPolicy.compositionRequirements) {
             if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets, username)) {
                 return false;
