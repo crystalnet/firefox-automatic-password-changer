@@ -26,15 +26,12 @@ class PolicyCreator {
      * @private
      */
     _createcharacterSets(characterRestrictions,characterSets){
-
         if (characterRestrictions.lowerAllowed) {
             this.policy.allowedCharacterSets.az = characterSets.lowerSet;
-
         }
 
         if (characterRestrictions.capitalAllowed) {
             this.policy.allowedCharacterSets.AZ = characterSets.capitalSet;
-
         }
 
         if (characterRestrictions.numberAllowed) {
@@ -52,27 +49,14 @@ class PolicyCreator {
         if(characterRestrictions.unicodeAllowed){
             this.policy.allowedCharacterSets.unicode = 'unicode';
         }
-
-
     }
 
     /**
-     * Converts the entered restrictions to valid policies
+     * Sets the minimum and maximum length of the password in the policy
      * @param length {String} length of the password
-     * @param characterRestrictions {Array} restrictions as objects
-     * @param characterSets  {Object} the character sets
-     * @param positionRestrictions {Array} restrictions as objects
-     * @param customRestrictions {Array} restrictions as objects
-     * @param advancedRestrictions {Array} restrictions as objects
-     * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
+     * @private
      */
-    createPolicy(length, characterRestrictions, characterSets, positionRestrictions, customRestrictions, advancedRestrictions) {
-
-        this._createLength(length);
-
-        this._createcharacterSets(characterRestrictions,characterSets);
-
-
+    _createMinimumRequirement(characterRestrictions) {
         if (characterRestrictions.lowerAllowed) {
             //we only create policies after checking whether the character set is allowed, because the input fields hold values regardless of that
 
@@ -153,20 +137,14 @@ class PolicyCreator {
             }
 
         }
+    }
 
-        if(advancedRestrictions.usernameAllowed){
-
-            let requirement = {
-                kind: 'mustNot',
-                num: 0,
-                rule: {
-                    description: 'May-not-contain-username.',
-                    regexp: '.*[username].*'
-                }
-            };
-            this.policy.compositionRequirements.push(requirement);
-
-        }
+    /**
+     * Sets the minimum and maximum length of the password in the policy
+     * @param length {String} length of the password
+     * @private
+     */
+    _createPositionRequirements(positionRestrictions) {
         // Translate position restrictions
         for (let restriction of positionRestrictions) {
             if (restriction.restrictionContent) {
@@ -209,6 +187,28 @@ class PolicyCreator {
                 this.policy.compositionRequirements.push(requirement);
             }
         }
+    }
+
+    /**
+     * Sets the minimum and maximum length of the password in the policy
+     * @param length {String} length of the password
+     * @private
+     */
+    _createAdvancedRequirements(customRestrictions, advancedRestrictions) {
+        if(advancedRestrictions.usernameAllowed){
+
+            let requirement = {
+                kind: 'mustNot',
+                num: 0,
+                rule: {
+                    description: 'May-not-contain-username.',
+                    regexp: '.*[username].*'
+                }
+            };
+            this.policy.compositionRequirements.push(requirement);
+
+        }
+
 
         for (let restriction of customRestrictions) {
             if (restriction.customRegEx) {
@@ -225,6 +225,25 @@ class PolicyCreator {
                 this.policy.compositionRequirements.push(customRequirement);
             }
         }
+    }
+
+    /**
+     * Converts the entered restrictions to valid policies
+     * @param length {String} length of the password
+     * @param characterRestrictions {Array} restrictions as objects
+     * @param characterSets  {Object} the character sets
+     * @param positionRestrictions {Array} restrictions as objects
+     * @param customRestrictions {Array} restrictions as objects
+     * @param advancedRestrictions {Array} restrictions as objects
+     * @returns {{allowedCharacterSets: {}, minLength, maxLength, compositionRequirements: Array}}
+     */
+    createPolicy(length, characterRestrictions, characterSets, positionRestrictions, customRestrictions, advancedRestrictions) {
+
+        this._createLength(length);
+        this._createcharacterSets(characterRestrictions,characterSets);
+        this._createMinimumRequirement(characterRestrictions);
+        this._createPositionRequirements(positionRestrictions);
+        this._createAdvancedRequirements(customRestrictions, advancedRestrictions);
 
         return this.policy;
     }
