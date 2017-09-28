@@ -12,6 +12,7 @@ describe('Player', function () {
     let policyCreator7 = new PolicyCreator();
     let policyCreator8 = new PolicyCreator();
     let policyCreator9 = new PolicyCreator();
+    let policyCreator10 = new PolicyCreator();
 
     describe('createLength()', function () {
         policyCreator1._createLength({
@@ -28,6 +29,7 @@ describe('Player', function () {
     });
 
     describe('createCharactersets()', function(){
+
         policyCreator1._createcharacterSets({lowerAllowed: true, capitalAllowed: true, numberAllowed: true, specialAllowed: true, unicodeAllowed: true}, { lowerSet: 'abc', capitalSet: 'ABC', numberSet: '1234', specialSet: '#?()[]$%', whitespaceAllowed: true, unicode: 'unicode'});
         policyCreator2._createcharacterSets({lowerAllowed: false, capitalAllowed: false, numberAllowed: false, specialAllowed: true, unicodeAllowed: false}, {specialSet: '#?()[]$%', whitespaceAllowed: false});
         policyCreator3._createcharacterSets({lowerAllowed: false, capitalAllowed: true, numberAllowed: false, specialAllowed: false, unicodeAllowed: false}, {capitalSet: 'ABC'});
@@ -64,6 +66,7 @@ describe('Player', function () {
         policyCreator2._createMinimumRequirement({lowerAllowed: false, minLower: null, capitalAllowed: true, minCapital: null, numberAllowed: true, minNumber: null,  specialAllowed: true, minSpecial: 2});
         policyCreator3._createMinimumRequirement({lowerAllowed: true, minLower: null, capitalAllowed: true, minCapital: 3, numberAllowed: false, minNumber: null, specialAllowed: false, minSpecial: null});
         policyCreator8._createMinimumRequirement({lowerAllowed: false, minLower: null, capitalAllowed: false, minCapital: 3, numberAllowed: false, minNumber: null, specialAllowed: false, minSpecial: null});
+
         it('should create requirements for the minimum amount different allowed of characters mandatory for password', function(){
             policyCreator1.policy.compositionRequirements[0].rule.description.should.equal('Must-contain-at-least 1 lower-case-letters.');
         });
@@ -77,9 +80,11 @@ describe('Player', function () {
             policyCreator8.policy.compositionRequirements.should.be.empty();
         });
     });
+
     describe('createPositionRequirements()', function(){
         policyCreator4._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'},{restrictionPosition: '1', restrictionType: 'mustNot', restrictionContent: 'lowercase'},{restrictionPosition: '3', restrictionType: 'must', restrictionContent: 'number'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: 'special'}, {restrictionPosition: '7', restrictionType: 'mustNot', restrictionContent: 'x'}]);
         policyCreator9._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: null}]);
+
         it('should create position requirement for a capital letter on position 4 in password', function(){
             policyCreator4.policy.compositionRequirements[0].rule.description.should.equal('Position: 4 must-be: a-capital-letter.');
         });
@@ -103,6 +108,8 @@ describe('Player', function () {
     describe('createAdvancedRequirements()', function(){
         policyCreator5._createAdvancedRequirements([{customRegEx: null, customRegExDesc: null}], {usernameAllowed: true});
         policyCreator6._createAdvancedRequirements([{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: false});
+        policyCreator10._createAdvancedRequirements([{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: true});
+
 
         it('should create position requirement for a capital letter on position 4 in password', function(){
             policyCreator5.policy.compositionRequirements[0].rule.description.should.equal('May-not-contain-username.');

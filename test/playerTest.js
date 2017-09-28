@@ -164,7 +164,7 @@ describe('Player', function () {
         });
 
         it('should reject a password with unicode if it isn´t an allowed charset', function () {
-            player._validateUserPassword('WoW😙!⇎1🌼👻₩⊕', username).sat.should.be.false();
+            player.validateUserPassword('WoW😙!⇎1🌼👻₩⊕', username).sat.should.be.false();
         });
     });
 
@@ -198,10 +198,6 @@ describe('Player', function () {
 
         it('should not change a custom description', () => {
             return player._generateDescription('Custom: Eine deutsche Beschreibung!').should.equal('Eine deutsche Beschreibung!');
-        });
-
-        it('should return an empty string if the id is unknown', () => {
-            return player._generateDescription("chrome.i18n.getMessage('unknown-id-test-yea')").should.equal('');
         });
 
         // don´t know which language will be used by identifier
