@@ -48,6 +48,7 @@ describe('Player', function () {
     const playerShort = new Player(dataShort, schema);
 
     describe('#constructor()', function () {
+
         it('should not accept a faulty JSON as Input', function () {
             (function () {
                 new Player(faulty, schema);
@@ -60,6 +61,7 @@ describe('Player', function () {
     });
 
     describe('#_parseBlueprint()', function () {
+
         it('should have a to z property', function () {
             player._parseBlueprint(data, player.schema).pwdPolicy[0].allowedCharacterSets.az.should.equal('abcdefghijklmnopqrstuvwxyz');
         });
@@ -83,6 +85,7 @@ describe('Player', function () {
 
     //the following tests call _validatePassword() but necessarily test the _test() function too, as the validation function just calls upon the test function for each regular expression.
     describe('#_validatePassword()', function () {
+
         it('should reject a password containing only numbers', function () {
             abPlayer._validatePassword( '00000', username).should.be.false();
         });
@@ -126,9 +129,10 @@ describe('Player', function () {
         });
     });
 
-    // TODO: tests for the failExp descriptions
+
     describe('#validateUserPassword()', function () {
-        it('should reject password containig excluded letters', function () {
+
+        it('should reject password containing excluded letters', function () {
             abPlayer.validateUserPassword('0a++BCc7&$', username).sat.should.be.false();
         });
 
@@ -186,6 +190,7 @@ describe('Player', function () {
     });
 
     describe('#_invokePasswordGenerator()', function () {
+
         it('should resolve the promise', () => {
             return invokePGPlayer._invokePasswordGenerator().should.be.fulfilled();
         });
@@ -209,6 +214,7 @@ describe('Player', function () {
     });
 
     describe('#_generateDescription()', function () {
+
         it('should not change a custom description', () => {
             return player._generateDescription('Custom: It´s a test description.').should.equal('It´s a test description.');
         });
@@ -217,13 +223,14 @@ describe('Player', function () {
             return player._generateDescription('Custom: Eine deutsche Beschreibung!').should.equal('Eine deutsche Beschreibung!');
         });
 
-        // don´t know which language will be used by identifier
+
         it('should change identifier to a valid description', () => {
             return player._generateDescription('do-not-use').should.be.a.String();
         });
     });
 
     describe('#generatePassword()', function () {
+
         it('should resolve the promise', () => {
             return invokePGPlayer.generatePassword(username).should.be.fulfilled();
         });

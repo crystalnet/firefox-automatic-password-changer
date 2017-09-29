@@ -3,6 +3,7 @@
  */
 
 describe('Player', function () {
+
     let policyCreator1 = new PolicyCreator();
     let policyCreator2 = new PolicyCreator();
     let policyCreator3 = new PolicyCreator();
@@ -15,6 +16,7 @@ describe('Player', function () {
     let policyCreator10 = new PolicyCreator();
 
     describe('createLength()', function () {
+
         policyCreator1._createLength({
             minLength: 3,
             maxLength: 6
@@ -34,6 +36,7 @@ describe('Player', function () {
         policyCreator2._createcharacterSets({lowerAllowed: false, capitalAllowed: false, numberAllowed: false, specialAllowed: true, unicodeAllowed: false}, {specialSet: '#?()[]$%', whitespaceAllowed: false});
         policyCreator3._createcharacterSets({lowerAllowed: false, capitalAllowed: true, numberAllowed: false, specialAllowed: false, unicodeAllowed: false}, {capitalSet: 'ABC'});
         policyCreator4._createcharacterSets({lowerAllowed: false, capitalAllowed: false, numberAllowed: false, specialAllowed: false, unicodeAllowed: false});
+
         it('should set characterSet in which all charsets are allowed including unicode and whitespace', function(){
             policyCreator1.policy.allowedCharacterSets.az.should.equal('abc');
         });
@@ -62,6 +65,7 @@ describe('Player', function () {
     });
 
     describe('createMinimumRequirement()', function(){
+
         policyCreator1._createMinimumRequirement({lowerAllowed: true, minLower: 1, capitalAllowed: false, minCapital: null, numberAllowed: true, minNumber: 1, specialAllowed: true, minSpecial: null});
         policyCreator2._createMinimumRequirement({lowerAllowed: false, minLower: null, capitalAllowed: true, minCapital: null, numberAllowed: true, minNumber: null,  specialAllowed: true, minSpecial: 2});
         policyCreator3._createMinimumRequirement({lowerAllowed: true, minLower: null, capitalAllowed: true, minCapital: 3, numberAllowed: false, minNumber: null, specialAllowed: false, minSpecial: null});
@@ -82,6 +86,7 @@ describe('Player', function () {
     });
 
     describe('createPositionRequirements()', function(){
+
         policyCreator4._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'},{restrictionPosition: '1', restrictionType: 'mustNot', restrictionContent: 'lowercase'},{restrictionPosition: '3', restrictionType: 'must', restrictionContent: 'number'},{restrictionPosition: '5', restrictionType: 'mustNot', restrictionContent: 'special'}, {restrictionPosition: '7', restrictionType: 'mustNot', restrictionContent: 'x'}]);
         policyCreator9._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: null}]);
 
@@ -105,7 +110,9 @@ describe('Player', function () {
         });
 
     });
+
     describe('createAdvancedRequirements()', function(){
+
         policyCreator5._createAdvancedRequirements([{customRegEx: null, customRegExDesc: null}], {usernameAllowed: true});
         policyCreator6._createAdvancedRequirements([{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: false});
         policyCreator10._createAdvancedRequirements([{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: true});
@@ -119,17 +126,21 @@ describe('Player', function () {
         });
 
     });
+
     describe('createPolicy()', function(){
+
         policyCreator7.createPolicy({minLength: 7, maxLength: 15}, {lowerAllowed: true, capitalAllowed: true, numberAllowed: true, specialAllowed: true, unicodeAllowed: true},{ lowerSet: 'abc', capitalSet: 'ABC', numberSet: '1234', specialSet: '#?()[]$%', whitespaceAllowed: true, unicode: 'unicode'},[{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'}],[{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: false});
+
         it('should create a valid policy', function(){
         policyCreator7.policy.minLength.should.equal(7);
         });
     });
 
     describe('constructor()', function(){
-    it('should create a new policyCreator', function(){
+
+        it('should create a new policyCreator', function(){
         new PolicyCreator().should.be.an.instanceOf(PolicyCreator);
-    });
+        });
     });
 
 });
