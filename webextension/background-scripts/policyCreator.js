@@ -52,8 +52,8 @@ class PolicyCreator {
     }
 
     /**
-     * Sets the minimum and maximum length of the password in the policy
-     * @param length {String} length of the password
+     * Sets the minimum amount of characters for a particular charset and creates requirement
+     * @param characterRestrictions {Array} set of character restrictions
      * @private
      */
     _createMinimumRequirement(characterRestrictions) {
@@ -137,11 +137,12 @@ class PolicyCreator {
             }
 
         }
+
     }
 
     /**
-     * Sets the minimum and maximum length of the password in the policy
-     * @param length {String} length of the password
+     * creates the position specific restrictions for the password
+     * @param positionRestrictions {Array} set of position requirements for the password
      * @private
      */
     _createPositionRequirements(positionRestrictions) {
@@ -186,12 +187,13 @@ class PolicyCreator {
                 }
                 this.policy.compositionRequirements.push(requirement);
             }
-        }
+    }
     }
 
     /**
-     * Sets the minimum and maximum length of the password in the policy
-     * @param length {String} length of the password
+     * creates custom and advanced requirements for the password
+     * @param customRestrictions {Array} custom restrictions for password
+     * @param advancedRestrictions {Array} advanced restriction for password
      * @private
      */
     _createAdvancedRequirements(customRestrictions, advancedRestrictions) {
