@@ -187,7 +187,7 @@ class PolicyCreator {
                 }
                 this.policy.compositionRequirements.push(requirement);
             }
-    }
+        }
     }
 
     /**
