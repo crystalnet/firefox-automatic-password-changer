@@ -80,6 +80,7 @@ function initializeSpecificationDialog(data, inputField) {
 
     //Tabs
     $('#general').html(browser.i18n.getMessage('general-tab'));
+    $('#specification-introduction').html(browser.i18n.getMessage('specification-introduction'));
     $('#position-restrictions').html(browser.i18n.getMessage('position-restrictions-tab'));
     $('#character-sets').html(browser.i18n.getMessage('character-sets-tab'));
     $('#custom-regexp').html(browser.i18n.getMessage('custom-regexp-tab'));
@@ -95,12 +96,11 @@ function initializeSpecificationDialog(data, inputField) {
     $('#lowercaseLetters').html(browser.i18n.getMessage('lowercase-letters'));
     $('#lowercaseAllowedLabel').html(browser.i18n.getMessage('lowercase-allowed'));
 
-
     $('#numbersAllowedLabel').html(browser.i18n.getMessage('numbers-allowed'));
-
 
     $('#specialsAllowedLabel').html(browser.i18n.getMessage('special-allowed'));
     $('#usernameAllowedLabel').html(browser.i18n.getMessage('username-not-allowed'));
+    $('#prevPasswordsAllowedLabel').html(browser.i18n.getMessage('old-passwords-not-allowed'));
     $('#whitespaceLabel').html(browser.i18n.getMessage('whitespace-allowed'));
     $('#unicodeLabel').html(browser.i18n.getMessage('unicode-allowed'));
 

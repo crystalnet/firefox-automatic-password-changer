@@ -87,6 +87,14 @@ input[type = password]{
     top: -5px;
 }
 
+#requirementsReminder{
+    margin: 10px;
+    list-style-type: square;
+    list-style-position: inside;
+    position: relative;
+    color: darkorange;
+}
+
 #requirementsSat{
     margin: 10px;
     list-style-type: square;

@@ -8,6 +8,8 @@
                 <li><a href="#customRestrictionsTab" id="custom-regexp">Advanced</a></li>
             </ul>
             <div id="generalTab">
+                <div id="specification-introduction"></div>
+                <div style="padding-bottom: 0.3cm; width: 100%;"></div>
                 <form id="lengthForm">
                     <Legend id="lengthLegend" style="font-weight: bold;
                     font-size: 1.1em;
@@ -186,6 +188,11 @@
                 <form id="advancedRestrictionsForm">
                     <label id="usernameAllowedLabel" for="usernameAllowed" style="font-weight: bold;">May not contain username.</label>
                     <input type="checkbox" name="usernameAllowed" id="usernameAllowed"
+                           class="ui-checkboxradio-input">
+                    <br/>
+                    <div style="padding-bottom: 0.3cm; width: 100%;"></div>
+                    <label id="prevPasswordsAllowedLabel" for="prevPasswordsAllowed" style="font-weight: bold;">May not be the same as the last 5 passwords.</label>
+                    <input type="checkbox" name="prevPasswordsAllowed" id="prevPasswordsAllowed"
                            class="ui-checkboxradio-input">
                     <br/>
                     <div style="padding-bottom: 0.3cm; width: 100%;"></div>

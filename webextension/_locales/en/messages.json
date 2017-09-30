@@ -397,5 +397,14 @@
   },
   "May-not-contain-username.": {
     "message": "May not contain your username."
+  },
+  "specification-introduction": {
+    "message": "Please enter the requirements for passwords on this website here. Furter options can be found in the other tabs."
+  },
+  "old-passwords-not-allowed": {
+    "message": "May not contain your last 5 passwords."
+  },
+  "May-not-be-the-same-as-the-last-5-passwords.": {
+    "message": "Should not contain your last 5 passwords."
   }
 }

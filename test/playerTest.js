@@ -160,7 +160,7 @@ describe('Player', function () {
             player.validateUserPassword('asdfasdf', username).sat.should.be.false();
         });
 
-        it('should reject a previously used password', function () {
+        it('should not reject a previously used password', function () {
             player.validateUserPassword('P@ssword123', username).sat.should.be.false();
         });
 

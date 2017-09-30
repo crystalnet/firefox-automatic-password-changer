@@ -211,6 +211,20 @@ class PolicyCreator {
 
         }
 
+        if(advancedRestrictions.prevPasswordsAllowed){
+
+            let requirement = {
+                kind: 'mustNot',
+                num: 5,
+                rule: {
+                    description: 'May-not-be-the-same-as-the-last-5-passwords.',
+                    regexp: '.*[password].*'
+                }
+            };
+            this.policy.compositionRequirements.push(requirement);
+
+        }
+
 
         for (let restriction of customRestrictions) {
             if (restriction.customRegEx) {

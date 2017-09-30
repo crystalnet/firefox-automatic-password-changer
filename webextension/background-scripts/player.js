@@ -146,6 +146,10 @@ class Player {
 
         }
 
+        //We replace all occurences of the identifiers in the RegEx with the corresponding character set
+        // Some special characters need to be escaped so that they don't interfere with the RegEx.
+        // The character sets are used as sets in [], thus only a few characters need to be replaced.
+
         for(let charSetId of Object.keys(allowedCharacterSets)){
             if(charSetId=='unicode'){
                 continue;
@@ -161,15 +165,11 @@ class Player {
 
         }
 
-
+        // We have no access to previous passwords, so we ignore these requirements and remind the user to respect them.
+        // The 5 pseudo passwords can be replaced with the real passwords, if those are accessible in the future.
         const passwords = ['012345678', 'password', 'asdf', 'test', 'P@ssword123'];
-
-
-
-        //We replace all occurences of the identifiers in the RegEx with the corresponding character set
-        // Some special characters need to be escaped so that they don't interfere with the RegEx.
-        // The character sets are used as sets in [], thus only a few characters need to be replaced.
         if (regExp.includes('[password]')) {
+
             let newValue = '(';
             for (let pw of passwords) {
                 newValue += pw + '|';
@@ -205,6 +205,7 @@ class Player {
         let characterSets = this.blueprint.pwdPolicy[0].allowedCharacterSets;
         let unSatReq = [];
         let satReq = [];
+        let reminder = [];
         let satisfied = true;
         let minLength = pwdPolicy.minLength;
         let maxLength = pwdPolicy.maxLength;
@@ -270,6 +271,11 @@ class Player {
         //no we go through every composition requirement and test whether it's rule is satisfied or not
         //the descriptions contain identifiers that are parsed into a localized message
         for (let requirement of pwdPolicy.compositionRequirements) {
+            //We cannot access the previous passwords of the user, so we just post a reminder
+            if(requirement.rule.regexp === '.*[password].*'){
+                reminder.push(this._generateDescription(requirement.rule.description));
+                continue;
+            }
 
             if (!this._test(password, requirement, pwdPolicy.allowedCharacterSets, username)) {
                 satisfied = false;
@@ -279,7 +285,7 @@ class Player {
             }        }
 
 
-        return {sat: satisfied, failReq: unSatReq, passReq: satReq};
+        return {sat: satisfied, failReq: unSatReq, passReq: satReq, remindReq: reminder};
     }
 
     /**

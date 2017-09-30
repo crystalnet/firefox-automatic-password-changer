@@ -300,11 +300,13 @@ function checkRequirements(player, username) {
     let password = $('#new-password').val();
     let notSatisfied = $('#requirementsNotSat');
     let satisfied = $('#requirementsSat');
+    let reminder = $('#requirementsReminder');
     let changeButton = $('#changePasswordBtn');
 
     //deletes any values that are still in either requirementsNotSat or requirementsSat
     notSatisfied.html('');
     satisfied.html('');
+    reminder.html('');
 
     const checkedRequirements = player.validateUserPassword(password, username);
     if (checkedRequirements.sat) {
@@ -321,6 +323,17 @@ function checkRequirements(player, username) {
     }
 
     notSatisfied.text(function () {
+        $(this).append(list);
+    });
+
+    arrayOfReqs = checkedRequirements.remindReq;
+    list = '';
+    for (let count = 0; count < arrayOfReqs.length; count++) {
+        let d = arrayOfReqs[count];
+        list += '<li>' + d + '</li>';
+    }
+
+    reminder.text(function () {
         $(this).append(list);
     });
 
