@@ -91,19 +91,19 @@ describe('Player', function () {
         policyCreator9._createPositionRequirements([{restrictionPosition: '4', restrictionType: 'must', restrictionContent: null}]);
 
         it('should create position requirement for a capital letter on position 4 in password', function(){
-            policyCreator4.policy.compositionRequirements[0].rule.description.should.equal('Position: 4 must-be: a-capital-letter.');
+            policyCreator4.policy.compositionRequirements[0].rule.description.should.equal('Position: 4 must-be: a-capital-letter. mustPosEnd.');
         });
         it('should create position restriction for a lowercase letter on position 1 in password', function(){
-            policyCreator4.policy.compositionRequirements[1].rule.description.should.equal('Position: 1 must-not-be: a-lowercase-letter.');
+            policyCreator4.policy.compositionRequirements[1].rule.description.should.equal('Position: 1 must-not-be: a-lowercase-letter. mustNotPosEnd.');
         });
         it('should create position requirement for a number on position 3 in password', function(){
-            policyCreator4.policy.compositionRequirements[2].rule.description.should.equal('Position: 3 must-be: a-number.');
+            policyCreator4.policy.compositionRequirements[2].rule.description.should.equal('Position: 3 must-be: a-number. mustPosEnd.');
         });
         it('should create position restriction for a special character on position 5 in password', function(){
-            policyCreator4.policy.compositionRequirements[3].rule.description.should.equal('Position: 5 must-not-be: a-special-character.');
+            policyCreator4.policy.compositionRequirements[3].rule.description.should.equal('Position: 5 must-not-be: a-special-character. mustNotPosEnd.');
         });
         it('should create position restriction for a specific character on position 7 in password', function(){
-            policyCreator4.policy.compositionRequirements[4].rule.description.should.equal('Position: 7 must-not-be: : x');
+            policyCreator4.policy.compositionRequirements[4].rule.description.should.equal('Position: 7 must-not-be: : x mustNotPosEnd.');
         });
         it('should create a policy without any restrictions', function(){
             policyCreator9.policy.compositionRequirements.should.be.empty();
@@ -132,14 +132,14 @@ describe('Player', function () {
         policyCreator7.createPolicy({minLength: 7, maxLength: 15}, {lowerAllowed: true, capitalAllowed: true, numberAllowed: true, specialAllowed: true, unicodeAllowed: true},{ lowerSet: 'abc', capitalSet: 'ABC', numberSet: '1234', specialSet: '#?()[]$%', whitespaceAllowed: true, unicode: 'unicode'},[{restrictionPosition: '4', restrictionType: 'must', restrictionContent: 'capital'}],[{customRegEx: '.*[testRegex]*.', customRegExDesc: 'This is a regular expression for testing purposes.'}], {usernameAllowed: false});
 
         it('should create a valid policy', function(){
-        policyCreator7.policy.minLength.should.equal(7);
+            policyCreator7.policy.minLength.should.equal(7);
         });
     });
 
     describe('constructor()', function(){
 
         it('should create a new policyCreator', function(){
-        new PolicyCreator().should.be.an.instanceOf(PolicyCreator);
+            new PolicyCreator().should.be.an.instanceOf(PolicyCreator);
         });
     });
 
