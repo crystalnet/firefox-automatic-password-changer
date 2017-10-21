@@ -176,12 +176,12 @@ class PolicyCreator {
                 let pos = parseInt(restriction.restrictionPosition) - 1;
                 if (restriction.restrictionType === 'must') {
                     requirement.rule = {
-                        description: 'Position: ' + restriction.restrictionPosition + ' must-be: ' + type,
+                        description: 'Position: ' + restriction.restrictionPosition + ' must-be: ' + type + ' mustPosEnd.',
                         regexp: '^((.){' + pos + '}[' + regExContent + '])'
                     };
                 } else {
                     requirement.rule = {
-                        description: 'Position: ' + restriction.restrictionPosition + ' must-not-be: ' + type,
+                        description: 'Position: ' + restriction.restrictionPosition + ' must-not-be: ' + type + ' mustNotPosEnd.',
                         regexp: '^((.){' + pos + '}[' + regExContent + '])'
                     };
                 }

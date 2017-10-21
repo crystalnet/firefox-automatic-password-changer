@@ -399,9 +399,15 @@
     "message": "Bitte geben Sie hier nun die Anforderungen der Website an das Passwort ein. Weitere Optionen finden sich in den anderen Reitern."
   },
   "old-passwords-not-allowed": {
-    "message": "Darf die letzten 5 Passwörter nicht enthalten."
+    "message": "Soll vorherige Passwörter nicht enthalten."
   },
   "May-not-be-the-same-as-the-last-5-passwords.": {
-    "message": "Darf die letzten 5 Passwörter nicht enthalten."
+    "message": "Soll vorherige Passwörter nicht enthalten."
+  },
+  "mustPosEnd.": {
+    "message": " enthalten."
+  },
+  "mustNotPosEnd.": {
+    "message": " enthalten"
   }
 }

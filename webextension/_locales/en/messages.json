@@ -258,10 +258,10 @@
     "message": "May not contain more than"
   },
   "in-your-password": {
-    "message": "in your password."
+    "message": " in your password."
   },
   "do-not-use": {
-    "message": "Please do not use"
+    "message": "Please do not use "
   },
   "save-password-policy": {
     "message": "Save policy"
@@ -360,16 +360,16 @@
     "message": "Must contain at least "
   },
   "lower-case-letters.": {
-    "message": "lower case letter/s."
+    "message": " lower case letter/s."
   },
   "capital-case-letters.": {
-    "message": "capital case letter/s."
+    "message": " capital case letter/s."
   },
   "numbers.": {
-    "message": "number/s."
+    "message": " number/s."
   },
   "special-characters.": {
-    "message": "special character/s."
+    "message": " special character/s."
   },
   "Position:": {
     "message": "Position: "
@@ -402,9 +402,15 @@
     "message": "Please enter the requirements for passwords on this website here. Furter options can be found in the other tabs."
   },
   "old-passwords-not-allowed": {
-    "message": "May not contain your last 5 passwords."
+    "message": "May not contain previous passwords."
   },
   "May-not-be-the-same-as-the-last-5-passwords.": {
-    "message": "Should not contain your last 5 passwords."
+    "message": "Should not contain a previous password."
+  },
+  "mustPosEnd.": {
+    "message": " "
+  },
+  "mustNotPosEnd.": {
+    "message": " "
   }
 }
