@@ -399,7 +399,7 @@
     "message": "May not contain your username."
   },
   "specification-introduction": {
-    "message": "Please enter the requirements for passwords on this website here. Furter options can be found in the other tabs."
+    "message": "Please enter the requirements for passwords on this website here. Further options can be found in the other tabs."
   },
   "old-passwords-not-allowed": {
     "message": "May not contain previous passwords."

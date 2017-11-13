@@ -130,7 +130,7 @@ function addAccountSection(name, url, blueprintExists) {
         let $recordBtn = $(document.createElement('DIV')).button({
             label: browser.i18n.getMessage('record_blueprint_btn')
         }).on('click', function () {
-            startRecording(url);
+            startRecording(url, name);
         });
         $(itemContent).append($recordBtn);
     } else {
@@ -364,8 +364,9 @@ function changeThisPasswordAut(url, username, newPassword = '') {
 /**
  * Trigger function for recording a new blueprint
  * @param url URL for a login entry
+ * @param name username for a login entry
  */
-function startRecording(url) {
+function startRecording(url, name) {
     let box = window.confirm(browser.i18n.getMessage('acclmessage1', url));
     if (box === true) {
         let querying = browser.tabs.query({currentWindow: true, active: true});
@@ -377,7 +378,7 @@ function startRecording(url) {
                 // close the account list tab
                 browser.tabs.remove(tabs[0].id);
                 // trigger recording on newly opened tab
-                backgroundPage.toggleRecorder();
+                backgroundPage.toggleRecorder(name, url);
             }, null);
         }, null);
     }

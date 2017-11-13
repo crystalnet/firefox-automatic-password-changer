@@ -132,7 +132,8 @@ function buildContextMenu() {
         id: 'labelAsNewPassword',
         parentId: 'labelAs',
         title: browser.i18n.getMessage('new password'),
-        contexts: ['page_action']
+        contexts: ['editable', 'password']
+        // TODO change back contexts: ['page_action']
     });
     browser.contextMenus.create({
         id: 'startStopRecording',
@@ -233,18 +234,19 @@ function handleLabelAsContextMenuClick(label, tabId) {
  * Starts the recorder, if it is inactive and stops it otherwise;
  * Also handles badge and context menu accordingly
  */
-function toggleRecorder() {
+function toggleRecorder(name = null, url = null) {
     let recorderStatus = recorder.recorderStatus();
     if (recorderStatus) {
         badge.deactivateRecording();
         recorder.stopRecording();
         // hide labelAsNewPassword context menu item
         browser.contextMenus.update('labelAsNewPassword', {
-            contexts: ['page_action']
+            contexts: ['editable', 'password']
+            // TODO change back contexts: ['page_action']
         });
     } else {
         badge.activateRecording();
-        recorder.startRecording();
+        recorder.startRecording(name, url);
     }
     /* actual recorderStatus is now flipped after starting or stopping recorder ! */
     // update the startStopRecording item title

@@ -21,19 +21,19 @@ class Recorder {
     /**
      * Starts a recording
      */
-    startRecording() {
+    startRecording(name = null, url = null) {
         this.isActive = true;
         this.userWebPath = [];
         this.pwdPolicy = [];
         this.tagTracker = {};
-        this.webPage = '';
+        this.webPage = url ? url : '';
         this.loginData = {
             password: '',
-            username: '',
+            username: name ? name : '',
             passwordField: '',
             usernameField: '',
             formSubmitURL: '',
-            url: ''
+            url: url ? url : ''
         };
         // let the legacy add-on retrieve the currently stored login credentials from the password manager
         // we need this later when setting the password from the recording
